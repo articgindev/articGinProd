@@ -28,7 +28,7 @@ const Gallery = () => {
         <SubHeading title="Instagram" />
         <h1 className="headtext__cormorant">Photo Gallery</h1>
         <p
-          className="p__opensans"
+          className="p__tnroman"
           style={{ color: '#AAAAAA', marginTop: '2rem' }}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat

@@ -1,37 +1,39 @@
 import React from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineRestaurantMenu } from 'react-icons/md';
+import { MdOutlineShoppingCart } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa';
 import images from '../../constants/images';
 import './Navbar.css';
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = React.useState(false);
   return (
-    <nav className="app__navbar">
+    <nav className="app__navbar app__bg">
       <div className="app__navbar-logo">
         <img src={images.artic} alt="app__logo" />
       </div>
       <ul className="app__navbar-links">
-        <li className="p__opensans">
-          <a href="#home">Home</a>
+        <li className="p__tnroman">
+          <a href="#home">HOME</a>
         </li>
-        <li className="p__opensans">
-          <a href="#products">Productos</a>
+        <li className="p__tnroman">
+          <a href="#products">PRODUCTOS</a>
         </li>
-        <li className="p__opensans">
-          <a href="#aboutUs">About Us</a>
+        <li className="p__tnroman">
+          <a href="#aboutUs">ABOUT</a>
         </li>
-        <li className="p__opensans">
-          <a href="#contact">Contact</a>
+        <li className="p__tnroman">
+          <a href="#contact">CONTACT</a>
         </li>
       </ul>
       <div className="app__navbar-login">
-        <a href="#login" className="p__opensans">
-          Log In / Registration
+        <a href="#login" className="p__tnroman">
+          <FaUserCircle />{' '}
         </a>
         <div />
-        <a href="/" className="p__opensans">
-          Book Table
+        <a href="/" className="p__tnroman">
+          <MdOutlineShoppingCart />
         </a>
       </div>
       <div className="app__navbar-smallscreen">

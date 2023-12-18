@@ -1,7 +1,3 @@
-.app__header {
-  background-color: var(--color-black);
-}
-
 .app__header-h1 {
   font-family: var(--font-base);
   color: var(--color-golden);
