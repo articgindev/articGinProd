@@ -6,77 +6,45 @@ body {
   color: #333;
 }
 
-.home-container {
+.nosotros-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
 }
 
-.home-header {
+.nosotros-header {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.home-header h1 {
+.nosotros-header h1 {
   font-size: 2.5em;
   margin: 0.5em 0;
 }
 
-.home-header p {
-  font-size: 1.2em;
-  margin: 0;
-}
-
-.home-main {
+.nosotros-main {
   width: 100%;
   text-align: center;
 }
 
-.home-section {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.home-section h2 {
-  margin-top: 0;
-}
-
-.home-section p {
-  margin: 0.5em 0 0;
-}
-
 /* Responsivo para dispositivos móviles */
 @media (max-width: 600px) {
-  .home-header h1 {
+  .nosotros-header h1 {
     font-size: 2em;
-  }
-
-  .home-header p {
-    font-size: 1em;
   }
 }
 
 /* Responsivo para tabletas */
 @media (min-width: 601px) and (max-width: 1024px) {
-  .home-header h1 {
+  .nosotros-header h1 {
     font-size: 2.2em;
-  }
-
-  .home-header p {
-    font-size: 1.1em;
   }
 }
 
 /* Responsivo para escritorios */
 @media (min-width: 1025px) {
-  .home-header h1 {
+  .nosotros-header h1 {
     font-size: 2.5em;
-  }
-
-  .home-header p {
-    font-size: 1.2em;
   }
 }

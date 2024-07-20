@@ -1,0 +1,88 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+  background: url('../assets/backgrounds/FondoArticGin.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+#root {
+  padding: 0 !important;
+}
+
+.canvas-container {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0);
+
+  /* Fondo completamente transparente */
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.home-header {
+  text-align: center;
+}
+
+.home-header img {
+  width: 200px;
+  height: 80px;
+  margin: 3em 0;
+}
+
+.home-header p {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.home-main {
+  width: 100%;
+  text-align: center;
+}
+
+.home-section h2 {
+  margin-top: 0;
+}
+
+.home-section p {
+  margin: 0.5em 0 0;
+}
+
+/* Responsivo para dispositivos móviles */
+@media (max-width: 600px) {
+  .home-header h1 {
+    font-size: 2em;
+  }
+
+  .home-header p {
+    font-size: 1em;
+  }
+}
+
+/* Responsivo para tabletas */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .home-header h1 {
+    font-size: 2.2em;
+  }
+
+  .home-header p {
+    font-size: 1.1em;
+  }
+}
+
+/* Responsivo para escritorios */
+@media (min-width: 1025px) {
+  .home-header h1 {
+    font-size: 2.5em;
+  }
+
+  .home-header p {
+    font-size: 1.2em;
+  }
+}
