@@ -1,11 +1,16 @@
 // src/components/HomeComponent.jsx
-import React, { Suspense } from 'react';
+// src/components/HomeComponent.jsx
+import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import Botella1 from './Botella1';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { PointLightHelper } from 'three';
+import Model from './BOTELLA_ARTIC';
+
 import './Gin.css';
-import { OrbitControls } from '@react-three/drei';
 
 const GinComponent = () => {
+  const lightRef = useRef();
+
   return (
     <div className="container">
       <header className="home-header">
@@ -13,17 +18,23 @@ const GinComponent = () => {
       </header>
       <main className="home-main">
         <div className="canvas-container">
-          <Canvas camera={{ position: [-13, -20, 20], fov: 110 }}>
+          <Canvas>
+            <PerspectiveCamera fov={10} aspect={1} position={[0, 0, 0]} />
             <OrbitControls
               enableZoom={false}
-              minDistance={280}
-              maxDistance={100}
-              enableRotate={true}
+              minDistance={5}
+              maxDistance={5}
+              minPolarAngle={Math.PI / 2} // Limita completamente la rotación vertical
+              maxPolarAngle={Math.PI / 2}
             />
-            <directionalLight position={[5, 5, 5]} intensity={1} />
-            <directionalLight position={[-5, -5, -5]} intensity={0.5} />
+            <ambientLight intensity={2} />
+            <pointLight ref={lightRef} position={[-1, 3, 0]} intensity={1} />
+            <pointLight ref={lightRef} position={[0, -3, 0]} intensity={10} />
+            {lightRef.current && (
+              <primitive object={new PointLightHelper(lightRef.current, 1)} />
+            )}{' '}
             <Suspense fallback={null}>
-              <Botella1 rotation={[Math.PI / 4, Math.PI / 4, 0]} />
+              <Model scale={7} />
             </Suspense>
           </Canvas>
         </div>
