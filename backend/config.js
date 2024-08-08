@@ -1,3 +1,8 @@
-export const PORT = 5555;
+// src/config.js
+import dotenv from 'dotenv';
 
-export const mongoDBURL = "mongodb+srv://artic:botanico1@artic.ctvlikj.mongodb.net/sales-collection?retryWrites=true&w=majority&appName=artic"
+// Cargar las variables de entorno desde el archivo .env
+dotenv.config();
+
+export const PORT = process.env.PORT;
+export const mongoDBURL = process.env.MONGODB_URL;
