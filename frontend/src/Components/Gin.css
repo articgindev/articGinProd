@@ -9,7 +9,7 @@ body {
 }
 
 .gin-container {
-  background: url('../assets/backgrounds/FondoArticGin.png') no-repeat center center fixed !important;
+  background: url('../assets/backgrounds/FondoArticGin.png');
   background-size: cover !important;
 }
 
