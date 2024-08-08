@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+}
+
+.product-description {
+  text-align: center;
+  color: black;
+}
+
+.product-description img {
+  width: 200px;
+}
+
+.product-description button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.product-description button:hover {
+  background-color: #2980b9;
+}
