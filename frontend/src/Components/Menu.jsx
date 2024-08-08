@@ -6,7 +6,7 @@ import botanicosImage from '../assets/menuOptions/menuBotanicos3.png';
 import origenImage from '../assets/menuOptions/menuOrigen4.png';
 import ecoImage from '../assets/menuOptions/menuEco5.png';
 import nosotrosImage from '../assets/menuOptions/menuContacto6.png';
-import showMenu from '../assets/buttons/montañaScrollIzq.png';
+import showMenu from '../assets/buttons/montanaScrollIzq.png';
 
 const sections = [
   { id: 'gin-section', name: 'GIN', image: ginImage },
