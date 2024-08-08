@@ -1,0 +1,53 @@
+.ageComponent-container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../assets/backgrounds/FondoEdad.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.texto-edad-image {
+  max-width: 80%;
+  margin-bottom: 20px;
+}
+
+.ageComponent-sub-container {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.ageComponent-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ageComponent-form label {
+  margin-bottom: 10px;
+}
+
+.select-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ageComponent-form select {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.ageComponent-form button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.ageComponent-result {
+  margin-top: 20px;
+}
