@@ -7,7 +7,7 @@ body {
 }
 
 .shop-container {
-  background: rgb(32, 56, 69);
+  background: rgb(236, 236, 236);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,10 +18,15 @@ body {
 }
 
 .shop-sub-container {
-  background: rgb(21, 26, 32);
+  background: rgba(255, 255, 255, 0.813);
   height: 93.5vh;
   width: 88vw;
   border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .shop-header {
@@ -29,33 +34,77 @@ body {
   margin-bottom: 20px;
 }
 
-.shop-header h1 {
-  font-size: 2.5em;
-  margin: 0.5em 0;
+.shop-header img {
+  max-width: 150px;
+  margin-top: 20px;
 }
 
 .shop-main {
   width: 100%;
   text-align: center;
+  position: relative;
 }
 
-/* Responsivo para dispositivos móviles */
-@media (max-width: 600px) {
-  .shop-header h1 {
-    font-size: 2em;
-  }
+.shop-back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  max-width: 30px;
+  cursor: pointer;
 }
 
-/* Responsivo para tabletas */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .shop-header h1 {
-    font-size: 2.2em;
-  }
+.shop-bottle {
+  max-width: 200px;
+  margin: 20px 0;
 }
 
-/* Responsivo para escritorios */
-@media (min-width: 1025px) {
-  .shop-header h1 {
-    font-size: 2.5em;
-  }
+.shop-batch-number {
+  max-width: 100px;
+  margin: 10px 0;
 }
+
+.shop-product-description {
+  max-width: 80%;
+  margin: 10px 0;
+}
+
+.shop-price {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.shop-quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.shop-quantity-control img {
+  max-width: 30px;
+  height: auto;
+  cursor: pointer;
+}
+
+.shop-quantity-control p {
+  margin: 0 20px;
+  font-size: 24px;
+}
+
+.shop-add-to-cart {
+  max-width: 200px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.shop-cart-icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  max-width: 50px;
+  cursor: pointer;
+}
+
+/* Respons
