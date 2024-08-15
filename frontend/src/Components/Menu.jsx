@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'; // Añadimos `useLocation`
 import './Menu.css';
 import ginImage from '../assets/menuOptions/menuArticGin1.png';
 import shopImage from '../assets/menuOptions/menuShop2.png';
@@ -10,7 +11,7 @@ import showMenu from '../assets/buttons/montanaScrollIzq.png';
 
 const sections = [
   { id: 'gin-section', name: 'GIN', image: ginImage },
-  { id: 'shop-section', name: 'SHOP', image: shopImage },
+  { id: 'shop-section', name: 'SHOP', image: shopImage, isShop: true },
   {
     id: 'botanicos-section',
     name: 'BOTANICOS',
@@ -27,6 +28,8 @@ const Menu = () => {
   const [currentSection, setCurrentSection] = useState('');
   const [hoveredSection, setHoveredSection] = useState('');
   const timerRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation(); // Obtenemos la ruta actual
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,6 +56,30 @@ const Menu = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleSectionClick = (section) => {
+    setToggleMenu(false);
+    setCurrentSection(section.id);
+    if (section.isShop) {
+      // Redirigir a /cart
+      navigate('/cart');
+    } else {
+      if (location.pathname === '/cart') {
+        // Si estamos en /cart, primero redirigir a la página principal y luego desplazar
+        navigate('/', { replace: true }); // Navega a la página principal
+        setTimeout(() => {
+          document
+            .getElementById(section.id)
+            .scrollIntoView({ behavior: 'smooth' });
+        }, 0); // Desplaza a la sección después de redirigir
+      } else {
+        // Si no estamos en /cart, simplemente desplaza a la sección
+        document
+          .getElementById(section.id)
+          .scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   const getLinkStyle = (index) => {
     if (sections[index].id === hoveredSection) {
@@ -116,16 +143,9 @@ const Menu = () => {
         <ul className="menu-links">
           {sections.map((section, index) => (
             <li key={section.id}>
-              <a
-                href={`#${section.id}`}
+              <div
                 onMouseEnter={() => handleHover(section.id)}
-                onClick={() => {
-                  setToggleMenu(false);
-                  setCurrentSection(section.id);
-                  document
-                    .getElementById(section.id)
-                    .scrollIntoView({ behavior: 'smooth' });
-                }}
+                onClick={() => handleSectionClick(section)}
                 style={getLinkStyle(index)}
               >
                 <img
@@ -133,7 +153,7 @@ const Menu = () => {
                   alt={section.name}
                   className={getImageClassName(section)}
                 />
-              </a>
+              </div>
             </li>
           ))}
         </ul>

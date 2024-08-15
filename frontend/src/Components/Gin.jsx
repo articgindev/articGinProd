@@ -45,10 +45,14 @@ const GinComponent = () => {
             </Suspense>
           </Canvas>
         </div>
+        <div className="comprarButton">
+          <img
+            src={comprarGin}
+            alt="Comprar Gin"
+            onClick={handleComprarClick}
+          />
+        </div>
       </main>
-      <div className="comprarButton">
-        <img src={comprarGin} alt="Comprar Gin" onClick={handleComprarClick} />
-      </div>
     </div>
   );
 };

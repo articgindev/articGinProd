@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AgeComponent.css';
 import textoEdad from '../assets/textos/TextoEdad.png';
 
@@ -26,6 +26,8 @@ const AgeComponent = () => {
 
     if (age >= 18) {
       setIsAdult(true);
+      localStorage.setItem('isAdult', 'true');
+      window.location.href = '/';
     } else {
       setIsAdult(false);
     }
@@ -45,7 +47,7 @@ const AgeComponent = () => {
         <form onSubmit={handleSubmit} className="ageComponent-form">
           <div className="select-container">
             <select value={day} onChange={handleDayChange} required>
-              <option value="">Dia</option>
+              <option value="">Día</option>
               {days.map((day) => (
                 <option key={day} value={day}>
                   {day}
@@ -73,7 +75,11 @@ const AgeComponent = () => {
         </form>
         {isAdult !== null && (
           <div className="ageComponent-result">
-            {isAdult ? <p>You are an adult.</p> : <p>You are not an adult.</p>}
+            {isAdult ? (
+              <p>Bienvenido.</p>
+            ) : (
+              <p>Para acceder al sitio tenes que ser mayor.</p>
+            )}
           </div>
         )}
       </div>

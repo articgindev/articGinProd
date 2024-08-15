@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 /* Estilos generales */
 body {
   margin: 0;
@@ -6,8 +8,12 @@ body {
   height: auto;
 }
 
+p {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .shop-container {
-  background: rgb(236, 236, 236);
+  background-color: rgb(240, 248, 255);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,61 +24,82 @@ body {
 }
 
 .shop-sub-container {
-  background: rgba(255, 255, 255, 0.813);
+  background: rgb(236, 236, 236);
   height: 93.5vh;
   width: 88vw;
   border-radius: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
+  padding-top: 1rem;
 }
 
 .shop-header {
-  text-align: center;
-  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  z-index: 20;
+  top: 0;
+  left: 0;
 }
 
-.shop-header img {
-  max-width: 150px;
-  margin-top: 20px;
+.shop-logo {
+  max-width: 120px;
+  margin-left: 1rem;
+  position: relative;
+}
+
+.shop-back-button {
+  max-width: 3rem;
+  cursor: pointer;
+  position: relative;
+  margin-right: 1rem;
 }
 
 .shop-main {
   width: 100%;
   text-align: center;
   position: relative;
-}
-
-.shop-back-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  max-width: 30px;
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .shop-bottle {
-  max-width: 200px;
-  margin: 20px 0;
+  max-width: 32em;
+  position: absolute;
+  top: -10rem;
+  z-index: 10;
+  margin: 0;
 }
 
 .shop-batch-number {
   max-width: 100px;
   margin: 10px 0;
+  position: absolute;
+  right: 0px;
+  top: 22rem;
 }
 
 .shop-product-description {
-  max-width: 80%;
+  max-width: 90%;
   margin: 10px 0;
+  position: absolute;
+  top: 26.5rem;
 }
 
 .shop-price {
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 10px 0;
+  font-size: 1.3em;
+  margin: 25px 0;
+  position: absolute;
+  top: 30rem;
 }
 
 .shop-quantity-control {
@@ -80,16 +107,15 @@ body {
   align-items: center;
   justify-content: center;
   margin: 10px 0;
+  position: absolute;
+  top: 34rem;
 }
 
 .shop-quantity-control img {
-  max-width: 30px;
-  height: auto;
-  cursor: pointer;
+  max-width: 4rem;
 }
 
 .shop-quantity-control p {
-  margin: 0 20px;
   font-size: 24px;
 }
 
@@ -97,14 +123,14 @@ body {
   max-width: 200px;
   cursor: pointer;
   margin-top: 20px;
+  position: absolute;
+  top: 37.5rem;
 }
 
 .shop-cart-icon {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  max-width: 50px;
+  max-width: 4rem;
   cursor: pointer;
+  position: absolute;
+  top: 38.6rem;
+  right: 20px;
 }
-
-/* Respons

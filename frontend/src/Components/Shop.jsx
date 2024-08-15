@@ -27,9 +27,9 @@ const ShopComponent = () => {
       <div className="shop-sub-container">
         <div className="shop-header">
           <img src={h1Logo} alt="Artic Gin Logo" className="shop-logo" />
+          <img src={back} alt="Back" className="shop-back-button" />
         </div>
         <div className="shop-main">
-          <img src={back} alt="Back" className="shop-back-button" />
           <img src={bottle} alt="Bottle" className="shop-bottle" />
           <img src={batch} alt="Batch Number" className="shop-batch-number" />
           <img
@@ -38,7 +38,7 @@ const ShopComponent = () => {
             className="shop-product-description"
           />
           <div className="shop-price">
-            <p>${unitPrice * quantity} ARS</p>
+            <p>- ${unitPrice * quantity} ARS -</p>
           </div>
           <div className="shop-quantity-control">
             <img src={less} alt="Decrease Quantity" onClick={handleDecrease} />

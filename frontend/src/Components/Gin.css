@@ -11,11 +11,16 @@ body {
 .gin-container {
   background: url('../assets/backgrounds/FondoArticGin.png');
   background-size: cover !important;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .canvas-container {
   width: 100%;
   height: 100%;
+  flex: 1;
+
 }
 
 .home-container {
@@ -33,7 +38,8 @@ body {
 
 .comprarButton {
   position: absolute;
-  bottom: 2rem;
+  bottom: 10%;
+  /* Ajusta según la ubicación vertical deseada */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -59,9 +65,10 @@ body {
 }
 
 .home-main {
-  width: 100%;
-  height: 80vh;
-  text-align: center;
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .home-section h2 {
