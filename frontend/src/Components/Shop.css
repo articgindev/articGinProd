@@ -74,7 +74,7 @@ p {
 .shop-bottle {
   max-width: 15rem;
   position: absolute;
-  top: -10rem;
+  top: -12rem;
   z-index: 10;
   margin: 0;
 }
@@ -88,10 +88,10 @@ p {
 }
 
 .shop-product-description {
-  max-width: 90%;
+  max-width: 95%;
   margin: 10px 0;
   position: absolute;
-  top: 26.5rem;
+  top: 25rem;
 }
 
 .shop-price {
@@ -99,7 +99,7 @@ p {
   font-size: 1.3em;
   margin: 25px 0;
   position: absolute;
-  top: 30rem;
+  top: 29rem;
 }
 
 .shop-quantity-control {
@@ -108,7 +108,7 @@ p {
   justify-content: center;
   margin: 10px 0;
   position: absolute;
-  top: 34rem;
+  top: 33rem;
 }
 
 .shop-quantity-control img {
@@ -124,13 +124,13 @@ p {
   cursor: pointer;
   margin-top: 20px;
   position: absolute;
-  top: 37.5rem;
+  top: 37rem;
 }
 
 .shop-cart-icon {
   max-width: 4rem;
   cursor: pointer;
   position: absolute;
-  top: 38.6rem;
+  top: 38.1rem;
   right: 20px;
 }

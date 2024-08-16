@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './Shop.css';
 import Menu from './Menu';
 import back from '../assets/shop/back.png';
@@ -16,10 +17,15 @@ const ShopComponent = () => {
   const [quantity, setQuantity] = useState(1);
   const [isCartFilled, setIsCartFilled] = useState(false);
   const unitPrice = 16000;
+  const navigate = useNavigate(); // Usa el hook useNavigate
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
   const handleAddToCart = () => setIsCartFilled(true);
+
+  const handleBackClick = () => {
+    navigate('/'); // Navega a la ruta base (localhost:5173)
+  };
 
   return (
     <div className="shop-container">
@@ -27,7 +33,12 @@ const ShopComponent = () => {
       <div className="shop-sub-container">
         <div className="shop-header">
           <img src={h1Logo} alt="Artic Gin Logo" className="shop-logo" />
-          <img src={back} alt="Back" className="shop-back-button" />
+          <img
+            src={back}
+            alt="Back"
+            className="shop-back-button"
+            onClick={handleBackClick} // Añade el evento onClick para el botón "back"
+          />
         </div>
         <div className="shop-main">
           <img src={bottle} alt="Bottle" className="shop-bottle" />
