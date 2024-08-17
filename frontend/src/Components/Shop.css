@@ -49,7 +49,7 @@ p {
 }
 
 .shop-logo {
-  max-width: 120px;
+  max-width: 115px;
   margin-left: 1rem;
   position: relative;
 }
@@ -97,16 +97,14 @@ p {
 .shop-price {
   text-align: center;
   font-size: 1.3em;
-  margin: 25px 0;
   position: absolute;
-  top: 27rem;
+  top: 28rem;
 }
 
 .shop-quantity-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0;
   position: absolute;
   top: 32rem;
 }
@@ -116,7 +114,7 @@ p {
 }
 
 .shop-quantity-control p {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .shop-add-to-cart {
@@ -124,13 +122,13 @@ p {
   cursor: pointer;
   margin-top: 20px;
   position: absolute;
-  top: 36rem;
+  top: 35rem;
 }
 
 .shop-cart-icon {
   max-width: 4rem;
   cursor: pointer;
   position: absolute;
-  top: 37rem;
+  top: 36.1rem;
   right: 20px;
 }
