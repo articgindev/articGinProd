@@ -1,44 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Select from 'react-select';
 import './AgeComponent.css';
 import textoEdad from '../assets/textos/TextoEdad.png';
 
 const AgeComponent = () => {
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [day, setDay] = useState(null);
+  const [month, setMonth] = useState(null);
+  const [year, setYear] = useState(null);
   const [isAdult, setIsAdult] = useState(null);
 
-  const handleDayChange = (e) => setDay(e.target.value);
-  const handleMonthChange = (e) => setMonth(e.target.value);
-  const handleYearChange = (e) => setYear(e.target.value);
+  const handleDayChange = (selectedOption) => setDay(selectedOption);
+  const handleMonthChange = (selectedOption) => setMonth(selectedOption);
+  const handleYearChange = (selectedOption) => setYear(selectedOption);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const today = new Date();
-    const birthDate = new Date(year, month - 1, day);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    const dayDiff = today.getDate() - birthDate.getDate();
+    if (day && month && year) {
+      const today = new Date();
+      const birthDate = new Date(year.value, month.value - 1, day.value);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      const dayDiff = today.getDate() - birthDate.getDate();
 
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+      }
 
-    if (age >= 18) {
-      setIsAdult(true);
-      localStorage.setItem('isAdult', 'true');
-      window.location.href = '/';
-    } else {
-      setIsAdult(false);
+      if (age >= 18) {
+        setIsAdult(true);
+        localStorage.setItem('isAdult', 'true');
+        window.location.href = '/';
+      } else {
+        setIsAdult(false);
+      }
     }
   };
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const years = Array.from(
-    { length: 100 },
-    (_, i) => new Date().getFullYear() - i
-  );
+  const days = Array.from({ length: 31 }, (_, i) => ({
+    value: i + 1,
+    label: i + 1,
+  }));
+  const months = Array.from({ length: 12 }, (_, i) => ({
+    value: i + 1,
+    label: i + 1,
+  }));
+  const years = Array.from({ length: 100 }, (_, i) => ({
+    value: new Date().getFullYear() - i,
+    label: new Date().getFullYear() - i,
+  }));
 
   return (
     <div className="ageComponent-container">
@@ -46,30 +55,33 @@ const AgeComponent = () => {
       <div className="ageComponent-sub-container">
         <form onSubmit={handleSubmit} className="ageComponent-form">
           <div className="select-container">
-            <select value={day} onChange={handleDayChange} required>
-              <option value="">Día</option>
-              {days.map((day) => (
-                <option key={day} value={day}>
-                  {day}
-                </option>
-              ))}
-            </select>
-            <select value={month} onChange={handleMonthChange} required>
-              <option value="">Mes</option>
-              {months.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-            <select value={year} onChange={handleYearChange} required>
-              <option value="">Año</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <Select
+              value={day}
+              onChange={handleDayChange}
+              options={days}
+              placeholder="Día"
+              maxMenuHeight={150} // Controla la altura del menú desplegable
+              className="select-day"
+              isClearable
+            />
+            <Select
+              value={month}
+              onChange={handleMonthChange}
+              options={months}
+              placeholder="Mes"
+              maxMenuHeight={150} // Controla la altura del menú desplegable
+              className="select-month"
+              isClearable
+            />
+            <Select
+              value={year}
+              onChange={handleYearChange}
+              options={years}
+              placeholder="Año"
+              maxMenuHeight={150} // Controla la altura del menú desplegable
+              className="select-year"
+              isClearable
+            />
           </div>
           <button type="submit">Continuar</button>
         </form>
