@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { v4 as uuidv4 } from 'uuid';
 import './Shop.css';
 import Menu from './Menu';
+import CartComponent from './CartComponent';
 import back from '../assets/shop/back.png';
 import batch from '../assets/shop/batch.png';
 import less from '../assets/shop/less.png';
@@ -15,30 +16,41 @@ import h1Logo from '../assets/logos/h1Logo.png';
 
 const ShopComponent = () => {
   const [quantity, setQuantity] = useState(1);
+  const [isCartVisible, setIsCartVisible] = useState(false);
   const [isCartFilled, setIsCartFilled] = useState(false);
+  const [cartId, setCartId] = useState(null);
   const unitPrice = 16000;
-  const navigate = useNavigate(); // Usa el hook useNavigate
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
-  const handleAddToCart = () => setIsCartFilled(true);
 
-  const handleBackClick = () => {
-    navigate('/'); // Navega a la ruta base (localhost:5173)
+  const handleAddToCart = () => {
+    setIsCartFilled(true);
+  };
+
+  const handleShowCart = () => {
+    if (isCartFilled) {
+      const newCartId = uuidv4();
+      setCartId(newCartId);
+      setIsCartVisible(true);
+    }
+  };
+
+  const handleHideCart = () => {
+    setIsCartVisible(false); // Oculta el CartComponent
   };
 
   return (
     <div className="shop-container">
       <Menu className="shop-menu-button" />
-      <div className="shop-sub-container">
+      <div
+        className={`shop-sub-container ${
+          isCartVisible ? 'blur-background' : ''
+        }`}
+      >
         <div className="shop-header">
           <img src={h1Logo} alt="Artic Gin Logo" className="shop-logo" />
-          <img
-            src={back}
-            alt="Back"
-            className="shop-back-button"
-            onClick={handleBackClick} // Añade el evento onClick para el botón "back"
-          />
+          <img src={back} alt="Back" className="shop-back-button" />
         </div>
         <div className="shop-main">
           <img src={bottle} alt="Bottle" className="shop-bottle" />
@@ -66,9 +78,18 @@ const ShopComponent = () => {
             src={isCartFilled ? cartFilled : cartNotFilled}
             alt="Cart"
             className="shop-cart-icon"
+            onClick={handleShowCart}
           />
         </div>
       </div>
+      {isCartVisible && (
+        <CartComponent
+          quantity={quantity}
+          total={unitPrice * quantity}
+          cartId={cartId}
+          onBackClick={handleHideCart} // Pasamos la función para ocultar el CartComponent
+        />
+      )}
     </div>
   );
 };

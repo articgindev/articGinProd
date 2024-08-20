@@ -127,6 +127,13 @@ p {
   left: 10vw;
 }
 
+/* Desenfoque aplicado solo a shop-sub-container */
+.blur-background {
+  filter: blur(8px);
+  pointer-events: none;
+  /* Desactiva la interacción con el fondo */
+}
+
 /* Media queries para pantallas pequeñas */
 @media (max-width: 768px) {
   .shop-bottle {

@@ -7,7 +7,6 @@ import Age from './pages/Age';
 import './App.css';
 
 function App() {
-  // Función para verificar si el usuario ha pasado la validación de edad
   const isAdult = () => {
     return localStorage.getItem('isAdult') === 'true';
   };
@@ -16,7 +15,6 @@ function App() {
     <div className="app-container">
       <Routes>
         <Route path="/age" element={<Age />} />
-        {/* Rutas protegidas */}
         <Route
           path="/"
           element={isAdult() ? <Home /> : <Navigate to="/age" />}
