@@ -151,9 +151,6 @@ const CartComponent = ({
                   id="discountCode"
                   name="discountCode"
                   placeholder="CÓDIGO DE DESCUENTO"
-                  onFocus={() =>
-                    document.getElementById('discountCode').focus()
-                  }
                 />
               </form>
               {/* <p>Cantidad: {quantity || 0}</p>
