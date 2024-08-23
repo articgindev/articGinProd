@@ -30,7 +30,7 @@ app.use('/sales', salesRoutes);
 mongoose
   .connect(mongoDBURL)
   .then(() => {
-    console.log('App connected to database');
+    console.log('App connected to database now');
     app.listen(PORT, () => {
       console.log(`App is listening to port: ${PORT}`);
     });
