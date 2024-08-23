@@ -40,6 +40,10 @@ const ShopComponent = () => {
     setIsCartVisible(false); // Oculta el CartComponent
   };
 
+  const handleUpdateQuantity = (newQuantity) => {
+    setQuantity(newQuantity); // Actualiza la cantidad en ShopComponent
+  };
+
   return (
     <div className="shop-container">
       <Menu className="shop-menu-button" />
@@ -87,6 +91,7 @@ const ShopComponent = () => {
           quantity={quantity}
           total={unitPrice * quantity}
           cartId={cartId}
+          onUpdateQuantity={handleUpdateQuantity} // Pasamos la función para actualizar la cantidad
           onBackClick={handleHideCart} // Pasamos la función para ocultar el CartComponent
         />
       )}

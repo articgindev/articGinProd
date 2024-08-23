@@ -39,21 +39,28 @@
   cursor: pointer;
   max-width: 3.5rem;
   position: absolute;
-  top: -2vh;
+  top: -1vh;
   right: -5vw;
-}
-
-.cart-logo {
-  font-size: 1.5rem;
 }
 
 .cart-icon {
   cursor: pointer;
   max-width: 3.5rem;
   position: absolute;
-  position: absolute;
-  top: -2vh;
+  top: -1vh;
   left: -5vw;
+}
+
+.cart-bottle {
+  position: absolute;
+  left: -20vw;
+  width: clamp(90%, 110%, 120%);
+  height: auto;
+  max-width: 80%;
+}
+
+.cart-logo {
+  font-size: 1.5rem;
 }
 
 .cart-main {
@@ -61,6 +68,85 @@
   text-align: center;
 }
 
-.cart-summary {
-  margin-top: 20px;
+.cart-right-container {
+  width: 65%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: blueviolet;
+}
+
+.cart-unidades {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  top: 15%;
+  flex-direction: row;
+}
+
+.cart-unidades-img {
+  width: clamp(40%, 50%, 60%);
+  height: auto;
+  max-width: 6rem;
+  margin-right: 5px;
+}
+
+.cart-quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 0;
+  transform: translateY(-0.20vh);
+  /* Ajusta el valor según lo que necesites */
+}
+
+.cart-quantity-control img {
+  max-width: 2rem;
+  cursor: pointer;
+}
+
+.cart-quantity-control p {
+  margin: 0 5px;
+  font-size: 1rem;
+}
+
+.cart-description-img {
+  width: 12rem;
+  position: absolute;
+  top: 22%;
+}
+
+.discount-form {
+  background-color: rgb(165, 166, 168);
+  border-radius: 50px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65%;
+  position: absolute;
+  top: 32%;
+}
+
+.discount-form input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white !important;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.discount-form input::placeholder {
+  color: white;
+  opacity: 1;
 }
