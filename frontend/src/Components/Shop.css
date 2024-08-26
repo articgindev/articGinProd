@@ -111,20 +111,24 @@ p {
   font-size: 1.2rem;
 }
 
+.shop-addTocart-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  transform: translateY(68vh);
+}
+
 .shop-add-to-cart {
-  max-width: 200px;
-  cursor: pointer;
-  margin-top: 20px;
+  max-width: 12rem;
   position: absolute;
-  top: 85vh;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .shop-cart-icon {
-  max-width: 4rem;
-  cursor: pointer;
-  position: absolute;
-  top: 86.5vh;
-  left: 10vw;
+  max-width: 3.8rem;
 }
 
 /* Desenfoque aplicado solo a shop-sub-container */
@@ -140,10 +144,6 @@ p {
     width: clamp(12rem, 18vw, 20rem);
     /* Ajuste de tamaño para pantallas más pequeñas */
   }
-
-  .shop-add-to-cart {
-    max-width: 150px;
-  }
 }
 
 
@@ -157,15 +157,11 @@ p {
     top: 79vh;
   }
 
-  .shop-quantity-control img {
-    max-width: 3rem;
-  }
-
-  .shop-quantity-control p {
-    font-size: 1rem;
-  }
-
   .shop-product-description {
     margin: 1rem;
+  }
+
+  .shop-addTocart-container {
+    transform: translateY(64vh);
   }
 }

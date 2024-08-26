@@ -72,18 +72,20 @@ const ShopComponent = () => {
             <p>{quantity}</p>
             <img src={more} alt="Increase Quantity" onClick={handleIncrease} />
           </div>
-          <img
-            src={addToCart}
-            alt="Add to Cart"
-            className="shop-add-to-cart"
-            onClick={handleAddToCart}
-          />
-          <img
-            src={isCartFilled ? cartFilled : cartNotFilled}
-            alt="Cart"
-            className="shop-cart-icon"
-            onClick={handleShowCart}
-          />
+          <div className="shop-addTocart-container">
+            <img
+              src={isCartFilled ? cartFilled : cartNotFilled}
+              alt="Cart"
+              className="shop-cart-icon"
+              onClick={handleShowCart}
+            />
+            <img
+              src={addToCart}
+              alt="Add to Cart"
+              className="shop-add-to-cart"
+              onClick={handleAddToCart}
+            />
+          </div>
         </div>
       </div>
       {isCartVisible && (
