@@ -90,9 +90,10 @@ const CartComponent = ({
     setDiscountCode(e.target.value);
   };
 
-  //BUSCADOR DE DESCUENTOS
+  // BUSCADOR DE DESCUENTOS
+  const handleApplyDiscount = async (e) => {
+    if (e) e.preventDefault(); // Previene el comportamiento por defecto del formulario
 
-  const handleApplyDiscount = async () => {
     try {
       const discountRange = 'dCodigoDesc';
       const percentageRange = 'dPorcentajeDesc';
@@ -111,6 +112,7 @@ const CartComponent = ({
       const percentageResponse = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${percentageRange}?key=${API_KEY}`
       );
+
       if (!percentageResponse.ok) {
         throw new Error(
           'Error fetching discount percentages from Google Sheets'
@@ -128,11 +130,11 @@ const CartComponent = ({
         setDiscountValue(discountPercentage);
         setCalculatedDiscount(discountAmount);
       } else {
-        setDiscountValue('Invalid discount code');
+        setDiscountValue('Ups, no reconocemos ese codigo :( ');
       }
     } catch (error) {
-      console.error('Error applying discount code:', error);
-      setDiscountValue('Error applying discount code');
+      console.error('Ups, no reconocemos ese codigo :(', error);
+      setDiscountValue('Ups, no reconocemos ese codigo :(');
     }
   };
 
@@ -193,7 +195,7 @@ const CartComponent = ({
                 />
               </div>
               <div className="cart-discount-form-container">
-                <form className="discount-form">
+                <form className="discount-form" onSubmit={handleApplyDiscount}>
                   <input
                     type="text"
                     id="discountCode"
@@ -212,12 +214,11 @@ const CartComponent = ({
                   onClick={handleApplyDiscount}
                 />
               </div>
-
               <div className="cart-cartSubtotal">
                 <div className="cart-subtotal-container">
                   <div className="cart-discount-container">
                     {discountValue && typeof discountValue === 'string' && (
-                      <p className="cart-discount-text">{discountValue}</p>
+                      <p className="discount-error">{discountValue}</p>
                     )}
                     {discountValue && typeof discountValue === 'number' && (
                       <p className="cart-discount-percentage">
@@ -236,9 +237,7 @@ const CartComponent = ({
                   </div>
                 </div>
               </div>
-              {/* <p>Cantidad: {quantity || 0}</p>
-              <p>Total: ${total || 0} ARS</p> */}
-              {/* <div className="shipping-form">
+              <div className="shipping-form">
                 <label htmlFor="postalCode">Método de Envío:</label>
                 <input
                   type="text"
@@ -250,7 +249,7 @@ const CartComponent = ({
                 <button onClick={handleCalculateShipping}>
                   Calcular Envío
                 </button>
-              </div> */}
+              </div>
               {/* Muestra el costo de envío si está calculado */}
               {shippingCost !== null && (
                 <p>Costo de Envío: ${shippingCost} ARS</p>
