@@ -19,58 +19,79 @@ const CartComponent = ({
   cartId,
   onBackClick,
   onUpdateQuantity,
-  unitPrice, // unitPrice is passed as a prop and should be a valid number
+  unitPrice,
 }) => {
   const [postalCode, setPostalCode] = useState('');
-  const [shippingCost, setShippingCost] = useState(null);
+  const [shippingCost, setShippingCost] = useState('$XX ARS'); // Estado inicial con valor por defecto
   const [cartQuantity, setCartQuantity] = useState(quantity);
   const [discountCode, setDiscountCode] = useState('');
   const [discountValue, setDiscountValue] = useState(0);
   const [calculatedDiscount, setCalculatedDiscount] = useState(0);
-  const [isDiscountVisible, setIsDiscountVisible] = useState(false); // Nuevo estado para controlar la visibilidad
+  const [isDiscountVisible, setIsDiscountVisible] = useState(false);
+  const [showUpsPopup, setShowUpsPopup] = useState(false);
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
+    setShippingCost('$XX ARS'); // Restablecer al valor por defecto cada vez que cambia el código postal
+    setShowUpsPopup(false); // Cerrar el pop-up si se ingresa un nuevo código postal
   };
 
-  const handleCalculateShipping = async () => {
+  const handleCalculateShipping = async (e) => {
+    e.preventDefault(); // Prevent the form from reloading the page
     try {
-      const postalCodeRange = 'sCodigoPostal';
+      const postalCodeRange1 = 'sCodigoPostal';
+      const postalCodeRange2 = 'sCodigoPostalSinNum';
       const tariffRange = 'sTarifaSegunCodigo';
 
-      const postalCodeResponse = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${postalCodeRange}?key=${API_KEY}`
+      const postalCodeResponse1 = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${postalCodeRange1}?key=${API_KEY}`
       );
 
-      if (!postalCodeResponse.ok) {
+      if (!postalCodeResponse1.ok) {
         throw new Error('Error fetching postal codes from Google Sheets');
       }
 
-      const postalCodeData = await postalCodeResponse.json();
-      const postalCodeRows = postalCodeData.values;
+      const postalCodeData1 = await postalCodeResponse1.json();
+      const postalCodeRows1 = postalCodeData1.values;
+      let index = postalCodeRows1.findIndex((row) => row[0] === postalCode);
 
-      const tariffResponse = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${tariffRange}?key=${API_KEY}`
-      );
+      if (index === -1) {
+        const postalCodeResponse2 = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${postalCodeRange2}?key=${API_KEY}`
+        );
 
-      if (!tariffResponse.ok) {
-        throw new Error('Error fetching tariffs from Google Sheets');
+        if (!postalCodeResponse2.ok) {
+          throw new Error(
+            'Error fetching postal codes from Google Sheets (second range)'
+          );
+        }
+
+        const postalCodeData2 = await postalCodeResponse2.json();
+        const postalCodeRows2 = postalCodeData2.values;
+        index = postalCodeRows2.findIndex((row) => row[0] === postalCode);
       }
 
-      const tariffData = await tariffResponse.json();
-      const tariffRows = tariffData.values;
-
-      const index = postalCodeRows.findIndex((row) => row[0] === postalCode);
-
       if (index !== -1) {
+        const tariffResponse = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${tariffRange}?key=${API_KEY}`
+        );
+
+        if (!tariffResponse.ok) {
+          throw new Error('Error fetching tariffs from Google Sheets');
+        }
+
+        const tariffData = await tariffResponse.json();
+        const tariffRows = tariffData.values;
         const calculatedCost = tariffRows[index][0];
-        setShippingCost(calculatedCost);
+        setShippingCost(`$${calculatedCost} ARS`);
       } else {
-        setShippingCost('Postal code not found');
+        setShippingCost('$XX ARS');
+        setShowUpsPopup(true); // Mostrar el pop-up si no se encuentra el código postal
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
-      setShippingCost('Error calculating shipping cost');
+      setShippingCost('$XX ARS');
+      setShowUpsPopup(true); // Mostrar el pop-up si hay un error al calcular el costo de envío
     }
   };
 
@@ -264,25 +285,44 @@ const CartComponent = ({
                 </div>
               </div>
               <div className="shipping-form">
-                <label htmlFor="postalCode">Método de Envío:</label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  placeholder="Código Postal"
-                  value={postalCode}
-                  onChange={handlePostalCodeChange}
-                />
-                <button onClick={handleCalculateShipping}>
-                  Calcular Envío
-                </button>
+                <div className="cart-shipping-form-container">
+                  <p className="cart-cartCP-label">Carga tu CP:</p>
+                  <form
+                    onSubmit={handleCalculateShipping}
+                    className="cart-CP-form"
+                  >
+                    <input
+                      type="text"
+                      id="postalCode"
+                      placeholder="Código Postal"
+                      value={postalCode}
+                      onChange={handlePostalCodeChange}
+                    />
+                  </form>
+                </div>
+
+                <div className="cart-CP-cost">
+                  <p className="shipping-label">Costo de Envío:</p>
+                  <p className="shipping-value">{shippingCost}</p>
+                </div>
               </div>
-              {shippingCost !== null && (
-                <p>Costo de Envío: ${shippingCost} ARS</p>
-              )}
             </div>
           </div>
         </div>
       </div>
+      {/* Pop-up para el mensaje "UPS" */}
+      {showUpsPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              ¡UPS! Aun no llegamos a esa zona, pero no te quedes con las ganas.
+              Queremos que pueda llegar a tus manos. Háblanos por Instagram
+              @artic.tv
+            </p>
+            <button onClick={() => setShowUpsPopup(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
