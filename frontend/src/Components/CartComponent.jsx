@@ -19,13 +19,15 @@ const CartComponent = ({
   cartId,
   onBackClick,
   onUpdateQuantity,
+  unitPrice, // unitPrice is passed as a prop and should be a valid number
 }) => {
   const [postalCode, setPostalCode] = useState('');
   const [shippingCost, setShippingCost] = useState(null);
   const [cartQuantity, setCartQuantity] = useState(quantity);
   const [discountCode, setDiscountCode] = useState('');
-  const [discountValue, setDiscountValue] = useState(null);
-  const [calculatedDiscount, setCalculatedDiscount] = useState(null);
+  const [discountValue, setDiscountValue] = useState(0);
+  const [calculatedDiscount, setCalculatedDiscount] = useState(0);
+  const [isDiscountVisible, setIsDiscountVisible] = useState(false); // Nuevo estado para controlar la visibilidad
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
@@ -92,7 +94,7 @@ const CartComponent = ({
 
   // BUSCADOR DE DESCUENTOS
   const handleApplyDiscount = async (e) => {
-    if (e) e.preventDefault(); // Previene el comportamiento por defecto del formulario
+    if (e) e.preventDefault();
 
     try {
       const discountRange = 'dCodigoDesc';
@@ -126,28 +128,36 @@ const CartComponent = ({
 
       if (index !== -1) {
         const discountPercentage = parseFloat(percentageRows[index][0]);
-        const discountAmount = (total * discountPercentage) / 100;
+        const discountAmount =
+          (unitPrice * cartQuantity * discountPercentage) / 100;
         setDiscountValue(discountPercentage);
         setCalculatedDiscount(discountAmount);
       } else {
         setDiscountValue('Ups, no reconocemos ese codigo :( ');
+        setCalculatedDiscount(0);
       }
     } catch (error) {
       console.error('Ups, no reconocemos ese codigo :(', error);
       setDiscountValue('Ups, no reconocemos ese codigo :(');
+      setCalculatedDiscount(0);
     }
   };
 
   // Handle focus and blur for discount code input
   const handleFocus = (e) => {
     e.target.placeholder = '';
+    setIsDiscountVisible(true); // Mostrar campo de descuento
   };
 
   const handleBlur = (e) => {
     if (e.target.value === '') {
       e.target.placeholder = 'CÓDIGO DE DESCUENTO';
+      setIsDiscountVisible(false); // Ocultar campo de descuento si está vacío
     }
   };
+
+  // Calcula el subtotal en base al precio unitario, cantidad y descuento
+  const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
 
   return (
     <div className="cart-overlay">
@@ -216,24 +226,40 @@ const CartComponent = ({
               </div>
               <div className="cart-cartSubtotal">
                 <div className="cart-subtotal-container">
-                  <div className="cart-discount-container">
-                    {discountValue && typeof discountValue === 'string' && (
+                  <div
+                    className="cart-discount-container"
+                    style={{
+                      visibility:
+                        discountValue > 0 || typeof discountValue === 'string'
+                          ? 'visible'
+                          : 'hidden',
+                    }}
+                  >
+                    {typeof discountValue === 'number' &&
+                      discountValue === 0 &&
+                      calculatedDiscount === 0 && (
+                        <>
+                          <p className="cart-discount-percentage">0% OFF</p>
+                          <p className="cart-discount-amount">- $0.00 ARS</p>
+                        </>
+                      )}
+                    {typeof discountValue === 'number' && discountValue > 0 && (
+                      <>
+                        <p className="cart-discount-percentage">
+                          {discountValue}% OFF
+                        </p>
+                        <p className="cart-discount-amount">
+                          - ${calculatedDiscount.toFixed(2)} ARS
+                        </p>
+                      </>
+                    )}
+                    {typeof discountValue === 'string' && (
                       <p className="discount-error">{discountValue}</p>
-                    )}
-                    {discountValue && typeof discountValue === 'number' && (
-                      <p className="cart-discount-percentage">
-                        {discountValue}% OFF
-                      </p>
-                    )}
-                    {calculatedDiscount !== null && (
-                      <p className="cart-discount-amount">
-                        - ${calculatedDiscount.toFixed(2)} ARS
-                      </p>
                     )}
                   </div>
                   <div className="cart-subtotal-values">
                     <p className="cart-cartSubtotal-label">Subtotal:</p>
-                    <p className="cart-cartSubtotal-value">${total} ARS</p>
+                    <p className="cart-cartSubtotal-value">${subtotal} ARS</p>
                   </div>
                 </div>
               </div>
@@ -250,7 +276,6 @@ const CartComponent = ({
                   Calcular Envío
                 </button>
               </div>
-              {/* Muestra el costo de envío si está calculado */}
               {shippingCost !== null && (
                 <p>Costo de Envío: ${shippingCost} ARS</p>
               )}

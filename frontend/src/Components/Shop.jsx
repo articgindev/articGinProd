@@ -93,8 +93,9 @@ const ShopComponent = () => {
           quantity={quantity}
           total={unitPrice * quantity}
           cartId={cartId}
-          onUpdateQuantity={handleUpdateQuantity} // Pasamos la función para actualizar la cantidad
-          onBackClick={handleHideCart} // Pasamos la función para ocultar el CartComponent
+          onUpdateQuantity={handleUpdateQuantity}
+          onBackClick={handleHideCart}
+          unitPrice={unitPrice} // Asegúrate de pasar unitPrice como prop
         />
       )}
     </div>
