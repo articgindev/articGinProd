@@ -51,7 +51,6 @@
   top: -1vh;
   left: -5vw;
   z-index: 1010;
-
 }
 
 .cart-bottle {
@@ -355,8 +354,6 @@
   background-color: #cc0000;
 }
 
-
-
 @media (max-width: 375px) and (max-height: 700px) {
   .cart-discount-form-container {
     transform: translateY(-1vh);
@@ -369,11 +366,9 @@
   .discount-error {
     font-size: 0.75rem;
   }
-
 }
 
-
-/* Mensaje de error en pantallas angostas*/
+/* Mensaje de error en pantallas angostas */
 @media (max-width: 360px) {
   .discount-error {
     font-size: 0.75rem;

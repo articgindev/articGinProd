@@ -29,6 +29,7 @@ const CartComponent = ({
   const [calculatedDiscount, setCalculatedDiscount] = useState(0);
   const [isDiscountVisible, setIsDiscountVisible] = useState(false);
   const [showUpsPopup, setShowUpsPopup] = useState(false);
+  const [showDiscountPopup, setShowDiscountPopup] = useState(false); // Nuevo estado para el pop-up de descuento
 
   useEffect(() => {
     // Actualiza el subtotal y el descuento en vivo cuando cambia la cantidad
@@ -157,14 +158,17 @@ const CartComponent = ({
       if (index !== -1) {
         const discountPercentage = parseFloat(percentageRows[index][0]);
         setDiscountValue(discountPercentage);
+        setShowDiscountPopup(false); // Oculta el pop-up de descuento
       } else {
         setDiscountValue(0);
         setCalculatedDiscount(0);
+        setShowDiscountPopup(true); // Muestra el pop-up de descuento
       }
     } catch (error) {
       console.error('Ups, no reconocemos ese codigo :(', error);
       setDiscountValue(0);
       setCalculatedDiscount(0);
+      setShowDiscountPopup(true); // Muestra el pop-up de descuento
     }
 
     document.activeElement.blur();
@@ -255,9 +259,9 @@ const CartComponent = ({
                     className="cart-discount-container"
                     style={{
                       visibility:
-                        discountValue > 0 || typeof discountValue === 'string'
+                        discountValue > 0 && !showDiscountPopup
                           ? 'visible'
-                          : 'hidden',
+                          : 'hidden', // Se muestra solo si hay descuento y no hay pop-up
                     }}
                   >
                     {typeof discountValue === 'number' &&
@@ -314,6 +318,7 @@ const CartComponent = ({
           </div>
         </div>
       </div>
+      {/* Pop-up para el mensaje "UPS" de código postal */}
       {showUpsPopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">
@@ -323,6 +328,15 @@ const CartComponent = ({
               @artic.tv
             </p>
             <button onClick={() => setShowUpsPopup(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
+      {/* Pop-up para el mensaje "UPS" de código de descuento */}
+      {showDiscountPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>¡UPS! No reconocemos ese código de descuento :(</p>
+            <button onClick={() => setShowDiscountPopup(false)}>Cerrar</button>
           </div>
         </div>
       )}
