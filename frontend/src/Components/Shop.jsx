@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './Shop.css';
 import Menu from './Menu';
 import CartComponent from './CartComponent';
@@ -20,6 +21,7 @@ const ShopComponent = () => {
   const [isCartFilled, setIsCartFilled] = useState(false);
   const [cartId, setCartId] = useState(null);
   const unitPrice = 16000;
+  const navigate = useNavigate(); // Usa el hook useNavigate
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
@@ -40,6 +42,10 @@ const ShopComponent = () => {
     setIsCartVisible(false); // Oculta el CartComponent
   };
 
+  const handleBackClick = () => {
+    navigate('/'); // Redirige usando navigate
+  };
+
   const handleUpdateQuantity = (newQuantity) => {
     setQuantity(newQuantity); // Actualiza la cantidad en ShopComponent
   };
@@ -54,7 +60,12 @@ const ShopComponent = () => {
       >
         <div className="shop-header">
           <img src={h1Logo} alt="Artic Gin Logo" className="shop-logo" />
-          <img src={back} alt="Back" className="shop-back-button" />
+          <img
+            src={back}
+            alt="Back"
+            className="shop-back-button"
+            onClick={handleBackClick} // Redirige usando navigate
+          />
         </div>
         <div className="shop-main">
           <img src={bottle} alt="Bottle" className="shop-bottle" />
@@ -94,8 +105,8 @@ const ShopComponent = () => {
           total={unitPrice * quantity}
           cartId={cartId}
           onUpdateQuantity={handleUpdateQuantity}
-          onBackClick={handleHideCart}
-          unitPrice={unitPrice} // Asegúrate de pasar unitPrice como prop
+          onBackClick={handleHideCart} // Pasa la función para ocultar el carrito
+          unitPrice={unitPrice}
         />
       )}
     </div>

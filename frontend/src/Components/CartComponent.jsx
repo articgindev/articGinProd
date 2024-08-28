@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CartComponent.css';
 import back from '../assets/shop/back.png';
 import cartFilled from '../assets/shop/cartFilled.png';
@@ -9,7 +9,7 @@ import more from '../assets/shop/more.png';
 import productDescript from '../assets/cart/productDescript.png';
 import cartOkDesc from '../assets/cart/cartOkDesc.png';
 
-// Use environment variables for the API key and Spreadsheet ID
+// Variables de entorno para la API
 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -22,7 +22,7 @@ const CartComponent = ({
   unitPrice,
 }) => {
   const [postalCode, setPostalCode] = useState('');
-  const [shippingCost, setShippingCost] = useState('$XX ARS'); // Estado inicial con valor por defecto
+  const [shippingCost, setShippingCost] = useState('$XX ARS');
   const [cartQuantity, setCartQuantity] = useState(quantity);
   const [discountCode, setDiscountCode] = useState('');
   const [discountValue, setDiscountValue] = useState(0);
@@ -30,14 +30,20 @@ const CartComponent = ({
   const [isDiscountVisible, setIsDiscountVisible] = useState(false);
   const [showUpsPopup, setShowUpsPopup] = useState(false);
 
+  useEffect(() => {
+    // Actualiza el subtotal y el descuento en vivo cuando cambia la cantidad
+    const discountAmount = (unitPrice * cartQuantity * discountValue) / 100;
+    setCalculatedDiscount(discountAmount);
+  }, [cartQuantity, discountValue, unitPrice]);
+
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
-    setShippingCost('$XX ARS'); // Restablecer al valor por defecto cada vez que cambia el código postal
-    setShowUpsPopup(false); // Cerrar el pop-up si se ingresa un nuevo código postal
+    setShippingCost('$XX ARS');
+    setShowUpsPopup(false);
   };
 
   const handleCalculateShipping = async (e) => {
-    e.preventDefault(); // Prevent the form from reloading the page
+    e.preventDefault();
     try {
       const postalCodeRange1 = 'sCodigoPostal';
       const postalCodeRange2 = 'sCodigoPostalSinNum';
@@ -86,13 +92,15 @@ const CartComponent = ({
         setShippingCost(`$${calculatedCost} ARS`);
       } else {
         setShippingCost('$XX ARS');
-        setShowUpsPopup(true); // Mostrar el pop-up si no se encuentra el código postal
+        setShowUpsPopup(true);
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
       setShippingCost('$XX ARS');
-      setShowUpsPopup(true); // Mostrar el pop-up si hay un error al calcular el costo de envío
+      setShowUpsPopup(true);
     }
+
+    document.activeElement.blur();
   };
 
   const handleIncrease = () => {
@@ -113,7 +121,6 @@ const CartComponent = ({
     setDiscountCode(e.target.value);
   };
 
-  // BUSCADOR DE DESCUENTOS
   const handleApplyDiscount = async (e) => {
     if (e) e.preventDefault();
 
@@ -149,35 +156,32 @@ const CartComponent = ({
 
       if (index !== -1) {
         const discountPercentage = parseFloat(percentageRows[index][0]);
-        const discountAmount =
-          (unitPrice * cartQuantity * discountPercentage) / 100;
         setDiscountValue(discountPercentage);
-        setCalculatedDiscount(discountAmount);
       } else {
-        setDiscountValue('Ups, no reconocemos ese codigo :( ');
+        setDiscountValue(0);
         setCalculatedDiscount(0);
       }
     } catch (error) {
       console.error('Ups, no reconocemos ese codigo :(', error);
-      setDiscountValue('Ups, no reconocemos ese codigo :(');
+      setDiscountValue(0);
       setCalculatedDiscount(0);
     }
+
+    document.activeElement.blur();
   };
 
-  // Handle focus and blur for discount code input
   const handleFocus = (e) => {
     e.target.placeholder = '';
-    setIsDiscountVisible(true); // Mostrar campo de descuento
+    setIsDiscountVisible(true);
   };
 
   const handleBlur = (e) => {
     if (e.target.value === '') {
       e.target.placeholder = 'CÓDIGO DE DESCUENTO';
-      setIsDiscountVisible(false); // Ocultar campo de descuento si está vacío
+      setIsDiscountVisible(false);
     }
   };
 
-  // Calcula el subtotal en base al precio unitario, cantidad y descuento
   const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
 
   return (
@@ -189,7 +193,7 @@ const CartComponent = ({
               src={back}
               alt="Back"
               className="cart-back-button"
-              onClick={onBackClick}
+              onClick={onBackClick} // Usa la función proporcionada para ocultar el cart
             />
             <img src={cartFilled} alt="Cart" className="cart-icon" />
           </div>
@@ -310,7 +314,6 @@ const CartComponent = ({
           </div>
         </div>
       </div>
-      {/* Pop-up para el mensaje "UPS" */}
       {showUpsPopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">
