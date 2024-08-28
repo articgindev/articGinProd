@@ -36,11 +36,11 @@
 }
 
 .cart-back-button {
-  max-width: 4rem;
+  cursor: pointer;
+  max-width: 3.5rem;
   position: absolute;
-  top: -3vh;
+  top: -1vh;
   right: -5vw;
-  z-index: 10;
 }
 
 .cart-icon {
