@@ -22,22 +22,20 @@ const CartComponent = ({
   unitPrice,
 }) => {
   const [postalCode, setPostalCode] = useState('');
-  const [shippingCost, setShippingCost] = useState('$XX ARS'); // Estado inicial con valor por defecto
+  const [shippingCost, setShippingCost] = useState('$XX ARS');
   const [cartQuantity, setCartQuantity] = useState(quantity);
   const [discountCode, setDiscountCode] = useState('');
   const [discountValue, setDiscountValue] = useState(0);
   const [calculatedDiscount, setCalculatedDiscount] = useState(0);
-  const [isDiscountVisible, setIsDiscountVisible] = useState(false);
   const [showUpsPopup, setShowUpsPopup] = useState(false);
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
-    setShippingCost('$XX ARS'); // Restablecer al valor por defecto cada vez que cambia el código postal
-    setShowUpsPopup(false); // Cerrar el pop-up si se ingresa un nuevo código postal
+    setShippingCost('$XX ARS');
+    setShowUpsPopup(false);
   };
 
-  const handleCalculateShipping = async (e) => {
-    e.preventDefault(); // Prevent the form from reloading the page
+  const handleCalculateShipping = async () => {
     try {
       const postalCodeRange1 = 'sCodigoPostal';
       const postalCodeRange2 = 'sCodigoPostalSinNum';
@@ -86,12 +84,24 @@ const CartComponent = ({
         setShippingCost(`$${calculatedCost} ARS`);
       } else {
         setShippingCost('$XX ARS');
-        setShowUpsPopup(true); // Mostrar el pop-up si no se encuentra el código postal
+        setShowUpsPopup(true);
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
       setShippingCost('$XX ARS');
-      setShowUpsPopup(true); // Mostrar el pop-up si hay un error al calcular el costo de envío
+      setShowUpsPopup(true);
+    }
+  };
+
+  const handlePostalCodeBlur = () => {
+    handleCalculateShipping();
+  };
+
+  const handlePostalCodeKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Evitar que el formulario se envíe
+      handleCalculateShipping();
+      e.target.blur(); // Perder el foco para cerrar el teclado
     }
   };
 
@@ -105,7 +115,6 @@ const CartComponent = ({
     if (cartQuantity > 1) {
       const newQuantity = cartQuantity - 1;
       setCartQuantity(newQuantity);
-      onUpdateQuantity(newQuantity);
     }
   };
 
@@ -113,7 +122,6 @@ const CartComponent = ({
     setDiscountCode(e.target.value);
   };
 
-  // BUSCADOR DE DESCUENTOS
   const handleApplyDiscount = async (e) => {
     if (e) e.preventDefault();
 
@@ -164,20 +172,18 @@ const CartComponent = ({
     }
   };
 
-  // Handle focus and blur for discount code input
   const handleFocus = (e) => {
     e.target.placeholder = '';
-    setIsDiscountVisible(true); // Mostrar campo de descuento
+    setIsDiscountVisible(true);
   };
 
   const handleBlur = (e) => {
     if (e.target.value === '') {
       e.target.placeholder = 'CÓDIGO DE DESCUENTO';
-      setIsDiscountVisible(false); // Ocultar campo de descuento si está vacío
+      setIsDiscountVisible(false);
     }
   };
 
-  // Calcula el subtotal en base al precio unitario, cantidad y descuento
   const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
 
   return (
@@ -297,6 +303,8 @@ const CartComponent = ({
                       placeholder="Código Postal"
                       value={postalCode}
                       onChange={handlePostalCodeChange}
+                      onBlur={handlePostalCodeBlur}
+                      onKeyDown={handlePostalCodeKeyDown}
                     />
                   </form>
                 </div>
@@ -310,7 +318,6 @@ const CartComponent = ({
           </div>
         </div>
       </div>
-      {/* Pop-up para el mensaje "UPS" */}
       {showUpsPopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">

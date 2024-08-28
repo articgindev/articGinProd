@@ -37,11 +37,11 @@ const ShopComponent = () => {
   };
 
   const handleHideCart = () => {
-    setIsCartVisible(false); // Oculta el CartComponent
+    setIsCartVisible(false);
   };
 
   const handleUpdateQuantity = (newQuantity) => {
-    setQuantity(newQuantity); // Actualiza la cantidad en ShopComponent
+    setQuantity(newQuantity);
   };
 
   return (
@@ -54,7 +54,15 @@ const ShopComponent = () => {
       >
         <div className="shop-header">
           <img src={h1Logo} alt="Artic Gin Logo" className="shop-logo" />
-          <img src={back} alt="Back" className="shop-back-button" />
+          <img
+            src={back}
+            alt="Back"
+            className="shop-back-button"
+            onClick={() => {
+              console.log('ShopComponent back button clicked');
+              window.history.back(); // Navegar hacia atrás en la historia del navegador
+            }}
+          />
         </div>
         <div className="shop-main">
           <img src={bottle} alt="Bottle" className="shop-bottle" />
@@ -93,9 +101,9 @@ const ShopComponent = () => {
           quantity={quantity}
           total={unitPrice * quantity}
           cartId={cartId}
+          onBackClick={handleHideCart} // Volvemos a usar onBackClick para controlar la visibilidad del carrito
           onUpdateQuantity={handleUpdateQuantity}
-          onBackClick={handleHideCart}
-          unitPrice={unitPrice} // Asegúrate de pasar unitPrice como prop
+          unitPrice={unitPrice}
         />
       )}
     </div>
