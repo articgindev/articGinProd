@@ -16,8 +16,8 @@
   border-radius: 40px;
   padding: 20px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-  width: 80vw;
-  height: 80vh;
+  width: 100vw;
+  height: 100vh;
   max-width: 500px;
   position: relative;
 }
@@ -54,12 +54,21 @@
 }
 
 .cart-bottle {
-  position: absolute;
-  left: -20vw;
-  width: clamp(90%, 110%, 120%);
-  height: auto;
-  max-width: 80%;
+  position: fixed;
+  /* Cambia a 'fixed' para que se posicione en relación al viewport */
+  left: 50%;
+  /* Centra horizontalmente */
+  top: 50%;
+  /* Centra verticalmente */
+  transform: translate(-95%, -50%);
+  /* Ajusta la posición para centrar completamente */
+  width: clamp(80%, 110%, 120%);
+  height: 65vh;
+  max-width: 75vw;
+  z-index: 9999;
+  /* Asegura que la imagen esté al frente de todo */
 }
+
 
 .cart-logo {
   font-size: 1.5rem;
@@ -71,17 +80,27 @@
 }
 
 .cart-right-container {
-  width: 65%;
+  background-color: #ff0000;
+  border-radius: 50px;
+  width: 70%;
   position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
+  /* Necesario para centrar con transform */
+  left: 50%;
+  /* Centra horizontalmente */
+  top: 50%;
+  /* Mueve el contenedor al 50% desde la parte superior */
+  transform: translate(-35%, -50%);
+  /* Ajusta la posición para centrar horizontal y verticalmente */
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
+  padding: 5px 20px;
+  /* Agrega espacio interno de 5px alrededor de los elementos */
 }
+
 
 .cart-unidades {
   display: flex;
@@ -129,7 +148,7 @@
   justify-content: flex-start;
   width: 100%;
   margin-top: 0.5rem;
-  transform: translateY(-3.5vh);
+  transform: translateY(-0.8vh);
 }
 
 .discount-form {
@@ -170,7 +189,7 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  transform: translateY(-4vh);
+  transform: translateY(-2vh);
 }
 
 .cart-subtotal-container {
@@ -191,11 +210,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  transform: translateY(-0.5vh);
 }
 
 .cart-cartSubtotal-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin-right: 10px;
   margin-top: 0;
 }
@@ -218,16 +238,15 @@
 
 .cart-discount-amount {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   margin-left: auto;
-  color: #ff0000;
-  margin-right: 1rem;
+  margin-right: 0;
   margin-top: 0;
 }
 
 .cart-discount-percentage {
   margin-top: 0;
-  font-size: 1rem;
+  font-size: 0.9;
 }
 
 /* Estilo modificado para el mensaje de error */
@@ -298,6 +317,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 1.8rem;
+  transform: translateY(-1vh);
 }
 
 .shipping-value {
@@ -354,18 +374,121 @@
   background-color: #cc0000;
 }
 
+.cart-total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  border-bottom: 0.01px solid black;
+  transform: translateY(-4vh);
+}
+
+.cart-value {
+  margin-right: 0rem;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.cart-label {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Nuevo estilo para el selector de fecha */
+.cart-end-container {
+  position: fixed;
+  /* Cambiar a fixed para centrarlo independientemente del contenedor padre */
+  top: 50%;
+  /* Centrar verticalmente */
+  left: 50%;
+  /* Centrar horizontalmente */
+  transform: translate(-50%, 135%);
+  /* Ajustar para que el punto de referencia sea el centro */
+  width: 90vw;
+  height: auto;
+  /* Cambiar altura dinámica */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.cart-end-label {
+  font-size: 1.2rem;
+  font-weight: lighter;
+  justify-content: center;
+  color: rgb(165, 166, 168);
+}
+
+.date-picker {
+  width: 65%;
+  overflow-y: hidden;
+  /* Esto debe ser overflow-y, no hidden */
+  max-height: 7vh;
+}
+
+.date-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Asegurar que sea auto para el scroll */
+  max-height: 110px;
+  /* Asegurar que tenga una altura definida */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.date-item {
+  padding: 4px;
+  width: 100%;
+  text-align: center;
+  color: rgb(165, 166, 168);
+}
+
+.date-item.selected {
+  background-color: rgb(165, 166, 168);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 60px;
+  padding: 4px;
+  width: 80%
+}
+
 @media (max-width: 375px) and (max-height: 700px) {
   .cart-discount-form-container {
-    transform: translateY(-1vh);
+    transform: translateY(4.5vh);
+    margin-bottom: 1rem;
   }
 
   .cart-subtotal-container {
-    transform: translateY(2vh);
+    transform: translateY(4vh);
+  }
+
+  .cart-shipping-form-container {
+    transform: translateY(5vh);
+
   }
 
   .discount-error {
     font-size: 0.75rem;
   }
+
+  .cart-bottle {
+    height: auto;
+    max-width: auto;
+  }
+
+  .cart-CP-cost {
+    transform: translateY(1.2vh);
+  }
+
+  .cart-total {
+    transform: translateY(-2vh);
+  }
+
 }
 
 /* Mensaje de error en pantallas angostas */

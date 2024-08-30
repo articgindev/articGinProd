@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CartComponent.css';
 import back from '../assets/shop/back.png';
 import cartFilled from '../assets/shop/cartFilled.png';
@@ -9,7 +9,6 @@ import more from '../assets/shop/more.png';
 import productDescript from '../assets/cart/productDescript.png';
 import cartOkDesc from '../assets/cart/cartOkDesc.png';
 
-// Variables de entorno para la API
 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -29,13 +28,75 @@ const CartComponent = ({
   const [calculatedDiscount, setCalculatedDiscount] = useState(0);
   const [isDiscountVisible, setIsDiscountVisible] = useState(false);
   const [showUpsPopup, setShowUpsPopup] = useState(false);
-  const [showDiscountPopup, setShowDiscountPopup] = useState(false); // Nuevo estado para el pop-up de descuento
+  const [showDiscountPopup, setShowDiscountPopup] = useState(false);
+  const [pickupDates, setPickupDates] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const scrollRef = useRef(null); // Referencia al contenedor de scroll
 
   useEffect(() => {
-    // Actualiza el subtotal y el descuento en vivo cuando cambia la cantidad
+    // Bloquear el scroll del fondo cuando el carrito está abierto
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden'; // Deshabilitar scroll de fondo
+
+    return () => {
+      document.body.style.overflow = originalOverflow; // Restaurar el scroll de fondo
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchPickupDates = async () => {
+      try {
+        const dateRange = 'sFechas';
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${dateRange}?key=${API_KEY}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Error fetching pickup dates from Google Sheets');
+        }
+
+        const data = await response.json();
+        const dates = data.values.flat();
+        setPickupDates(dates);
+        setSelectedIndex(0);
+      } catch (error) {
+        console.error('Error fetching pickup dates:', error);
+      }
+    };
+
+    fetchPickupDates();
+  }, []);
+
+  useEffect(() => {
     const discountAmount = (unitPrice * cartQuantity * discountValue) / 100;
     setCalculatedDiscount(discountAmount);
   }, [cartQuantity, discountValue, unitPrice]);
+
+  // Nueva función para ajustar el scroll al elemento más cercano
+  const adjustScrollPosition = () => {
+    if (scrollRef.current) {
+      const itemHeight = scrollRef.current.firstChild.clientHeight;
+      const scrollTop = scrollRef.current.scrollTop;
+      const nearestIndex = Math.round(scrollTop / itemHeight);
+      scrollRef.current.scrollTo({
+        top: nearestIndex * itemHeight,
+        behavior: 'smooth',
+      });
+      setSelectedIndex(nearestIndex);
+    }
+  };
+
+  const handleScroll = (e) => {
+    const container = e.target;
+    const itemHeight = container.firstChild.clientHeight;
+    const scrollTop = container.scrollTop;
+    const newIndex = Math.round(scrollTop / itemHeight);
+    setSelectedIndex(newIndex);
+  };
+
+  const handleScrollStop = () => {
+    adjustScrollPosition(); // Ajusta el scroll al elemento más cercano cuando el scroll se detiene
+  };
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
@@ -188,6 +249,15 @@ const CartComponent = ({
 
   const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
 
+  const getShippingCostNumber = () => {
+    const costNumber = parseFloat(
+      shippingCost.replace('$', '').replace(' ARS', '')
+    );
+    return isNaN(costNumber) ? 0 : costNumber;
+  };
+
+  const totalCost = parseFloat(subtotal) + getShippingCostNumber();
+
   return (
     <div className="cart-overlay">
       <div className="cart-container">
@@ -197,7 +267,7 @@ const CartComponent = ({
               src={back}
               alt="Back"
               className="cart-back-button"
-              onClick={onBackClick} // Usa la función proporcionada para ocultar el cart
+              onClick={onBackClick}
             />
             <img src={cartFilled} alt="Cart" className="cart-icon" />
           </div>
@@ -308,17 +378,41 @@ const CartComponent = ({
                     />
                   </form>
                 </div>
-
                 <div className="cart-CP-cost">
                   <p className="shipping-label">Costo de Envío:</p>
                   <p className="shipping-value">{shippingCost}</p>
                 </div>
               </div>
+              <div className="cart-total">
+                <p className="cart-label">Total:</p>
+                <p className="cart-value">${totalCost.toFixed(2)} ARS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="cart-end-container">
+          <p className="cart-end-label">Día de entrega</p>
+          <div className="date-picker">
+            <div
+              className="date-scroll"
+              onScroll={handleScroll}
+              ref={scrollRef}
+              onTouchEnd={handleScrollStop} // Ajustar scroll al detener
+            >
+              {pickupDates.map((date, index) => (
+                <div
+                  key={index}
+                  className={`date-item ${
+                    index === selectedIndex ? 'selected' : ''
+                  }`}
+                >
+                  {date}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-      {/* Pop-up para el mensaje "UPS" de código postal */}
       {showUpsPopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">
@@ -331,7 +425,6 @@ const CartComponent = ({
           </div>
         </div>
       )}
-      {/* Pop-up para el mensaje "UPS" de código de descuento */}
       {showDiscountPopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">

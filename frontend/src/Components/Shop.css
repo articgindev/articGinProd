@@ -13,7 +13,8 @@ p {
 }
 
 .shop-container {
-  background-color: rgb(240, 248, 255);
+  background: url('../assets/backgrounds/FondoShop.jpg');
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +25,8 @@ p {
 }
 
 .shop-sub-container {
-  background: rgb(236, 236, 236);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
   min-height: 94vh;
   width: 88vw;
   border-radius: 50px;
@@ -65,34 +67,35 @@ p {
 }
 
 .shop-bottle {
-  width: clamp(12rem, 22vw, 25rem);
+  width: 56vw;
+  max-width: 80vw;
   position: absolute;
-  top: 2vh;
+  top: 0vh;
   z-index: 10;
-  margin: 0;
+  margin: 0px;
 }
 
 .shop-batch-number {
-  max-width: 22vw;
+  max-width: 24vw;
   margin: 2rem 0;
   position: absolute;
-  right: 10vw;
-  top: 50vh;
+  right: 2vw;
+  top: 55vh;
 }
 
 .shop-product-description {
-  width: clamp(18rem, 14vw, 16rem);
+  width: 85vw;
   margin: 1.5rem;
   position: absolute;
-  top: 60vh;
+  top: 62vh;
 }
 
 .shop-price {
   text-align: center;
   font-size: clamp(1em, 2.5vw, 1.5em);
-  /* Tamaño de fuente dinámico */
+  color: white;
   position: absolute;
-  top: 72vh;
+  top: 74vh;
 }
 
 .shop-quantity-control {
@@ -109,6 +112,7 @@ p {
 
 .shop-quantity-control p {
   font-size: 1.2rem;
+  color: white;
 }
 
 .shop-addTocart-container {
@@ -138,30 +142,38 @@ p {
   /* Desactiva la interacción con el fondo */
 }
 
+
+
 /* Media queries para pantallas pequeñas */
-@media (max-width: 768px) {
-  .shop-bottle {
-    width: clamp(12rem, 18vw, 20rem);
-    /* Ajuste de tamaño para pantallas más pequeñas */
-  }
-}
-
-
 /* celulares mas chicos tipo el SE */
-@media (max-width: 375px) and (max-height: 700px) {
+@media (max-width: 375px) and (max-height: 670px) {
   .shop-bottle {
-    width: clamp(10rem, 15vw, 18rem);
+    width: 45vw;
+  }
+
+  .shop-batch-number {
+    max-width: 23vw;
+    top: 52vh;
   }
 
   .shop-quantity-control {
     top: 79vh;
   }
 
-  .shop-product-description {
-    margin: 1rem;
+  .shop-price {
+    top: 74.5vh;
+
   }
 
   .shop-addTocart-container {
     transform: translateY(64vh);
+  }
+}
+
+
+@media (min-width: 392px) {
+
+  .shop-bottle {
+    width: 52vw;
   }
 }
