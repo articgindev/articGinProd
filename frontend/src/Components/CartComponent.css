@@ -12,7 +12,8 @@
 }
 
 .cart-container {
-  background-color: white;
+  background: url('../assets/backgrounds/FondoShop.jpg');
+  background-size: cover;
   border-radius: 40px;
   padding: 20px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
@@ -36,7 +37,6 @@
 }
 
 .cart-back-button {
-  cursor: pointer;
   max-width: 3.5rem;
   position: absolute;
   top: -1vh;
@@ -55,18 +55,12 @@
 
 .cart-bottle {
   position: fixed;
-  /* Cambia a 'fixed' para que se posicione en relación al viewport */
   left: 50%;
-  /* Centra horizontalmente */
   top: 50%;
-  /* Centra verticalmente */
-  transform: translate(-95%, -50%);
-  /* Ajusta la posición para centrar completamente */
-  width: clamp(80%, 110%, 120%);
-  height: 65vh;
-  max-width: 75vw;
-  z-index: 9999;
-  /* Asegura que la imagen esté al frente de todo */
+  transform: translate(-150%, -55%);
+  width: 8rem;
+  height: 22rem;
+  z-index: 1;
 }
 
 
@@ -80,7 +74,7 @@
 }
 
 .cart-right-container {
-  background-color: #ff0000;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 50px;
   width: 70%;
   position: absolute;
@@ -91,31 +85,31 @@
   /* Mueve el contenedor al 50% desde la parte superior */
   transform: translate(-35%, -50%);
   /* Ajusta la posición para centrar horizontal y verticalmente */
-  height: 80%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
-  padding: 5px 20px;
+  padding: 5px 25px;
   /* Agrega espacio interno de 5px alrededor de los elementos */
 }
-
 
 .cart-unidades {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   position: absolute;
-  top: 15%;
+  top: 10%;
   flex-direction: row;
 }
 
 .cart-unidades-img {
-  width: clamp(40%, 50%, 60%);
+  width: 7rem;
   height: auto;
-  max-width: 6rem;
+  max-width: 8rem;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 .cart-quantity-control {
@@ -127,19 +121,19 @@
 }
 
 .cart-quantity-control img {
-  max-width: 2rem;
+  max-width: 2.5rem;
   cursor: pointer;
 }
 
 .cart-quantity-control p {
   margin: 0 5px;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .cart-description-img {
-  width: 12rem;
+  width: 14rem;
   position: absolute;
-  top: 22%;
+  top: 18%;
 }
 
 .cart-discount-form-container {
@@ -147,8 +141,8 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-top: 0.5rem;
-  transform: translateY(-0.8vh);
+  margin-top: 2rem;
+  transform: translateY(-1.5vh);
 }
 
 .discount-form {
@@ -204,6 +198,7 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 1rem;
+
 }
 
 .cart-subtotal-values {
@@ -211,6 +206,7 @@
   align-items: center;
   justify-content: flex-start;
   transform: translateY(-0.5vh);
+  border-bottom: 0.01px solid black;
 }
 
 .cart-cartSubtotal-label {
@@ -218,6 +214,7 @@
   font-size: 0.9rem;
   margin-right: 10px;
   margin-top: 0;
+  margin-bottom: 3px;
 }
 
 .cart-cartSubtotal-value {
@@ -226,6 +223,7 @@
   margin-left: auto;
   margin-right: 0rem;
   margin-top: 0;
+  margin-bottom: 3px;
 }
 
 .cart-discount-text {
@@ -276,6 +274,7 @@
   justify-content: flex-start;
   width: 100%;
   transform: translateY(2vh);
+  margin-top: 10px;
 }
 
 .cart-cartCP-label {
@@ -318,16 +317,19 @@
   justify-content: flex-start;
   margin-top: 1.8rem;
   transform: translateY(-1vh);
+  border-bottom: 0.01px solid black;
 }
 
 .shipping-value {
   margin-left: auto;
   margin-right: 0rem;
+  margin-bottom: 0px;
   font-size: 0.9rem;
 }
 
 .shipping-label {
   font-size: 0.9rem;
+  margin-bottom: 0px;
 }
 
 /* Estilo del pop-up */
@@ -385,6 +387,7 @@
 
 .cart-value {
   margin-right: 0rem;
+  margin-bottom: 0px;
   font-size: 1rem;
   font-weight: bold;
   margin-left: auto;
@@ -393,31 +396,33 @@
 .cart-label {
   font-weight: bold;
   font-size: 1rem;
+  margin-bottom: 0px;
 }
 
 /* Nuevo estilo para el selector de fecha */
 .cart-end-container {
-  position: fixed;
-  /* Cambiar a fixed para centrarlo independientemente del contenedor padre */
+  position: absolute;
+  /* Cambiar a absolute para que se posicione en relación al contenedor padre */
   top: 50%;
   /* Centrar verticalmente */
   left: 50%;
   /* Centrar horizontalmente */
-  transform: translate(-50%, 135%);
-  /* Ajustar para que el punto de referencia sea el centro */
+  transform: translate(-50%, 120%);
+  /* Ajustar para centrar completamente */
   width: 90vw;
-  height: auto;
-  /* Cambiar altura dinámica */
+  max-width: 400px;
+  /* Ajustar según sea necesario */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   box-sizing: border-box;
 }
 
+
 .cart-end-label {
-  font-size: 1.2rem;
-  font-weight: lighter;
+  font-size: 1rem;
+  font-weight: bold;
   justify-content: center;
   color: rgb(165, 166, 168);
 }
@@ -425,7 +430,6 @@
 .date-picker {
   width: 65%;
   overflow-y: hidden;
-  /* Esto debe ser overflow-y, no hidden */
   max-height: 7vh;
 }
 
@@ -455,6 +459,15 @@
   border-radius: 60px;
   padding: 4px;
   width: 80%
+}
+
+.cart-comprar-button {
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  max-width: 10rem;
+  z-index: 1010;
 }
 
 @media (max-width: 375px) and (max-height: 700px) {
@@ -489,6 +502,19 @@
     transform: translateY(-2vh);
   }
 
+  .cart-end-container {
+    transform: translate(-50%, 130%);
+  }
+
+  .date-item.selected {
+    background-color: rgb(165, 166, 168);
+    padding: 3.5px;
+  }
+
+  .date-item {
+    padding: 3.5px;
+  }
+
 }
 
 /* Mensaje de error en pantallas angostas */
@@ -514,6 +540,10 @@
   }
 
   .shipping-label {
+    font-size: 0.9rem;
+  }
+
+  .date-item.selected {
     font-size: 0.9rem;
   }
 }

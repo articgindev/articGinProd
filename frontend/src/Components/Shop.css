@@ -146,8 +146,6 @@ p {
   /* Desactiva la interacción con el fondo */
 }
 
-
-
 /* Media queries para pantallas pequeñas */
 /* celulares mas chicos tipo el SE */
 @media (max-width: 375px) and (max-height: 670px) {
@@ -192,7 +190,12 @@ p {
   .shop-product-description {
     top: 22rem;
   }
+
+  .shop-addTocart-container {
+    top: 14rem;
+  }
 }
+
 
 /* Media queries para pantallas grandes iphone pro max y plus */
 

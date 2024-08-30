@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CartComponent.css';
 import back from '../assets/shop/back.png';
-import cartFilled from '../assets/shop/cartFilled.png';
 import cartBotella from '../assets/cart/cartBotella.png';
 import cartUnidades from '../assets/cart/cartUnidades.png';
 import less from '../assets/shop/less.png';
 import more from '../assets/shop/more.png';
 import productDescript from '../assets/cart/productDescript.png';
 import cartOkDesc from '../assets/cart/cartOkDesc.png';
+import comprar from '../assets/cart/cartComprar.png';
 
 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -262,20 +262,23 @@ const CartComponent = ({
     <div className="cart-overlay">
       <div className="cart-container">
         <div className="cart-sub-container">
-          <div className="cart-header">
-            <img
-              src={back}
-              alt="Back"
-              className="cart-back-button"
-              onClick={onBackClick}
-            />
-            <img src={cartFilled} alt="Cart" className="cart-icon" />
-          </div>
           <div className="cart-main">
             <div className="cart-bottle-container">
               <img src={cartBotella} alt="Botella" className="cart-bottle" />
             </div>
             <div className="cart-right-container">
+              <div className="cart-header">
+                <img
+                  src={back}
+                  alt="Back"
+                  className="cart-back-button"
+                  onClick={onBackClick}
+                />
+                {/* 
+            aca deberia ir un cartel con la ayuda cuando hay algun problema
+            <img src={cartFilled} alt="Cart" className="cart-icon" /> 
+            */}
+              </div>
               <div className="cart-unidades">
                 <img
                   src={cartUnidades}
@@ -387,28 +390,33 @@ const CartComponent = ({
                 <p className="cart-label">Total:</p>
                 <p className="cart-value">${totalCost.toFixed(2)} ARS</p>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="cart-end-container">
-          <p className="cart-end-label">Día de entrega</p>
-          <div className="date-picker">
-            <div
-              className="date-scroll"
-              onScroll={handleScroll}
-              ref={scrollRef}
-              onTouchEnd={handleScrollStop} // Ajustar scroll al detener
-            >
-              {pickupDates.map((date, index) => (
-                <div
-                  key={index}
-                  className={`date-item ${
-                    index === selectedIndex ? 'selected' : ''
-                  }`}
-                >
-                  {date}
+              <div className="cart-end-container">
+                <p className="cart-end-label">Día de entrega</p>
+                <div className="date-picker">
+                  <div
+                    className="date-scroll"
+                    onScroll={handleScroll}
+                    ref={scrollRef}
+                    onTouchEnd={handleScrollStop} // Ajustar scroll al detener
+                  >
+                    {pickupDates.map((date, index) => (
+                      <div
+                        key={index}
+                        className={`date-item ${
+                          index === selectedIndex ? 'selected' : ''
+                        }`}
+                      >
+                        {date}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              </div>
+              <img
+                src={comprar}
+                alt="Comprar"
+                className="cart-comprar-button"
+              />
             </div>
           </div>
         </div>
