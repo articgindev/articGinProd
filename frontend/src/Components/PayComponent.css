@@ -1,0 +1,128 @@
+.pay-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../assets/backgrounds/FondoShop.jpg');
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pay-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 40px;
+  width: 80%;
+  height: 50%;
+  max-width: 500px;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pay-back-button {
+  position: absolute;
+  top: -1.5rem;
+  right: -1.5rem;
+  max-width: 4rem;
+  cursor: pointer;
+}
+
+.pay-form {
+  width: 100%;
+}
+
+.pay-form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.pay-input,
+.pay-input-complete,
+.pay-input-complete-opcional {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  margin: 0.3em;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+.pay-input {
+  width: 48%;
+}
+
+.pay-input-complete,
+.pay-input-complete-opcional {
+  width: 100%;
+}
+
+/* Estilo para placeholders */
+.pay-input::placeholder,
+.pay-input-complete::placeholder,
+.pay-input-complete-opcional::placeholder {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+}
+
+.pay-input-complete-opcional::placeholder {
+  font-size: 0.7rem;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  position: relative;
+}
+
+.toggle-button {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  margin: 0.3em;
+  width: 100%;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.toggle-button.active {
+  background-color: rgba(100, 100, 100, 0.8);
+  z-index: 2;
+}
+
+.toggle-button:first-child {
+  margin-right: -8%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.toggle-button:last-child {
+  margin-left: -8%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.pay-submit-button {
+  max-width: 12rem;
+  margin-top: 1rem;
+  position: absolute;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -15%);
+  cursor: pointer;
+}

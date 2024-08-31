@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CartComponent.css';
 import back from '../assets/shop/back.png';
 import cartBotella from '../assets/cart/cartBotella.png';
@@ -31,15 +32,20 @@ const CartComponent = ({
   const [showDiscountPopup, setShowDiscountPopup] = useState(false);
   const [pickupDates, setPickupDates] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const scrollRef = useRef(null); // Referencia al contenedor de scroll
+  const [showInvalidPostalCodePopup, setShowInvalidPostalCodePopup] =
+    useState(false);
+  const [showInvalidDeliveryDatePopup, setShowInvalidDeliveryDatePopup] =
+    useState(false);
+  const [placeholderColor, setPlaceholderColor] = useState('#ffffff'); // Estado para el color del placeholder
+  const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Bloquear el scroll del fondo cuando el carrito está abierto
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden'; // Deshabilitar scroll de fondo
+    document.body.style.overflow = 'hidden';
 
     return () => {
-      document.body.style.overflow = originalOverflow; // Restaurar el scroll de fondo
+      document.body.style.overflow = originalOverflow;
     };
   }, []);
 
@@ -72,7 +78,6 @@ const CartComponent = ({
     setCalculatedDiscount(discountAmount);
   }, [cartQuantity, discountValue, unitPrice]);
 
-  // Nueva función para ajustar el scroll al elemento más cercano
   const adjustScrollPosition = () => {
     if (scrollRef.current) {
       const itemHeight = scrollRef.current.firstChild.clientHeight;
@@ -95,13 +100,14 @@ const CartComponent = ({
   };
 
   const handleScrollStop = () => {
-    adjustScrollPosition(); // Ajusta el scroll al elemento más cercano cuando el scroll se detiene
+    adjustScrollPosition();
   };
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
     setShippingCost('$XX ARS');
     setShowUpsPopup(false);
+    setPlaceholderColor('#ffffff'); // Resetea el color del placeholder al blanco cuando se cambia el CP
   };
 
   const handleCalculateShipping = async (e) => {
@@ -154,7 +160,8 @@ const CartComponent = ({
         setShippingCost(`$${calculatedCost} ARS`);
       } else {
         setShippingCost('$XX ARS');
-        setShowUpsPopup(true);
+        setShowInvalidPostalCodePopup(true); // Mostrar pop-up si no hay código postal válido
+        setPlaceholderColor('red'); // Cambia el color del placeholder a rojo
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
@@ -219,17 +226,17 @@ const CartComponent = ({
       if (index !== -1) {
         const discountPercentage = parseFloat(percentageRows[index][0]);
         setDiscountValue(discountPercentage);
-        setShowDiscountPopup(false); // Oculta el pop-up de descuento
+        setShowDiscountPopup(false);
       } else {
         setDiscountValue(0);
         setCalculatedDiscount(0);
-        setShowDiscountPopup(true); // Muestra el pop-up de descuento
+        setShowDiscountPopup(true);
       }
     } catch (error) {
       console.error('Ups, no reconocemos ese codigo :(', error);
       setDiscountValue(0);
       setCalculatedDiscount(0);
-      setShowDiscountPopup(true); // Muestra el pop-up de descuento
+      setShowDiscountPopup(true);
     }
 
     document.activeElement.blur();
@@ -258,6 +265,40 @@ const CartComponent = ({
 
   const totalCost = parseFloat(subtotal) + getShippingCostNumber();
 
+  // Nueva función para manejar la compra
+  const handlePurchase = () => {
+    if (shippingCost === '$XX ARS') {
+      setShowInvalidPostalCodePopup(true);
+      setPlaceholderColor('red'); // Cambia el color del placeholder a rojo
+      return;
+    }
+
+    if (pickupDates[selectedIndex] === 'OTRO') {
+      setShowInvalidDeliveryDatePopup(true);
+      return;
+    }
+
+    const purchaseData = {
+      cartId,
+      cantidad: cartQuantity,
+      descuentoAplicado: discountValue > 0 ? calculatedDiscount : '',
+      codigoDescuento: discountValue > 0 ? discountCode : '',
+      porcentajeDescuento: discountValue > 0 ? discountValue : '',
+      codigoPostal: postalCode,
+      costoEnvio: getShippingCostNumber(),
+      fechaEnvio: pickupDates[selectedIndex],
+      importeTotal: totalCost.toFixed(2),
+    };
+
+    // Guardar el objeto de compra en el localStorage
+    localStorage.setItem('purchaseData', JSON.stringify(purchaseData));
+
+    console.log(purchaseData);
+
+    // Navega a la siguiente página
+    navigate('/pagar');
+  };
+
   return (
     <div className="cart-overlay">
       <div className="cart-container">
@@ -274,10 +315,6 @@ const CartComponent = ({
                   className="cart-back-button"
                   onClick={onBackClick}
                 />
-                {/* 
-            aca deberia ir un cartel con la ayuda cuando hay algun problema
-            <img src={cartFilled} alt="Cart" className="cart-icon" /> 
-            */}
               </div>
               <div className="cart-unidades">
                 <img
@@ -334,7 +371,7 @@ const CartComponent = ({
                       visibility:
                         discountValue > 0 && !showDiscountPopup
                           ? 'visible'
-                          : 'hidden', // Se muestra solo si hay descuento y no hay pop-up
+                          : 'hidden',
                     }}
                   >
                     {typeof discountValue === 'number' &&
@@ -378,6 +415,12 @@ const CartComponent = ({
                       placeholder="Código Postal"
                       value={postalCode}
                       onChange={handlePostalCodeChange}
+                      style={{
+                        color: 'white', // El color del texto del input
+                        '::placeholder': {
+                          color: placeholderColor, // El color del placeholder
+                        },
+                      }}
                     />
                   </form>
                 </div>
@@ -397,7 +440,7 @@ const CartComponent = ({
                     className="date-scroll"
                     onScroll={handleScroll}
                     ref={scrollRef}
-                    onTouchEnd={handleScrollStop} // Ajustar scroll al detener
+                    onTouchEnd={handleScrollStop}
                   >
                     {pickupDates.map((date, index) => (
                       <div
@@ -416,20 +459,37 @@ const CartComponent = ({
                 src={comprar}
                 alt="Comprar"
                 className="cart-comprar-button"
+                onClick={handlePurchase} // Añade la función handlePurchase al botón
               />
             </div>
           </div>
         </div>
       </div>
-      {showUpsPopup && (
+      {showInvalidPostalCodePopup && (
         <div className="ups-popup">
           <div className="ups-popup-content">
             <p>
-              ¡UPS! Aun no llegamos a esa zona, pero no te quedes con las ganas.
-              Queremos que pueda llegar a tus manos. Háblanos por Instagram
-              @artic.tv
+              Para concretar la compra necesitamos un código postal que esté
+              dentro del área que repartimos. Visita nuestro Instagram @artic.tv
+              para conocer las zonas donde podemos llegar.
             </p>
-            <button onClick={() => setShowUpsPopup(false)}>Cerrar</button>
+            <button onClick={() => setShowInvalidPostalCodePopup(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+      {showInvalidDeliveryDatePopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              Nuestra logística trabaja solo viernes y sábados de 14hs a 21hs.
+              En breve estaremos agregando más días. Por favor, selecciona una
+              fecha de entrega válida.
+            </p>
+            <button onClick={() => setShowInvalidDeliveryDatePopup(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
