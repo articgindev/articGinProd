@@ -167,14 +167,20 @@ const Pay = () => {
               value={formData.notasPedido}
               onChange={handleInputChange}
               className="pay-input-complete-opcional"
+              style={{
+                height: '2rem', // Ajuste automático de altura
+                borderRadius: '15px', // Radius para el borde
+              }}
             />
           </div>
-          <img
-            src={comprar}
-            alt="Pagar"
-            className="pay-submit-button"
-            onClick={handleSubmit}
-          />
+          <div className="pay-submit-button-container">
+            <img
+              src={comprar}
+              alt="Pagar"
+              className="pay-submit-button"
+              onClick={handleSubmit}
+            />
+          </div>
         </form>
       </div>
     </div>

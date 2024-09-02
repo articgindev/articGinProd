@@ -346,6 +346,10 @@
   z-index: 1001;
 }
 
+.shipping-form input.invalid-placeholder::placeholder {
+  color: red;
+}
+
 .ups-popup-content {
   background-color: white;
   border-radius: 10px;
@@ -450,6 +454,7 @@
   text-align: center;
   color: rgb(165, 166, 168);
 }
+
 
 .date-item.selected {
   background-color: rgb(165, 166, 168);

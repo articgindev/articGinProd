@@ -26,7 +26,6 @@ p {
 
 .shop-sub-container {
   background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(2px);
   min-height: 94vh;
   width: 88vw;
   border-radius: 50px;

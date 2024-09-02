@@ -36,7 +36,7 @@ const CartComponent = ({
     useState(false);
   const [showInvalidDeliveryDatePopup, setShowInvalidDeliveryDatePopup] =
     useState(false);
-  const [placeholderColor, setPlaceholderColor] = useState('#ffffff'); // Estado para el color del placeholder
+  const [isPostalCodeInvalid, setIsPostalCodeInvalid] = useState(false); // Estado para el error de código postal
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
@@ -107,7 +107,7 @@ const CartComponent = ({
     setPostalCode(e.target.value);
     setShippingCost('$XX ARS');
     setShowUpsPopup(false);
-    setPlaceholderColor('#ffffff'); // Resetea el color del placeholder al blanco cuando se cambia el CP
+    setIsPostalCodeInvalid(false); // Resetea el error cuando se cambia el CP
   };
 
   const handleCalculateShipping = async (e) => {
@@ -161,7 +161,7 @@ const CartComponent = ({
       } else {
         setShippingCost('$XX ARS');
         setShowInvalidPostalCodePopup(true); // Mostrar pop-up si no hay código postal válido
-        setPlaceholderColor('red'); // Cambia el color del placeholder a rojo
+        setIsPostalCodeInvalid(true); // Marca el CP como inválido
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
@@ -251,6 +251,8 @@ const CartComponent = ({
     if (e.target.value === '') {
       e.target.placeholder = 'CÓDIGO DE DESCUENTO';
       setIsDiscountVisible(false);
+    } else if (e.target.id === 'postalCode') {
+      handleCalculateShipping(e); // Calcular costo de envío al salir del campo CP
     }
   };
 
@@ -269,7 +271,7 @@ const CartComponent = ({
   const handlePurchase = () => {
     if (shippingCost === '$XX ARS') {
       setShowInvalidPostalCodePopup(true);
-      setPlaceholderColor('red'); // Cambia el color del placeholder a rojo
+      setIsPostalCodeInvalid(true); // Marca el CP como inválido
       return;
     }
 
@@ -415,12 +417,10 @@ const CartComponent = ({
                       placeholder="Código Postal"
                       value={postalCode}
                       onChange={handlePostalCodeChange}
-                      style={{
-                        color: 'white', // El color del texto del input
-                        '::placeholder': {
-                          color: placeholderColor, // El color del placeholder
-                        },
-                      }}
+                      onBlur={handleBlur} // Calcula el costo al perder el foco
+                      className={
+                        isPostalCodeInvalid ? 'invalid-placeholder' : ''
+                      }
                     />
                   </form>
                 </div>
@@ -459,7 +459,7 @@ const CartComponent = ({
                 src={comprar}
                 alt="Comprar"
                 className="cart-comprar-button"
-                onClick={handlePurchase} // Añade la función handlePurchase al botón
+                onClick={handlePurchase}
               />
             </div>
           </div>
