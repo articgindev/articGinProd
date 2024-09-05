@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import './Shop.css';
 import Menu from './Menu';
 import CartComponent from './CartComponent';
@@ -21,7 +21,7 @@ const ShopComponent = () => {
   const [isCartFilled, setIsCartFilled] = useState(false);
   const [cartId, setCartId] = useState(null);
   const unitPrice = 16000;
-  const navigate = useNavigate(); // Usa el hook useNavigate
+  const navigate = useNavigate();
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
@@ -39,15 +39,15 @@ const ShopComponent = () => {
   };
 
   const handleHideCart = () => {
-    setIsCartVisible(false); // Oculta el CartComponent
+    setIsCartVisible(false);
   };
 
   const handleBackClick = () => {
-    navigate('/'); // Redirige usando navigate
+    navigate('/');
   };
 
   const handleUpdateQuantity = (newQuantity) => {
-    setQuantity(newQuantity); // Actualiza la cantidad en ShopComponent
+    setQuantity(newQuantity);
   };
 
   return (
@@ -64,12 +64,15 @@ const ShopComponent = () => {
             src={back}
             alt="Back"
             className="shop-back-button"
-            onClick={handleBackClick} // Redirige usando navigate
+            onClick={handleBackClick}
           />
         </div>
         <div className="shop-main">
-          <img src={bottle} alt="Bottle" className="shop-bottle" />
-          <img src={batch} alt="Batch Number" className="shop-batch-number" />
+          {/* Contenedor para la botella y el batch */}
+          <div className="bottle-batch-container">
+            <img src={bottle} alt="Bottle" className="shop-bottle" />
+            <img src={batch} alt="Batch Number" className="shop-batch-number" />
+          </div>
           <img
             src={productDescript}
             alt="Product Description"
@@ -105,7 +108,7 @@ const ShopComponent = () => {
           total={unitPrice * quantity}
           cartId={cartId}
           onUpdateQuantity={handleUpdateQuantity}
-          onBackClick={handleHideCart} // Pasa la función para ocultar el carrito
+          onBackClick={handleHideCart}
           unitPrice={unitPrice}
         />
       )}

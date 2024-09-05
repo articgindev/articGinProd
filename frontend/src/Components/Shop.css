@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
 /* Estilos generales */
 body {
   margin: 0;
@@ -28,12 +26,15 @@ p {
   background: rgba(0, 0, 0, 0.2);
   min-height: 94vh;
   width: 88vw;
+  max-width: 400px;
   border-radius: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 1rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .shop-header {
@@ -57,146 +58,161 @@ p {
 }
 
 .shop-main {
-  width: 100vw;
+  width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* Contenedor para la botella y el batch */
+.bottle-batch-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: -5rem;
+  position: relative;
+  width: 100%;
+  /* Para asegurar que el contenedor use todo el ancho */
 }
 
 .shop-bottle {
-  width: 56vw;
-  max-width: 80vw;
-  position: absolute;
-  top: -0.5rem;
-  z-index: 10;
-  margin: 0px;
+  width: 45vw;
+  max-width: 250px;
+  margin-right: 1rem;
+  /* Espacio entre la botella y el batch */
+  margin-left: auto;
+  /* Asegura que la botella esté centrada */
+  margin-right: auto;
 }
 
 .shop-batch-number {
-  max-width: 24vw;
-  position: relative;
-  left: 8rem;
-  top: 22rem;
+  width: 30%;
+  max-width: 80px;
+  position: absolute;
+  bottom: 1rem;
+  right: 0;
 }
 
 .shop-product-description {
-  width: 85vw;
-  margin: 2rem;
-  position: relative;
-  top: 22rem;
+  width: 80%;
+  margin: 1.5rem auto;
 }
 
 .shop-price {
   text-align: center;
-  font-size: clamp(1em, 2.5vw, 1.5em);
+  font-size: clamp(1em, 2vw, 1.2em);
   color: white;
-  position: relative;
-  top: 18rem;
   font-weight: bold;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .shop-quantity-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  top: 16rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .shop-quantity-control img {
-  max-width: 3.5rem;
+  max-width: 3rem;
 }
 
 .shop-quantity-control p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: white;
   font-weight: bold;
+  margin: 0 0.5rem;
 }
 
 .shop-addTocart-container {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 90%;
+  justify-content: center;
+  width: 100%;
   padding: 10px;
-  top: 15rem;
+  margin-top: 1rem;
 }
 
 .shop-add-to-cart {
   max-width: 12rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .shop-cart-icon {
-  max-width: 3.8rem;
+  max-width: 3rem;
 }
 
-/* Desenfoque aplicado solo a shop-sub-container */
 .blur-background {
   filter: blur(8px);
   pointer-events: none;
-  /* Desactiva la interacción con el fondo */
 }
 
-/* Media queries para pantallas pequeñas */
-/* celulares mas chicos tipo el SE */
-@media (max-width: 375px) and (max-height: 670px) {
+@media (max-width: 375px) {
   .shop-bottle {
-    width: 45vw;
+    width: 35vw;
   }
 
   .shop-batch-number {
-    top: 15rem;
-    left: 7rem;
+    width: 30%;
   }
 
-  .shop-quantity-control {
-    top: 8rem;
+  .shop-product-description {
+    width: 90%;
+    margin: 1rem auto;
   }
 
   .shop-price {
-    top: 10.5rem;
+    font-size: 0.9em;
   }
 
   .shop-addTocart-container {
-    top: 7rem;
+    margin-top: 0.5rem;
   }
 
-  .shop-product-description {
-    top: 15rem;
+  .shop-quantity-control img {
+    max-width: 2.5rem;
+  }
+
+  .shop-quantity-control p {
+    font-size: 0.9rem;
+  }
+
+  .shop-add-to-cart {
+    max-width: 8rem;
+  }
+
+  .shop-cart-icon {
+    max-width: 2.5rem;
   }
 }
 
-/* Media queries para pantallas gruesas y cortas */
+@media (min-width: 376px) and (max-width: 768px) {
+  .shop-bottle {
+    width: 40vw;
+  }
 
-@media (min-width: 392px) {
+  .shop-product-description {
+    width: 85%;
+    margin: 1.5rem auto;
+  }
+}
+
+@media (min-width: 769px) {
+  .shop-bottle {
+    width: 35vw;
+  }
 
   .shop-batch-number {
-    top: 20rem;
-  }
-
-  .shop-bottle {
-    width: 52vw;
+    width: 20%;
   }
 
   .shop-product-description {
-    top: 22rem;
+    width: 70%;
   }
 
   .shop-addTocart-container {
-    top: 14rem;
+    width: 80%;
   }
 }
-
-
-/* Media queries para pantallas grandes iphone pro max y plus */
-
-
-@media only screen and (min-device-width: 391px) and (max-device-width: 430px) and (min-device-height: 844px) and (max-device-height: 926px) {}
