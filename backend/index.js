@@ -19,23 +19,27 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    'http://localhost:5173',
-    'https://artictv.com'
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', true); // Si usas cookies o tokens de autorización
-  next();
-});
+// Definir orígenes permitidos
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://artictv.com'
+];
 
-// Manejar solicitudes preflight OPTIONS
-app.options('*', cors());
+// CORS Middleware
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('No permitido por CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    credentials: true, // Si usas cookies o tokens de autorización
+  })
+);
 
 // Rutas
 app.use(paymentRoutes);
