@@ -11,8 +11,6 @@
   background: url('../assets/backgrounds/FondoShop.jpg');
   background-size: cover;
   overflow: auto;
-  overflow-y: scroll;
-  /* Asegúrate de que el desplazamiento vertical esté activado */
 }
 
 .cart-container {
@@ -354,11 +352,13 @@
   font-size: 1rem;
   font-weight: bold;
   margin-left: auto;
+  margin-bottom: 0px;
 }
 
 .cart-label {
   font-weight: bold;
   font-size: 1rem;
+  margin-bottom: 0px;
 }
 
 .cart-end-container {
@@ -374,6 +374,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: rgb(165, 166, 168);
+  margin: 10px
 }
 
 .date-picker {
@@ -387,7 +388,7 @@
   width: 100%;
   color: white;
   font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  font-size: 1rem;
   text-align: center;
   border: none;
 }
@@ -403,6 +404,11 @@
 }
 
 @media (max-width: 375px) and (max-height: 700px) {
+
+  .cart-right-container {
+    height: 75vh;
+  }
+
   .cart-discount-form-container {
     margin-bottom: 5px;
   }
@@ -429,15 +435,24 @@
   }
 
   .cart-total {
-    margin-top: 2vh;
+    margin-top: 0vh;
   }
 
   .cart-end-container {
-    margin-top: 2vh;
+    margin-top: 0.5vh;
+  }
+
+  .cart-end-label {
+    font-size: 0.8rem;
+  }
+
+  .select-date {
+    font-size: 0.8rem;
   }
 
   .cart-comprar-button {
     max-width: 8rem;
+    transform: translateY(-15%);
   }
 }
 

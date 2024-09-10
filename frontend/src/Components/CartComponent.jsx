@@ -41,6 +41,15 @@ const CartComponent = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Disable scroll in the ShopComponent when Cart is visible
+    document.body.classList.add('no-scroll');
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchPickupDates = async () => {
       try {
         const dateRange = 'sFechas';
@@ -69,7 +78,7 @@ const CartComponent = ({
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
     setShippingCost('$XX ARS');
-    setIsPostalCodeInvalid(false); // Reset the placeholder color when the user starts typing again
+    setIsPostalCodeInvalid(false);
   };
 
   const handleCalculateShipping = async () => {
@@ -103,7 +112,7 @@ const CartComponent = ({
         setShippingCost(`$${calculatedCost} ARS`);
       } else {
         setShowInvalidPostalCodePopup(true);
-        setIsPostalCodeInvalid(true); // Marks the CP as invalid to show the placeholder in red
+        setIsPostalCodeInvalid(true);
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
@@ -183,37 +192,29 @@ const CartComponent = ({
 
   const handlePurchase = async () => {
     try {
-      // Validar si el costo de envío no está calculado
       if (shippingCost === '$XX ARS') {
         setShowInvalidPostalCodePopup(true);
         setIsPostalCodeInvalid(true);
         return;
       }
 
-      // Validar si la fecha de entrega seleccionada es "OTRO"
       if (pickupDates[selectedIndex] === 'OTRO') {
         setShowInvalidDeliveryDatePopup(true);
         return;
       }
 
-      // Generar el costo total del carrito
       const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
-      // Definir la URL base según el entorno (desarrollo o producción)
       const baseUrl = window.location.origin.includes('localhost')
         ? 'http://localhost:5555'
         : 'https://artic-gin-server.vercel.app';
 
-      // Crear el carrito en el backend y obtener el cartId de la base de datos
       const response = await axios.post(`${baseUrl}/create-cart`, {
-        total: totalCost, // Enviar el total calculado
+        total: totalCost,
       });
 
-      // Obtener el cartId del backend (guardado en MongoDB)
       const { cartId: savedCartId } = response.data;
 
-      // Redirigir al usuario a la página de pago con el cartId en la URL
-      // Verificar que el cartId está presente antes de redirigir
       if (savedCartId) {
         navigate(`/pagar/${savedCartId}`);
       } else {
