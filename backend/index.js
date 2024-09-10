@@ -1,12 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import path from 'path';
 
-import paymentRoutes from './routes/payment.routes.js'; // Importa tus rutas de pagos
-import cartRoutes from './routes/cart.routes.js'; // Importa las rutas de carrito
+import paymentRoutes from './routes/payment.routes.js';
+import cartRoutes from './routes/cart.routes.js';
 
 dotenv.config();
 
@@ -19,38 +18,36 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Definir orígenes permitidos
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://artictv.com'
-];
+// Configuración de CORS con un manejo explícito de OPTIONS
+app.use((req, res, next) => {
+  const allowedOrigins = ['http://localhost:5173', 'https://artictv.com'];
+  const origin = req.headers.origin;
 
-// CORS Middleware
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('No permitido por CORS'));
-      }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    credentials: true, // Si usas cookies o tokens de autorización
-  })
-);
+  // Solo permitimos los orígenes que están en la lista
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+
+  // Si la solicitud es de tipo OPTIONS (preflight), respondemos con 200
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
 
 // Rutas
 app.use(paymentRoutes);
-app.use(cartRoutes); // Agrega las rutas del carrito
+app.use(cartRoutes);
 
 // Archivos estáticos
 app.use(express.static(path.resolve('src/public')));
 
 // Conexión a la base de datos
-mongoose
-  .connect(mongoDBURL)
+mongoose.connect(mongoDBURL)
   .then(() => {
     console.log('Conexión exitosa a la base de datos');
     app.listen(PORT, () => {
