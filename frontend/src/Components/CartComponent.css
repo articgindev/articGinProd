@@ -11,6 +11,8 @@
   background: url('../assets/backgrounds/FondoShop.jpg');
   background-size: cover;
   overflow: auto;
+  overflow-y: scroll;
+  /* Asegúrate de que el desplazamiento vertical esté activado */
 }
 
 .cart-container {
