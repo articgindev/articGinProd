@@ -22,13 +22,13 @@ app.use(morgan('dev'));
 // CORS: Configuración dinámica basada en el entorno
 const allowedOrigins = [
   'http://localhost:5173', // Origen de desarrollo
-  process.env.PROD_FRONTEND_URL // Origen de producción (usado en prod)
+  process.env.PROD_FRONTEND_URL // Origen de producción
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permitir solicitudes sin origen (como en Postman o similar)
+      // Permitir solicitudes sin origen (por ejemplo, desde Postman)
       if (!origin) return callback(null, true);
 
       // Verificar si el origen está en la lista permitida
@@ -38,11 +38,14 @@ app.use(
         return callback(new Error('No permitido por CORS'));
       }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true, // Si es necesario enviar cookies
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Permitir envío de cookies si es necesario
   })
 );
+
+// Manejar solicitudes preflight OPTIONS
+app.options('*', cors());
 
 // Rutas
 app.use(paymentRoutes);
