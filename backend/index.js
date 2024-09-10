@@ -23,21 +23,21 @@ app.use((req, res, next) => {
   const allowedOrigins = ['http://localhost:5173', 'https://artictv.com'];
   const origin = req.headers.origin;
 
-  // Solo permitimos los orígenes que están en la lista
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Credentials', 'true'); // Si usas cookies o tokens de autorización
   }
 
-  // Si la solicitud es de tipo OPTIONS (preflight), respondemos con 200
+  // Si es una solicitud preflight OPTIONS, respondemos inmediatamente
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
 
   next();
 });
+
 
 // Rutas
 app.use(paymentRoutes);
