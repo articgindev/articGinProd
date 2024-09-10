@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 // CORS: Configuración dinámica basada en el entorno
 const allowedOrigins = [
   'http://localhost:5173', // Origen de desarrollo
-  process.env.PROD_FRONTEND_URL // Origen de producción
+  "https://artictv.com" // Origen de producción
 ];
 
 app.use(
