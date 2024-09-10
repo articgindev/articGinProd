@@ -3,23 +3,23 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import path from 'path'; // Para servir archivos estáticos
+import path from 'path';
 
 import paymentRoutes from './routes/payment.routes.js'; // Importa tus rutas de pagos
+import cartRoutes from './routes/cart.routes.js'; // Importa las rutas de carrito
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5555;
 const mongoDBURL = process.env.MONGODB_URL;
 
-// Inicializar la aplicación Express
 const app = express();
 
-// Configuración de middlewares
-app.use(express.json()); // Parsear JSON
-app.use(morgan('dev')); // Middleware para ver las peticiones HTTP
+// Middlewares
+app.use(express.json());
+app.use(morgan('dev'));
 
-// Middleware para manejo de CORS
+// CORS
 app.use(
   cors({
     origin:
@@ -32,9 +32,10 @@ app.use(
 );
 
 // Rutas
-app.use(paymentRoutes); // Agregamos las rutas de pagos
+app.use(paymentRoutes);
+app.use(cartRoutes); // Agrega las rutas del carrito
 
-// Servir archivos estáticos si tienes una carpeta pública
+// Archivos estáticos
 app.use(express.static(path.resolve('src/public')));
 
 // Conexión a la base de datos

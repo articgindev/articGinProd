@@ -1,66 +1,57 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { MERCADOPAGO_API_KEY } from '../config.js';
+import Sale from '../models/Sale.js';
 
 // Crear una instancia del cliente Mercado Pago
 const client = new MercadoPagoConfig({
-  accessToken: MERCADOPAGO_API_KEY,
+  accessToken: MERCADOPAGO_API_KEY,  // Verifica que esta clave esté correctamente configurada
 });
 
 export const createOrder = async (req, res) => {
   try {
-    // Crear una instancia de Preference utilizando el cliente
-    const preference = new Preference(client);
+    const { total } = req.body;
 
-    // Crear la preferencia de pago
+    if (!total) {
+      return res.status(400).json({ message: "El total es obligatorio" });
+    }
+
+    // Crear preferencia de Mercado Pago
+    const preference = new Preference(client);
     const result = await preference.create({
       body: {
-        items: [
-          {
-            title: 'ARTIC GIN',
-            quantity: 1,
-            unit_price: 500,
-            currency_id: "ARS"
-          }
-        ],
-        notification_url: "https://localhost:5555/webhook",
+        items: [{
+          title: 'ARTIC GIN',
+          quantity: 1,
+          unit_price: parseFloat(total),
+          currency_id: "ARS"
+        }],
         back_urls: {
-          success: "https://9459-181-85-45-222.ngrok-free.app/success",
-          // pending: "https://e720-190-237-16-208.sa.ngrok.io/pending",
-          // failure: "https://e720-190-237-16-208.sa.ngrok.io/failure",
+          success: "https://3ea1-181-85-53-220.ngrok-free.app/success",
         },
-      }
+        notification_url: "https://3ea1-181-85-53-220.ngrok-free.app/webhook",
+      },
     });
 
-    console.log(result);
-    res.json({ message: "Payment created", data: result.body });
+    res.json({ message: "Payment created", id: result.id });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Something went wrong", error: error.message });
+    console.error("Error al crear la preferencia:", error);
+    res.status(500).json({ message: "Error al crear la preferencia", error: error.message });
   }
 };
+
 
 export const receiveWebhook = async (req, res) => {
   try {
-    // Extraer los parámetros de la query
-    const { payment_id, status, merchant_order_id } = req.query;
+    const payment = req.query;
+    console.log(payment);
+    if (payment.type === "payment") {
+      const data = await mercadopago.payment.findById(payment["data.id"]);
+      console.log(data);
+    }
 
-    // Registrar la información que llega del webhook
-    console.log({
-      Payment: payment_id,
-      Status: status,
-      MerchantOrder: merchant_order_id,
-    });
-
-    // Responder con el estado 200 y los datos
-    res.status(200).json({
-      Payment: payment_id,
-      Status: status,
-      MerchantOrder: merchant_order_id,
-    });
+    res.sendStatus(204);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong", error: error.message });
   }
 };
-
-

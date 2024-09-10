@@ -9,6 +9,8 @@ import more from '../assets/shop/more.png';
 import productDescript from '../assets/cart/productDescript.png';
 import cartOkDesc from '../assets/cart/cartOkDesc.png';
 import comprar from '../assets/cart/cartComprar.png';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid'; // Para generar un cartId único
 
 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -179,32 +181,38 @@ const CartComponent = ({
     parseFloat(shippingCost.replace('$', '').replace(' ARS', '')) || 0;
   const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
-  const handlePurchase = () => {
-    if (shippingCost === '$XX ARS') {
-      setShowInvalidPostalCodePopup(true);
-      setIsPostalCodeInvalid(true);
-      return;
+  const handlePurchase = async () => {
+    try {
+      if (shippingCost === '$XX ARS') {
+        setShowInvalidPostalCodePopup(true);
+        setIsPostalCodeInvalid(true);
+        return;
+      }
+
+      if (pickupDates[selectedIndex] === 'OTRO') {
+        setShowInvalidDeliveryDatePopup(true);
+        return;
+      }
+
+      const cartId = uuidv4(); // Genera un cartId único
+      const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2); // Cálculo correcto del total
+
+      // Enviar el cartId y el total al backend para crear el carrito
+      const response = await axios.post('http://localhost:5555/create-cart', {
+        cartId,
+        total: totalCost, // Enviar el total calculado
+      });
+
+      const { cartId: savedCartId } = response.data;
+
+      // Guardar el cartId en el localStorage para usarlo en la página de pago
+      localStorage.setItem('cartId', savedCartId);
+
+      // Redirigir al usuario a la página de pago con el cartId en la URL
+      navigate(`/pagar/${savedCartId}`);
+    } catch (error) {
+      console.error('Error creando el carrito:', error);
     }
-
-    if (pickupDates[selectedIndex] === 'OTRO') {
-      setShowInvalidDeliveryDatePopup(true);
-      return;
-    }
-
-    const purchaseData = {
-      cartId,
-      cantidad: cartQuantity,
-      descuentoAplicado: discountValue > 0 ? calculatedDiscount : '',
-      codigoDescuento: discountValue > 0 ? discountCode : '',
-      porcentajeDescuento: discountValue > 0 ? discountValue : '',
-      codigoPostal: postalCode,
-      costoEnvio: shippingCostNumber,
-      fechaEnvio: pickupDates[selectedIndex],
-      importeTotal: totalCost,
-    };
-
-    localStorage.setItem('purchaseData', JSON.stringify(purchaseData));
-    navigate('/pagar');
   };
 
   return (

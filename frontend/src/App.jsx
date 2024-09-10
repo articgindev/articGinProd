@@ -30,9 +30,9 @@ function App() {
           path="/cart"
           element={isAdult() ? <Cart /> : <Navigate to="/age" />}
         />
-        {/* Añade la ruta /pagar y verifica que el usuario haya completado la compra */}
+        {/* Cambiar la ruta de /pagar a /pagar/:cartId */}
         <Route
-          path="/pagar"
+          path="/pagar/:cartId"
           element={
             isAdult() && hasCompletedPurchase() ? <Pay /> : <Navigate to="/" />
           }

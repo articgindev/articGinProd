@@ -72,12 +72,24 @@ const Pay = () => {
           ? 'https://artic-gin-server.vercel.app' // URL en producción
           : 'http://localhost:5555'; // URL en desarrollo
 
+      // Recuperamos los datos del localStorage
+      const purchaseData = JSON.parse(localStorage.getItem('purchaseData'));
+
+      if (!purchaseData) {
+        throw new Error('No hay datos de compra');
+      }
+
+      // Enviar la preferencia al backend con el total dinámico
       const response = await axios.post(`${baseUrl}/create-order`, {
         title: 'ARTIC GIN',
         quantity: 1,
-        total: 1000, // Ajusta esto según sea necesario
+        total: purchaseData.importeTotal, // Usar el total calculado
       });
-      const { id } = response.data;
+
+      // Verificar la respuesta
+      console.log('Preferencia creada:', response.data);
+
+      const { id } = response.data; // Aquí capturamos el `id` correctamente
       return id;
     } catch (error) {
       console.error('Error creando la preferencia:', error);
