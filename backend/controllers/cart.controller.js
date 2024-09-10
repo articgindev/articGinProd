@@ -1,35 +1,23 @@
-import Cart from '../models/Cart.js';
+import { v4 as uuidv4 } from 'uuid';
+import Cart from '../models/Cart.js'; // Asegúrate de importar tu modelo de carrito
 
 export const createCart = async (req, res) => {
+  const { total } = req.body;
+
   try {
-    const { cartId, total } = req.body;  // Recibimos el cartId y el total desde el frontend
+    const cartId = uuidv4(); // Genera un cartId único
 
-    if (!cartId) {
-      return res.status(400).json({ message: "El cartId es obligatorio" });
-    }
+    // Crear el carrito en la base de datos MongoDB
+    const newCart = await Cart.create({ cartId, total });
 
-    if (!total || total <= 0) {
-      return res.status(400).json({ message: "El total del carrito es inválido" });
-    }
-
-    // Crear un nuevo carrito con el cartId y el total proporcionados
-    const newCart = new Cart({
-      cartId,
-      total,
-    });
-
-    // Guardar el carrito en la base de datos
-    const savedCart = await newCart.save();
-
-    res.status(201).json({
-      message: "Carrito creado con éxito",
-      cartId: savedCart.cartId,
-    });
+    // Enviar el cartId como respuesta al frontend
+    res.status(201).json({ cartId: newCart.cartId });
   } catch (error) {
-    console.error("Error al crear el carrito:", error);
-    res.status(500).json({ message: "Error al crear el carrito" });
+    console.error('Error creando el carrito:', error);
+    res.status(500).json({ error: 'Error creando el carrito' });
   }
 };
+
 
 export const getCartById = async (req, res) => {
   try {

@@ -7,6 +7,7 @@ import path from 'path';
 import paymentRoutes from './routes/payment.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 
+
 dotenv.config();
 
 const PORT = process.env.PORT || 5555;

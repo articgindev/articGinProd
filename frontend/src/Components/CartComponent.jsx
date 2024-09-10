@@ -183,38 +183,42 @@ const CartComponent = ({
 
   const handlePurchase = async () => {
     try {
+      // Validar si el costo de envío no está calculado
       if (shippingCost === '$XX ARS') {
         setShowInvalidPostalCodePopup(true);
         setIsPostalCodeInvalid(true);
         return;
       }
 
+      // Validar si la fecha de entrega seleccionada es "OTRO"
       if (pickupDates[selectedIndex] === 'OTRO') {
         setShowInvalidDeliveryDatePopup(true);
         return;
       }
 
-      const cartId = uuidv4(); // Genera un cartId único
-      const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2); // Cálculo correcto del total
+      // Generar el costo total del carrito
+      const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
-      // Determinar si usar localhost o la URL de producción
+      // Definir la URL base según el entorno (desarrollo o producción)
       const baseUrl = window.location.origin.includes('localhost')
         ? 'http://localhost:5555'
         : 'https://artic-gin-server.vercel.app';
 
-      // Enviar el cartId y el total al backend para crear el carrito
+      // Crear el carrito en el backend y obtener el cartId de la base de datos
       const response = await axios.post(`${baseUrl}/create-cart`, {
-        cartId,
         total: totalCost, // Enviar el total calculado
       });
 
+      // Obtener el cartId del backend (guardado en MongoDB)
       const { cartId: savedCartId } = response.data;
 
-      // Guardar el cartId en el localStorage para usarlo en la página de pago
-      localStorage.setItem('cartId', savedCartId);
-
       // Redirigir al usuario a la página de pago con el cartId en la URL
-      navigate(`/pagar/${savedCartId}`);
+      // Verificar que el cartId está presente antes de redirigir
+      if (savedCartId) {
+        navigate(`/pagar/${savedCartId}`);
+      } else {
+        console.error('El cartId no fue generado correctamente');
+      }
     } catch (error) {
       console.error('Error creando el carrito:', error);
     }
