@@ -1,40 +1,51 @@
 import express from 'express';
-import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
-import salesRoutes from './routes/salesRoutes.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import path from 'path'; // Para servir archivos estáticos
 
+import paymentRoutes from './routes/payment.routes.js'; // Importa tus rutas de pagos
 
+dotenv.config();
+
+const PORT = process.env.PORT || 5555;
+const mongoDBURL = process.env.MONGODB_URL;
+
+// Inicializar la aplicación Express
 const app = express();
 
-// Middleware for parsing request body
-app.use(express.json());
+// Configuración de middlewares
+app.use(express.json()); // Parsear JSON
+app.use(morgan('dev')); // Middleware para ver las peticiones HTTP
 
-// Middleware for handling CORS POLICY
-// Allow Custom Origins
+// Middleware para manejo de CORS
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? process.env.PROD_FRONTEND_URL
+        : 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
   })
 );
 
-app.get('/', (request, response) => {
-  console.log(request);
-  return response.status(234).send('Welcome');
-});
+// Rutas
+app.use(paymentRoutes); // Agregamos las rutas de pagos
 
-app.use('/sales', salesRoutes);
+// Servir archivos estáticos si tienes una carpeta pública
+app.use(express.static(path.resolve('src/public')));
 
+// Conexión a la base de datos
 mongoose
   .connect(mongoDBURL)
   .then(() => {
-    console.log('App connected to database now');
+    console.log('Conexión exitosa a la base de datos');
     app.listen(PORT, () => {
-      console.log(`App is listening to port: ${PORT}`);
+      console.log(`Servidor escuchando en el puerto: ${PORT}`);
     });
   })
   .catch((error) => {
-    console.log(error);
+    console.error('Error en la conexión a la base de datos:', error);
   });

@@ -56,7 +56,6 @@
 .pay-input-complete,
 .pay-input-complete-opcional {
   background-color: rgb(165, 166, 168) !important;
-  /* Mantiene el fondo gris */
   border: none;
   border-radius: 50px;
   padding: 10px;
@@ -65,7 +64,6 @@
   font-family: 'Montserrat', sans-serif;
   text-align: center;
   transition: background-color 0s;
-  /* Evita transición de autofill */
 }
 
 .pay-input {
@@ -96,9 +94,12 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px rgb(165, 166, 168) inset !important;
-  /* Fondo gris constante */
   -webkit-text-fill-color: white !important;
-  /* Texto blanco constante */
+}
+
+/* Estilo para inputs con errores */
+.invalid-placeholder::placeholder {
+  color: red;
 }
 
 .toggle-container {
@@ -143,7 +144,6 @@ input:-webkit-autofill:active {
   width: 100%;
   position: absolute;
   bottom: -3.5rem;
-  /* Alinea al borde inferior del contenedor */
   left: 0;
   display: flex;
   justify-content: center;
@@ -154,6 +154,50 @@ input:-webkit-autofill:active {
 .pay-submit-button {
   max-width: 12rem;
   cursor: pointer;
+}
+
+/* Pop-up de error */
+.ups-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.ups-popup-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ups-popup-content p {
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+}
+
+.ups-popup-content button {
+  background-color: rgb(165, 166, 168);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ups-popup-content button:hover {
+  background-color: #cc0000;
 }
 
 /* Media queries para asegurar responsividad en pantallas más pequeñas */

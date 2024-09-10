@@ -29,6 +29,13 @@ const CartComponent = ({
   const [pickupDates, setPickupDates] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [showInvalidPostalCodePopup, setShowInvalidPostalCodePopup] =
+    useState(false);
+  const [showInvalidDiscountPopup, setShowInvalidDiscountPopup] =
+    useState(false);
+  const [showInvalidDeliveryDatePopup, setShowInvalidDeliveryDatePopup] =
+    useState(false);
+  const [isPostalCodeInvalid, setIsPostalCodeInvalid] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,10 +67,10 @@ const CartComponent = ({
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
     setShippingCost('$XX ARS');
+    setIsPostalCodeInvalid(false); // Reset the placeholder color when the user starts typing again
   };
 
-  const handleCalculateShipping = async (e) => {
-    e.preventDefault();
+  const handleCalculateShipping = async () => {
     try {
       const postalCodeRange1 = 'sCodigoPostal';
       const postalCodeRange2 = 'sCodigoPostalSinNum';
@@ -93,12 +100,26 @@ const CartComponent = ({
         const calculatedCost = tariffData.values[index][0];
         setShippingCost(`$${calculatedCost} ARS`);
       } else {
-        setShippingCost('$XX ARS');
+        setShowInvalidPostalCodePopup(true);
+        setIsPostalCodeInvalid(true); // Marks the CP as invalid to show the placeholder in red
       }
     } catch (error) {
       console.error('Error calculating shipping cost:', error);
       setShippingCost('$XX ARS');
+      setShowInvalidPostalCodePopup(true);
+      setIsPostalCodeInvalid(true);
     }
+  };
+
+  const handleKeyDown = (e, handler) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handler();
+    }
+  };
+
+  const handleBlur = (handler) => {
+    handler();
   };
 
   const handleIncrease = () => {
@@ -115,8 +136,7 @@ const CartComponent = ({
     }
   };
 
-  const handleApplyDiscount = async (e) => {
-    e.preventDefault();
+  const handleApplyDiscount = async () => {
     try {
       const discountRange = 'dCodigoDesc';
       const percentageRange = 'dPorcentajeDesc';
@@ -138,27 +158,39 @@ const CartComponent = ({
       if (index !== -1) {
         const discountPercentage = parseFloat(percentageRows[index][0]);
         setDiscountValue(discountPercentage);
-        setIsDiscountApplied(true); // Se marca que el descuento ha sido aplicado
+        setIsDiscountApplied(true);
       } else {
+        setShowInvalidDiscountPopup(true);
+        setIsDiscountApplied(false);
         setDiscountValue(0);
         setCalculatedDiscount(0);
-        setIsDiscountApplied(false); // El descuento no se aplica si no es válido
       }
     } catch (error) {
       console.error('Error applying discount:', error);
+      setShowInvalidDiscountPopup(true);
       setDiscountValue(0);
       setCalculatedDiscount(0);
-      setIsDiscountApplied(false); // Asegurar que no se aplica en caso de error
+      setIsDiscountApplied(false);
     }
   };
 
   const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
-  const totalCost = (
-    parseFloat(subtotal) +
-    parseFloat(shippingCost.replace('$', '').replace(' ARS', ''))
-  ).toFixed(2);
+  const shippingCostNumber =
+    parseFloat(shippingCost.replace('$', '').replace(' ARS', '')) || 0;
+  const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
   const handlePurchase = () => {
+    if (shippingCost === '$XX ARS') {
+      setShowInvalidPostalCodePopup(true);
+      setIsPostalCodeInvalid(true);
+      return;
+    }
+
+    if (pickupDates[selectedIndex] === 'OTRO') {
+      setShowInvalidDeliveryDatePopup(true);
+      return;
+    }
+
     const purchaseData = {
       cartId,
       cantidad: cartQuantity,
@@ -166,10 +198,11 @@ const CartComponent = ({
       codigoDescuento: discountValue > 0 ? discountCode : '',
       porcentajeDescuento: discountValue > 0 ? discountValue : '',
       codigoPostal: postalCode,
-      costoEnvio: parseFloat(shippingCost.replace('$', '').replace(' ARS', '')),
+      costoEnvio: shippingCostNumber,
       fechaEnvio: pickupDates[selectedIndex],
       importeTotal: totalCost,
     };
+
     localStorage.setItem('purchaseData', JSON.stringify(purchaseData));
     navigate('/pagar');
   };
@@ -225,6 +258,8 @@ const CartComponent = ({
                 placeholder="CÓDIGO DE DESCUENTO"
                 value={discountCode}
                 onChange={(e) => setDiscountCode(e.target.value)}
+                onBlur={() => handleBlur(handleApplyDiscount)}
+                onKeyDown={(e) => handleKeyDown(e, handleApplyDiscount)}
               />
             </form>
             <img
@@ -262,6 +297,9 @@ const CartComponent = ({
                   placeholder="Código Postal"
                   value={postalCode}
                   onChange={handlePostalCodeChange}
+                  onBlur={() => handleBlur(handleCalculateShipping)}
+                  onKeyDown={(e) => handleKeyDown(e, handleCalculateShipping)}
+                  className={isPostalCodeInvalid ? 'invalid-placeholder' : ''}
                 />
               </form>
             </div>
@@ -299,6 +337,43 @@ const CartComponent = ({
           />
         </div>
       </div>
+      {showInvalidPostalCodePopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              No reconocemos ese código postal. Por favor, introduce un código
+              válido.
+            </p>
+            <button onClick={() => setShowInvalidPostalCodePopup(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+      {showInvalidDiscountPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>¡UPS! No reconocemos ese código de descuento :(</p>
+            <button onClick={() => setShowInvalidDiscountPopup(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+      {showInvalidDeliveryDatePopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              Nuestra logística trabaja solo viernes y sábados de 14hs a 21hs.
+              En breve estaremos agregando más días. Por favor, selecciona una
+              fecha de entrega válida.
+            </p>
+            <button onClick={() => setShowInvalidDeliveryDatePopup(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

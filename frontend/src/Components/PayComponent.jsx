@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import back from '../assets/shop/back.png';
-import comprar from '../assets/cart/cartComprar.png'; // Usamos temporalmente la imagen de "comprar" para el botón de pagar
+import comprar from '../assets/cart/cartComprar.png';
 import './PayComponent.css';
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import axios from 'axios';
 
 const Pay = () => {
+  // Inicializar MercadoPago con la clave pública
+  initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
+    locale: 'es-AR',
+  });
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
@@ -19,6 +26,10 @@ const Pay = () => {
     contactoReceptor: '',
     notasPedido: '',
   });
+
+  const [errors, setErrors] = useState({});
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [preferenceId, setPreferenceId] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,14 +46,64 @@ const Pay = () => {
     }));
   };
 
-  const handleBack = () => {
-    navigate('/cart'); // Navegar de vuelta al carrito
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.nombre) newErrors.nombre = true;
+    if (!formData.apellido) newErrors.apellido = true;
+    if (!validateEmail(formData.email)) newErrors.email = true;
+    if (!formData.direccion) newErrors.direccion = true;
+    if (!formData.localidad) newErrors.localidad = true;
+    if (!formData.altura) newErrors.altura = true;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Crear preferencia y obtener el ID desde el backend
+  const createPreference = async () => {
+    try {
+      const baseUrl =
+        process.env.NODE_ENV === 'production'
+          ? 'https://artic-gin-server.vercel.app' // URL en producción
+          : 'http://localhost:5555'; // URL en desarrollo
+
+      const response = await axios.post(`${baseUrl}/create-order`, {
+        title: 'ARTIC GIN',
+        quantity: 1,
+        total: 1000, // Ajusta esto según sea necesario
+      });
+      const { id } = response.data;
+      return id;
+    } catch (error) {
+      console.error('Error creando la preferencia:', error);
+      return null;
+    }
+  };
+
+  // Llamar a createPreference y configurar el ID de preferencia
+  const handleBuy = async () => {
+    const id = await createPreference();
+    if (id) {
+      setPreferenceId(id); // Guardar el ID de la preferencia
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí podrías añadir la lógica para procesar el pago
-    console.log('Datos del formulario:', formData);
+    if (validateForm()) {
+      handleBuy(); // Si todo está validado, generar preferencia
+    } else {
+      setShowErrorPopup(true);
+    }
+  };
+
+  const handleBack = () => {
+    navigate('/cart');
   };
 
   return (
@@ -62,7 +123,9 @@ const Pay = () => {
               placeholder="Nombre"
               value={formData.nombre}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.nombre ? 'invalid-placeholder' : ''
+              }`}
             />
             <input
               type="text"
@@ -70,7 +133,9 @@ const Pay = () => {
               placeholder="Apellido"
               value={formData.apellido}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.apellido ? 'invalid-placeholder' : ''
+              }`}
             />
           </div>
           <div className="pay-form-row">
@@ -80,7 +145,9 @@ const Pay = () => {
               placeholder="Correo Electrónico"
               value={formData.email}
               onChange={handleInputChange}
-              className="pay-input-complete"
+              className={`pay-input-complete ${
+                errors.email ? 'invalid-placeholder' : ''
+              }`}
             />
           </div>
           <div className="pay-form-row">
@@ -90,7 +157,9 @@ const Pay = () => {
               placeholder="Dirección"
               value={formData.direccion}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.direccion ? 'invalid-placeholder' : ''
+              }`}
             />
             <input
               type="text"
@@ -98,7 +167,9 @@ const Pay = () => {
               placeholder="Localidad"
               value={formData.localidad}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.localidad ? 'invalid-placeholder' : ''
+              }`}
             />
           </div>
           <div className="pay-form-row">
@@ -108,7 +179,9 @@ const Pay = () => {
               placeholder="Altura"
               value={formData.altura}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.altura ? 'invalid-placeholder' : ''
+              }`}
             />
             <input
               type="text"
@@ -168,8 +241,8 @@ const Pay = () => {
               onChange={handleInputChange}
               className="pay-input-complete-opcional"
               style={{
-                height: '2rem', // Ajuste automático de altura
-                borderRadius: '15px', // Radius para el borde
+                height: '2rem',
+                borderRadius: '15px',
               }}
             />
           </div>
@@ -181,8 +254,26 @@ const Pay = () => {
               onClick={handleSubmit}
             />
           </div>
+          {preferenceId && (
+            <Wallet
+              initialization={{ preferenceId }} // El ID de preferencia que obtuvimos del backend
+              customization={{ texts: { valueProp: 'smart_option' } }}
+            />
+          )}
         </form>
       </div>
+
+      {showErrorPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              Hay un error con tus datos, por favor revisalos y vuelve a
+              intentarlo.
+            </p>
+            <button onClick={() => setShowErrorPopup(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
