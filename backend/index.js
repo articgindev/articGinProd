@@ -20,21 +20,26 @@ app.use(morgan('dev'));
 
 // Configuración de CORS con un manejo explícito de OPTIONS
 app.use((req, res, next) => {
-  const allowedOrigins = ['http://localhost:5173', 'https://artictv.com'];
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://www.artictv.com'
+  ];
   const origin = req.headers.origin;
 
+  // Solo permitir las solicitudes de orígenes permitidos
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true'); // Si usas cookies o tokens de autorización
+    res.setHeader('Access-Control-Allow-Credentials', 'true'); // Permitir credenciales
   }
 
-  // Si es una solicitud preflight OPTIONS, respondemos inmediatamente
+  // Responder inmediatamente a las solicitudes preflight OPTIONS
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
 
+  // Pasar al siguiente middleware
   next();
 });
 
