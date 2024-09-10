@@ -19,30 +19,20 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
-// CORS: Configuración dinámica basada en el entorno
-const allowedOrigins = [
-  'http://localhost:5173', // Origen de desarrollo
-  "https://artictv.com" // Origen de producción
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Permitir solicitudes sin origen (por ejemplo, desde Postman)
-      if (!origin) return callback(null, true);
-
-      // Verificar si el origen está en la lista permitida
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error('No permitido por CORS'));
-      }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Permitir envío de cookies si es necesario
-  })
-);
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://artictv.com'
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', true); // Si usas cookies o tokens de autorización
+  next();
+});
 
 // Manejar solicitudes preflight OPTIONS
 app.options('*', cors());
