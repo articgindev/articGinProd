@@ -1,24 +1,20 @@
+// models/Sale.js
 import mongoose from 'mongoose';
 
-const SaleSchema = new mongoose.Schema({
-  cartId: { type: String, required: true },  // ID del carrito, que sirve como referencia única
-  total: { type: Number, required: true },   // Total de la compra
-  datosPersonales: {                         // Datos del comprador
-    nombre: String,
-    apellido: String,
-    email: String,
-    direccion: String,
-    localidad: String,
-    altura: String,
-    entreCalles: String,
-    tipoVivienda: String,
-    piso: String,
-    contactoReceptor: String,
-    notasPedido: String,
+const saleSchema = new mongoose.Schema({
+  cartId: { type: String, required: true }, // Relaciona con el carrito
+  total: { type: Number, required: true }, // Total de la compra
+  personalData: {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    postalCode: { type: String, required: true },
   },
-  estado: { type: String, default: 'pendiente' },  // Estado de la compra (pendiente, aprobado, rechazado)
-  createdAt: { type: Date, default: Date.now },    // Fecha de creación
+  paymentStatus: { type: String, default: 'pending' }, // Estado del pago (pending, approved, rejected)
+  paymentId: { type: String }, // ID de pago de Mercado Pago
+  createdAt: { type: Date, default: Date.now },
 });
 
-const Sale = mongoose.model('Sale', SaleSchema);
+const Sale = mongoose.model('Sale', saleSchema);
 export default Sale;

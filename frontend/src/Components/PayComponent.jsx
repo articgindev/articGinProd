@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // Importamos useParams para obtener el cartId desde la URL
 import back from '../assets/shop/back.png';
 import comprar from '../assets/cart/cartComprar.png';
 import './PayComponent.css';
@@ -7,7 +7,7 @@ import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from 'axios';
 
 const Pay = () => {
-  // Inicializar MercadoPago con la clave pública
+  const { cartId } = useParams(); // Obtener el cartId desde la URL
   initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
     locale: 'es-AR',
   });
@@ -72,24 +72,43 @@ const Pay = () => {
           ? 'https://artic-gin-server.vercel.app' // URL en producción
           : 'http://localhost:5555'; // URL en desarrollo
 
-      // Recuperamos los datos del localStorage
-      const purchaseData = JSON.parse(localStorage.getItem('purchaseData'));
-
-      if (!purchaseData) {
-        throw new Error('No hay datos de compra');
+      // Verifica que `cartId` esté siendo extraído correctamente de la URL
+      if (!cartId) {
+        throw new Error('cartId no está presente en la URL');
       }
 
-      // Enviar la preferencia al backend con el total dinámico
+      // Crear el objeto personalData a partir del formulario
+      const personalData = {
+        name: formData.nombre,
+        address: formData.direccion,
+        city: formData.localidad,
+        postalCode: formData.altura,
+        email: formData.email,
+        contact: formData.contactoReceptor || 'N/A',
+        notes: formData.notasPedido || 'N/A',
+      };
+
+      // Verificar que todos los campos requeridos en `personalData` estén presentes
+      if (
+        !personalData.name ||
+        !personalData.address ||
+        !personalData.city ||
+        !personalData.postalCode ||
+        !personalData.email
+      ) {
+        throw new Error('Faltan datos personales necesarios');
+      }
+
+      // Enviar la preferencia al backend con el cartId desde la URL
       const response = await axios.post(`${baseUrl}/create-order`, {
-        title: 'ARTIC GIN',
-        quantity: 1,
-        total: purchaseData.importeTotal, // Usar el total calculado
+        total: 17999, // Aquí debes colocar el total correcto (asumido como 17999 en este caso)
+        personalData,
+        cartId, // Enviar el cartId desde la URL
       });
 
-      // Verificar la respuesta
       console.log('Preferencia creada:', response.data);
 
-      const { id } = response.data; // Aquí capturamos el `id` correctamente
+      const { id } = response.data;
       return id;
     } catch (error) {
       console.error('Error creando la preferencia:', error);
@@ -97,18 +116,17 @@ const Pay = () => {
     }
   };
 
-  // Llamar a createPreference y configurar el ID de preferencia
   const handleBuy = async () => {
     const id = await createPreference();
     if (id) {
-      setPreferenceId(id); // Guardar el ID de la preferencia
+      setPreferenceId(id);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      handleBuy(); // Si todo está validado, generar preferencia
+      handleBuy();
     } else {
       setShowErrorPopup(true);
     }
@@ -268,7 +286,7 @@ const Pay = () => {
           </div>
           {preferenceId && (
             <Wallet
-              initialization={{ preferenceId }} // El ID de preferencia que obtuvimos del backend
+              initialization={{ preferenceId }}
               customization={{ texts: { valueProp: 'smart_option' } }}
             />
           )}
