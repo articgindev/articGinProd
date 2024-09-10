@@ -197,8 +197,13 @@ const CartComponent = ({
       const cartId = uuidv4(); // Genera un cartId único
       const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2); // Cálculo correcto del total
 
+      // Determinar si usar localhost o la URL de producción
+      const baseUrl = window.location.origin.includes('localhost')
+        ? 'http://localhost:5555'
+        : 'https://artic-gin-server.vercel.app';
+
       // Enviar el cartId y el total al backend para crear el carrito
-      const response = await axios.post('http://localhost:5555/create-cart', {
+      const response = await axios.post(`${baseUrl}/create-cart`, {
         cartId,
         total: totalCost, // Enviar el total calculado
       });
