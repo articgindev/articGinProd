@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Importamos useParams para obtener el cartId desde la URL
+import { useNavigate, useParams } from 'react-router-dom';
 import back from '../assets/shop/back.png';
 import comprar from '../assets/cart/cartComprar.png';
 import './PayComponent.css';
@@ -7,7 +7,7 @@ import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from 'axios';
 
 const Pay = () => {
-  const { cartId } = useParams(); // Obtener el cartId desde la URL
+  const { cartId } = useParams();
   initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
     locale: 'es-AR',
   });
@@ -30,6 +30,8 @@ const Pay = () => {
   const [errors, setErrors] = useState({});
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [showGeneralErrorPopup, setShowGeneralErrorPopup] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,15 +71,13 @@ const Pay = () => {
     try {
       const baseUrl =
         process.env.NODE_ENV === 'production'
-          ? 'https://artic-gin-server.vercel.app' // URL en producción
-          : 'http://localhost:5555'; // URL en desarrollo
+          ? 'https://artic-gin-server.vercel.app'
+          : 'http://localhost:5555';
 
-      // Verifica que `cartId` esté siendo extraído correctamente de la URL
       if (!cartId) {
         throw new Error('cartId no está presente en la URL');
       }
 
-      // Crear el objeto personalData a partir del formulario
       const personalData = {
         name: formData.nombre,
         address: formData.direccion,
@@ -88,7 +88,6 @@ const Pay = () => {
         notes: formData.notasPedido || 'N/A',
       };
 
-      // Verificar que todos los campos requeridos en `personalData` estén presentes
       if (
         !personalData.name ||
         !personalData.address ||
@@ -99,19 +98,17 @@ const Pay = () => {
         throw new Error('Faltan datos personales necesarios');
       }
 
-      // Enviar la preferencia al backend con el cartId desde la URL
       const response = await axios.post(`${baseUrl}/create-order`, {
-        total: 17999, // Aquí debes colocar el total correcto (asumido como 17999 en este caso)
+        total: 17999,
         personalData,
-        cartId, // Enviar el cartId desde la URL
+        cartId,
       });
-
-      console.log('Preferencia creada:', response.data);
 
       const { id } = response.data;
       return id;
     } catch (error) {
       console.error('Error creando la preferencia:', error);
+      setShowGeneralErrorPopup(true);
       return null;
     }
   };
@@ -120,12 +117,15 @@ const Pay = () => {
     const id = await createPreference();
     if (id) {
       setPreferenceId(id);
+    } else {
+      setIsButtonDisabled(false); // Re-habilitar el botón si falla la creación de la preferencia
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsButtonDisabled(true);
       handleBuy();
     } else {
       setShowErrorPopup(true);
@@ -276,19 +276,24 @@ const Pay = () => {
               }}
             />
           </div>
-          <div className="pay-submit-button-container">
-            <img
-              src={comprar}
-              alt="Pagar"
-              className="pay-submit-button"
-              onClick={handleSubmit}
-            />
-          </div>
+          {!preferenceId && (
+            <div className="pay-submit-button-container">
+              <img
+                src={comprar}
+                alt="Pagar"
+                className="pay-submit-button"
+                onClick={handleSubmit}
+                style={{ display: isButtonDisabled ? 'none' : 'block' }}
+              />
+            </div>
+          )}
           {preferenceId && (
-            <Wallet
-              initialization={{ preferenceId }}
-              customization={{ texts: { valueProp: 'smart_option' } }}
-            />
+            <div className="pay-submit-button-container">
+              <Wallet
+                initialization={{ preferenceId }}
+                customization={{ texts: { valueProp: 'smart_option' } }}
+              />
+            </div>
           )}
         </form>
       </div>
@@ -301,6 +306,17 @@ const Pay = () => {
               intentarlo.
             </p>
             <button onClick={() => setShowErrorPopup(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {showGeneralErrorPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>Nuestra web tiene un error. Intenta más tarde.</p>
+            <button onClick={() => setShowGeneralErrorPopup(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
