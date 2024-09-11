@@ -20,7 +20,7 @@ const ShopComponent = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [isCartFilled, setIsCartFilled] = useState(false);
   const [cartId, setCartId] = useState(null);
-  const unitPrice = 16000;
+  const unitPrice = 1;
   const navigate = useNavigate();
 
   const handleIncrease = () => setQuantity(quantity + 1);

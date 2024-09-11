@@ -203,14 +203,16 @@ const CartComponent = ({
         return;
       }
 
+      // Calculamos el total y lo redondeamos a 2 decimales
       const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
       const baseUrl = window.location.origin.includes('localhost')
         ? 'http://localhost:5555'
         : 'https://artic-gin-server.vercel.app';
 
+      // Enviar total y crear el carrito
       const response = await axios.post(`${baseUrl}/create-cart`, {
-        total: totalCost,
+        total: totalCost, // Enviar el total al backend
       });
 
       const { cartId: savedCartId } = response.data;

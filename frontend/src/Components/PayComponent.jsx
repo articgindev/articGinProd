@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import back from '../assets/shop/back.png';
 import comprar from '../assets/cart/cartComprar.png';
@@ -8,11 +8,20 @@ import axios from 'axios';
 
 const Pay = () => {
   const { cartId } = useParams();
-  initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
-    locale: 'es-AR',
-  });
+
+  useEffect(() => {
+    initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
+      locale: 'es-AR',
+    });
+  }, []);
 
   const navigate = useNavigate();
+  const [totalCost, setTotalCost] = useState(null);
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [showGeneralErrorPopup, setShowGeneralErrorPopup] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -27,24 +36,32 @@ const Pay = () => {
     notasPedido: '',
   });
 
-  const [errors, setErrors] = useState({});
-  const [showErrorPopup, setShowErrorPopup] = useState(false);
-  const [preferenceId, setPreferenceId] = useState(null);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [showGeneralErrorPopup, setShowGeneralErrorPopup] = useState(false);
+  useEffect(() => {
+    const fetchCartTotal = async () => {
+      try {
+        const baseUrl =
+          process.env.NODE_ENV === 'production'
+            ? 'https://artic-gin-server.vercel.app'
+            : 'http://localhost:5555';
+
+        console.log('Fetching cart with ID:', cartId); // Añadir para depurar
+        const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
+        setTotalCost(response.data.total);
+      } catch (error) {
+        console.error('Error obteniendo el total del carrito:', error);
+      }
+    };
+
+    if (cartId) {
+      fetchCartTotal();
+    }
+  }, [cartId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
-
-  const handleToggle = (type) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tipoVivienda: type,
     }));
   };
 
@@ -66,17 +83,16 @@ const Pay = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Crear preferencia y obtener el ID desde el backend
   const createPreference = async () => {
     try {
+      if (!totalCost) {
+        throw new Error('El total aún no ha sido cargado');
+      }
+
       const baseUrl =
         process.env.NODE_ENV === 'production'
           ? 'https://artic-gin-server.vercel.app'
           : 'http://localhost:5555';
-
-      if (!cartId) {
-        throw new Error('cartId no está presente en la URL');
-      }
 
       const personalData = {
         name: formData.nombre,
@@ -88,18 +104,8 @@ const Pay = () => {
         notes: formData.notasPedido || 'N/A',
       };
 
-      if (
-        !personalData.name ||
-        !personalData.address ||
-        !personalData.city ||
-        !personalData.postalCode ||
-        !personalData.email
-      ) {
-        throw new Error('Faltan datos personales necesarios');
-      }
-
       const response = await axios.post(`${baseUrl}/create-order`, {
-        total: 17999,
+        total: totalCost,
         personalData,
         cartId,
       });
@@ -118,7 +124,7 @@ const Pay = () => {
     if (id) {
       setPreferenceId(id);
     } else {
-      setIsButtonDisabled(false); // Re-habilitar el botón si falla la creación de la preferencia
+      setIsButtonDisabled(false);
     }
   };
 
