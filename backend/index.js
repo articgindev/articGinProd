@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors'; // Añadir cors para gestionar las políticas CORS
 
 import cartRoutes from './routes/cart.routes.js'; // Importar rutas de carrito
+import paymentRoutes from './routes/payment.routes.js'; // Importar rutas de carrito
 
 dotenv.config();
 
