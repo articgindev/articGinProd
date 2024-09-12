@@ -9,6 +9,9 @@ import axios from 'axios';
 const Pay = () => {
   const { cartId } = useParams();
 
+  //APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11 uat
+  //APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58 prod
+
   useEffect(() => {
     initMercadoPago('APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11', {
       locale: 'es-AR',

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Age from './pages/Age';
 import Pay from './pages/Pay';
+import Success from './pages/Success';
 
 import './App.css';
 
@@ -27,6 +28,10 @@ function App() {
         <Route
           path="/pagar/:cartId"
           element={isAdult() ? <Pay /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/success"
+          element={isAdult() ? <Success /> : <Navigate to="/" />}
         />
       </Routes>
     </div>

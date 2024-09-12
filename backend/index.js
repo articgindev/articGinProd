@@ -47,10 +47,7 @@ app.use(paymentRoutes);  // Registrar la ruta /create-order
 
 
 // Conexión a la base de datos
-mongoose.connect(mongoDBURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(mongoDBURL)
   .then(() => {
     console.log('Conexión exitosa a la base de datos');
     app.listen(PORT, () => {

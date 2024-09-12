@@ -38,7 +38,7 @@ export const createOrder = async (req, res) => {
           },
         ],
         back_urls: {
-          success: 'https://artictv.com',
+          success: 'https://artictv.com/success',
         },
         notification_url: `https://artic-gin-server.vercel.app/webhook`,
         external_reference: externalReference,
