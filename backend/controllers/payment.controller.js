@@ -40,7 +40,7 @@ export const createOrder = async (req, res) => {
         back_urls: {
           success: 'https://artictv.com',
         },
-        notification_url: `https://ffc6-2800-2427-f000-10c-8599-bc24-5129-af64.ngrok-free.app/webhook`,
+        notification_url: `https://artic-gin-server.vercel.app/webhook`,
         external_reference: externalReference,
       },
     });
