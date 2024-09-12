@@ -138,6 +138,13 @@ const Pay = () => {
     }
   };
 
+  const handleToggle = (type) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tipoVivienda: type,
+    }));
+  };
+
   const handleBack = () => {
     navigate('/cart');
   };

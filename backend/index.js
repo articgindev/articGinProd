@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import path from 'path';
+import fs from 'fs'; // Asegúrate de importar fs si no lo tienes ya
 
 import paymentRoutes from './routes/payment.routes.js';
 import cartRoutes from './routes/cart.routes.js';
-
 
 dotenv.config();
 
@@ -27,23 +27,36 @@ app.use((req, res, next) => {
   ];
   const origin = req.headers.origin;
 
-  // Solo permitir las solicitudes de orígenes permitidos
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true'); // Permitir credenciales
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
 
-  // Responder inmediatamente a las solicitudes preflight OPTIONS
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
 
-  // Pasar al siguiente middleware
   next();
 });
 
+// OAuth2 callback route
+app.get('/oauth2callback', (req, res) => {
+  const code = req.query.code;
+  if (code) {
+    oAuth2Client.getToken(code, (err, token) => {
+      if (err) {
+        return res.status(500).send('Error al recuperar el token');
+      }
+      oAuth2Client.setCredentials(token);
+      fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
+      res.send('Autenticación completada, token guardado.');
+    });
+  } else {
+    res.status(400).send('No se recibió ningún código de autorización');
+  }
+});
 
 // Rutas
 app.use(paymentRoutes);

@@ -203,7 +203,6 @@ const CartComponent = ({
         return;
       }
 
-      // Calculamos el total y lo redondeamos a 2 decimales
       const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
       const baseUrl = window.location.origin.includes('localhost')
@@ -211,13 +210,17 @@ const CartComponent = ({
         : 'https://artic-gin-server.vercel.app';
 
       // Enviar total y crear el carrito
+      console.log('Sending request to create cart...');
       const response = await axios.post(`${baseUrl}/create-cart`, {
-        total: totalCost, // Enviar el total al backend
+        total: totalCost,
       });
+
+      console.log('Response from create-cart:', response.data);
 
       const { cartId: savedCartId } = response.data;
 
       if (savedCartId) {
+        console.log(`Navigating to /pagar/${savedCartId}`);
         navigate(`/pagar/${savedCartId}`);
       } else {
         console.error('El cartId no fue generado correctamente');

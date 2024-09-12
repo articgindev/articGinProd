@@ -12,12 +12,6 @@ function App() {
     return localStorage.getItem('isAdult') === 'true';
   };
 
-  // Nueva función para verificar si el usuario ha completado el proceso de compra
-  const hasCompletedPurchase = () => {
-    const purchaseData = localStorage.getItem('purchaseData');
-    return purchaseData !== null && purchaseData !== undefined;
-  };
-
   return (
     <div className="app-container">
       <Routes>
@@ -30,12 +24,9 @@ function App() {
           path="/cart"
           element={isAdult() ? <Cart /> : <Navigate to="/age" />}
         />
-        {/* Cambiar la ruta de /pagar a /pagar/:cartId */}
         <Route
           path="/pagar/:cartId"
-          element={
-            isAdult() && hasCompletedPurchase() ? <Pay /> : <Navigate to="/" />
-          }
+          element={isAdult() ? <Pay /> : <Navigate to="/" />}
         />
       </Routes>
     </div>
