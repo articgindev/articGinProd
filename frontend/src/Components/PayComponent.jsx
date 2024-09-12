@@ -10,7 +10,7 @@ const Pay = () => {
   const { cartId } = useParams();
 
   useEffect(() => {
-    initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
+    initMercadoPago('APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11', {
       locale: 'es-AR',
     });
   }, []);
