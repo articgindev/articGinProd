@@ -111,14 +111,13 @@ export const receiveWebhook = async (req, res) => {
         ]
       ];
 
-      console.log('Escribiendo en Google Sheets...');
+      // Agrega logs antes de llamar a writeToSheet
+      console.log('Preparando para escribir en Google Sheets...');
 
-      // Escribir los datos en Google Sheets de manera asíncrona
-      writeToSheet(values).then(() => {
-        console.log('Escritura en Google Sheets completada.');
-      }).catch((err) => {
-        console.error('Error al escribir en Google Sheets:', err);
-      });
+      // Escribir los datos en Google Sheets
+      await writeToSheet(values);
+
+      console.log('Datos escritos exitosamente en Google Sheets.');
 
       res.status(200).send('Payment processed successfully');
     } else {
