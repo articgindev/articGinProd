@@ -1,16 +1,26 @@
 import { google } from 'googleapis';
-import credentials from './google.json' assert { type: 'json' };
+import dotenv from 'dotenv';
 
-// Inicializa GoogleAuth usando las credenciales del archivo JSON
+// Cargar variables de entorno
+dotenv.config();
+
+// Convertir la clave privada que contiene saltos de línea para que sea válida
+const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+
+// Inicializa GoogleAuth usando las credenciales del archivo .env
 const auth = new google.auth.GoogleAuth({
-  credentials,
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: privateKey,
+    project_id: process.env.GOOGLE_PROJECT_ID,
+  },
   scopes: ['https://www.googleapis.com/auth/spreadsheets']
 });
 
 // Función asíncrona para apendear datos en la hoja de Google Sheets
 export async function writeToSheet(values) {
   const sheets = google.sheets({ version: 'v4', auth });
-  const spreadsheetId = '142FhHrGYBWpp9mxQ0L2uiEY6kMlVmT86Nykxpn05Z10';  // ID de la hoja de cálculo
+  const spreadsheetId = process.env.VITE_SPREADSHEET_ID;  // ID de la hoja de cálculo
   const range = 'Payments!A2';  // Especifica la hoja y el rango desde donde empezará a apendear
   const valueInputOption = 'USER_ENTERED';  // Los valores serán interpretados como ingresados por el usuario
 
