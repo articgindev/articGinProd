@@ -1,7 +1,7 @@
 .ageComponent-container {
   width: 100vw;
   height: 100vh;
-  background-image: url('../assets/backgrounds/FondoEdad.png');
+  background-image: url('../assets/backgrounds/FondoAge.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -11,8 +11,8 @@
 }
 
 .texto-edad-image {
-  max-width: 80%;
-  margin-bottom: 20px;
+  max-width: 70%;
+  margin-bottom: -10px;
 }
 
 .ageComponent-sub-container {
@@ -46,8 +46,67 @@
 .ageComponent-form button {
   padding: 5px 10px;
   cursor: pointer;
+  border-radius: 30px;
+
 }
 
 .ageComponent-result {
   margin-top: 20px;
+}
+
+.ageComponent-argAge {
+  max-width: 15%;
+  margin-top: 3rem;
+}
+
+@media (min-width: 1025px) {
+
+  /* Cambia el fondo y ajusta los tamaños aquí */
+  .ageComponent-container {
+    background-image: url('../assets/backgrounds/FondoCompuAge.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .texto-edad-image {
+    max-width: 25%;
+    margin-bottom: -20px;
+  }
+
+  .ageComponent-sub-container {
+    padding: 35px;
+    width: 25%;
+  }
+
+  .select-day {
+    width: 150%;
+    font-size: 25px;
+  }
+
+  .select-month {
+    width: 150%;
+    font-size: 25px;
+  }
+
+  .select-year {
+    width: 150%;
+    font-size: 25px;
+  }
+
+  .select-container {
+    display: flex;
+    gap: 30px;
+  }
+
+  .ageComponent-argAge {
+    max-width: 4%;
+  }
+
+  .ageComponent-form button {
+    margin-top: 10%;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    background-color: rgb(165, 166, 168);
+    color: white;
+  }
 }

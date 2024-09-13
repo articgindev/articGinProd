@@ -1,26 +1,15 @@
 /* Estilos generales */
-body {
-  margin: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-#root {
-  padding: 0 !important;
-}
-
 .gin-container {
-  background: url('../assets/backgrounds/FondoArticGin.png');
-  background-size: cover !important;
-  display: flex;
-  flex-direction: column;
+  width: 100vw;
   height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
-/* Estilo para el video de fondo */
+/* Video de fondo para móvil */
 .background-video {
   position: absolute;
   top: 0;
@@ -29,59 +18,64 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  /* Asegúrate de que el video esté debajo del contenido */
   pointer-events: none;
-  /* El video no interferirá con los clics */
 }
 
-.home-header {
-  text-align: center;
-  height: 20vh;
+/* Fondo y video para PC */
+.desktop-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../assets/backgrounds/ArticGinFondoCompu.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: 0;
+}
+
+.webp-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  /* Rotar 90 grados a la izquierda */
+  max-width: 60%;
+  height: auto;
   z-index: 1;
-  /* Asegúrate de que el contenido esté sobre el video */
 }
 
-.home-header img {
-  width: 10em;
-  height: 5em;
-  margin-top: 4em;
+/* Contenido principal */
+.home-header {
+  z-index: 1;
 }
 
 .comprarButton {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
+  max-width: 20%;
+  position: relative;
   z-index: 1;
 }
 
-.comprarButton img {
-  width: 6em;
-  height: 3em;
+.gin-comprar-button {
+  max-width: 10rem;
 }
 
-/* Responsivo para dispositivos móviles */
-@media (max-width: 600px) {
-  .home-header img {
-    width: 8em;
-    height: 4em;
-  }
-
-  .comprarButton img {
-    width: 5em;
-    height: 2.5em;
-  }
+.gin-logo {
+  max-width: 50%;
 }
 
-/* Responsivo para tabletas */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .home-header img {
-    width: 9em;
-    height: 4.5em;
+/* Media queries para controlar las versiones móvil y PC */
+@media (min-width: 1025px) {
+  .background-video {
+    display: none;
   }
 
-  .comprarButton img {
-    width: 5.5em;
-    height: 2.7em;
+  .gin-logo {
+    max-width: 30%;
+    transform: translateY(-250%);
+  }
+
+  .gin-comprar-button {
+    max-width: 15rem;
+    transform: translateY(250%);
   }
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Añadimos `useLocation`
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Menu.css';
 import ginImage from '../assets/menuOptions/menuArticGin1.png';
 import shopImage from '../assets/menuOptions/menuShop2.png';
@@ -8,6 +8,7 @@ import origenImage from '../assets/menuOptions/menuOrigen4.png';
 import ecoImage from '../assets/menuOptions/menuEco5.png';
 import nosotrosImage from '../assets/menuOptions/menuContacto6.png';
 import showMenu from '../assets/buttons/montanaScrollIzq.png';
+import backMenu from '../assets/buttons/montanaScrollIDer.png';
 
 const sections = [
   { id: 'gin-section', name: 'GIN', image: ginImage },
@@ -29,7 +30,7 @@ const Menu = () => {
   const [hoveredSection, setHoveredSection] = useState('');
   const timerRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Obtenemos la ruta actual
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,15 +66,13 @@ const Menu = () => {
       navigate('/cart');
     } else {
       if (location.pathname === '/cart') {
-        // Si estamos en /cart, primero redirigir a la página principal y luego desplazar
         navigate('/', { replace: true }); // Navega a la página principal
         setTimeout(() => {
           document
             .getElementById(section.id)
             .scrollIntoView({ behavior: 'smooth' });
-        }, 0); // Desplaza a la sección después de redirigir
+        }, 0);
       } else {
-        // Si no estamos en /cart, simplemente desplaza a la sección
         document
           .getElementById(section.id)
           .scrollIntoView({ behavior: 'smooth' });
@@ -157,6 +156,7 @@ const Menu = () => {
             </li>
           ))}
         </ul>
+        <img src={backMenu} alt="Back" className="backMenu" />
       </div>
     </div>
   );

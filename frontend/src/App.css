@@ -1,56 +1,56 @@
+/* Estilos base */
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
-  /* background-color: #131B20; */
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.app-container {
-  padding-top: env(safe-area-inset-top);
-  box-sizing: border-box;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Media query para pantallas grandes (mínimo 1281px) */
+@media (min-width: 1281px) {
+  #root {
+    /* Sin max-width, el contenedor se adaptará al 100% de la pantalla */
+    width: 100%;
+    /* Asegura que use todo el ancho disponible */
   }
 
-  to {
-    transform: rotate(360deg);
+  .logo {
+    height: 8em;
+    /* Aumenta el tamaño de la imagen */
+  }
+
+  .card {
+    padding: 3em;
+    /* Incrementa el padding para tarjetas */
+  }
+
+  .read-the-docs {
+    font-size: 1.2em;
+    /* Aumenta el tamaño del texto */
+    color: #666;
+    /* Ajusta el color del texto */
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Media query para pantallas extra grandes (mínimo 1601px) */
+@media (min-width: 1601px) {
+  #root {
+    width: 100%;
+    /* Mantiene el 100% del ancho */
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .logo {
+    height: 10em;
+    /* Aumenta más el tamaño de la imagen */
+  }
 
-.read-the-docs {
-  color: #888;
+  .card {
+    padding: 4em;
+    /* Incrementa más el padding */
+  }
+
+  .read-the-docs {
+    font-size: 1.4em;
+    /* Aumenta aún más el tamaño del texto */
+    color: #444;
+    /* Ajusta el color del texto para mayor contraste */
+  }
 }

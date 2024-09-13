@@ -1,27 +1,45 @@
-#root {
-  text-align: right !important;
-}
-
+/* Estilos generales */
 .landComponent {
   width: 100vw;
   height: 100vh;
   background: url('../assets/backgrounds/FondoLand.png');
   background-size: cover;
+  background-position: center;
   display: flex;
   justify-content: center;
-  /* Centra la imagen horizontalmente */
   align-items: center;
-  /* Centra la imagen verticalmente */
+  position: relative;
 }
 
-.tableComponent {
-  width: 100vw;
-  height: 100vh;
-}
-
-.landComponent img {
-  max-width: 100%;
-  height: auto;
+/* Imagen para móviles y tabletas */
+.mobile-tablet-img {
   display: block;
-  /* Asegura que la imagen sea tratada como un bloque */
+  max-width: 70%;
+  height: auto;
+}
+
+/* Imagen para pantallas grandes (PC) */
+.desktop-img {
+  display: none;
+}
+
+/* Media queries para pantallas más grandes (PC) */
+@media (min-width: 1025px) {
+  .landComponent {
+    background: url('../assets/backgrounds/FondoLandingCompu.jpg');
+    /* Cambia el fondo para PC */
+    background-size: cover;
+    background-position: center;
+  }
+
+  .mobile-tablet-img {
+    display: none;
+  }
+
+  .desktop-img {
+    display: block;
+    max-width: 50%;
+    height: auto;
+    margin: 0 auto;
+  }
 }

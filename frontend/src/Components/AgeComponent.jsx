@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import './AgeComponent.css';
 import textoEdad from '../assets/textos/TextoEdad.png';
+import argAge from '../assets/logos/argAge.png';
 
 const AgeComponent = () => {
   const [day, setDay] = useState(null);
@@ -95,6 +96,7 @@ const AgeComponent = () => {
           </div>
         )}
       </div>
+      <img src={argAge} alt="Arg Age" className="ageComponent-argAge" />
     </div>
   );
 };
