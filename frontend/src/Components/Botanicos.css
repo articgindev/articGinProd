@@ -1,50 +1,130 @@
-/* Estilos generales */
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f0f0f0;
-  color: #333;
-}
-
+/* Contenedor principal */
 .botanicos-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  text-align: center;
+  overflow: hidden;
+  height: 100vh;
 }
 
+/* Encabezado */
 .botanicos-header {
-  text-align: center;
-  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .botanicos-header h1 {
-  font-size: 2.5em;
-  margin: 0.5em 0;
+  font-size: 2rem;
+  margin-top: 20px;
+  color: #25283B;
 }
 
-.botanicos-main {
+/* Banner con el slider 3D */
+.banner {
   width: 100%;
+  height: 100vh;
   text-align: center;
+  overflow: hidden;
+  position: relative;
 }
 
-/* Responsivo para dispositivos móviles */
-@media (max-width: 600px) {
-  .botanicos-header h1 {
-    font-size: 2em;
+.banner .slider {
+  position: absolute;
+  width: 180px;
+  height: 230px;
+  top: 10%;
+  left: 45%;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) perspective(1000px) rotateX(-16deg);
+  /* Centra el slider */
+  animation: autoRun 20s linear infinite;
+  z-index: 2;
+}
+
+
+@keyframes autoRun {
+  from {
+    transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
+  }
+
+  to {
+    transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
   }
 }
 
-/* Responsivo para tabletas */
-@media (min-width: 601px) and (max-width: 1024px) {
+.banner .slider .item {
+  position: absolute;
+  inset: 0 0 0 0;
+  transform:
+    rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(450px);
+}
+
+.banner .slider .item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Media Queries para la responsividad */
+
+/* Móviles y pantallas pequeñas (max-width: 768px) */
+@media screen and (max-width: 768px) {
   .botanicos-header h1 {
-    font-size: 2.2em;
+    font-size: 1.5rem;
+    /* Tamaño más pequeño del título */
+    margin: 10px 0;
+    line-height: 1.2em;
+    /* Permitir que el texto se comprima un poco más */
+  }
+
+  .banner {
+    height: 50vh;
+  }
+
+  .banner .slider {
+    width: 20%;
+    height: 90px;
+    left: calc(50% - 30px);
+    top: 50%;
+  }
+
+  .banner .slider .item {
+    transform:
+      rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(2000px);
+  }
+
+  .banner .slider .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    /* Ajustar bordes más suaves */
+  }
+
+  .banner .content h1 {
+    font-size: 4rem;
+    /* Reducir el tamaño de texto en móviles */
+    text-shadow: none;
+    /* Eliminar sombra de texto en pantallas pequeñas */
   }
 }
 
-/* Responsivo para escritorios */
-@media (min-width: 1025px) {
+/* Pantallas medianas (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
   .botanicos-header h1 {
-    font-size: 2.5em;
+    font-size: 1.8rem;
+    margin: 10px 0;
+  }
+
+  .banner .slider .item {
+    transform:
+      rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(8rem);
+  }
+
+  .banner .slider .item img {
+    border-radius: 8px;
+  }
+
+  .banner .content h1 {
+    font-size: 5rem;
   }
 }

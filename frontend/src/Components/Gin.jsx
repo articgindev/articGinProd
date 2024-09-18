@@ -3,21 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import h1Logo from '../assets/logos/h1Logo.png';
 import comprarGin from '../assets/buttons/comprarGin.png';
 import bottleCartoonWebmPub from '/bottleCartoon1.mp4'; // Video para móvil
-import ArticGinFondoCompu from '../assets/backgrounds/ArticGinFondoCompu.jpg'; // Fondo para PC
-import desktopVideo from '../assets/videos/bottleCartoon.webm'; // Video para PC
+import desktopVideo from '/bottleCartoon.mp4';
+
 import './Gin.css';
 
 const GinComponent = () => {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1024);
+      const isMobileScreen = window.innerWidth <= 1024;
+      setIsMobile(isMobileScreen);
+      console.log(
+        `Window width: ${window.innerWidth}, isMobile: ${isMobileScreen}`
+      );
     };
 
-    handleResize();
     window.addEventListener('resize', handleResize);
+    handleResize(); // Llamada inicial para establecer el estado correcto al cargar la página.
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -35,7 +39,6 @@ const GinComponent = () => {
       </header>
 
       {isMobile ? (
-        // Si es móvil, muestra el video
         <video
           src={bottleCartoonWebmPub}
           autoPlay
@@ -45,7 +48,6 @@ const GinComponent = () => {
           className="background-video"
         />
       ) : (
-        // Si es PC, muestra el video de fondo
         <div className="desktop-background">
           <video
             src={desktopVideo}
@@ -57,18 +59,14 @@ const GinComponent = () => {
           />
         </div>
       )}
-
-      <main className="home-main">
-        <div className="canvas-container"></div>
-        <div className="comprarButton">
-          <img
-            src={comprarGin}
-            alt="Comprar Gin"
-            className="gin-comprar-button"
-            onClick={handleComprarClick}
-          />
-        </div>
-      </main>
+      <div className="comprarButton">
+        <img
+          src={comprarGin}
+          alt="Comprar Gin"
+          className="gin-comprar-button"
+          onClick={handleComprarClick}
+        />
+      </div>
     </div>
   );
 };

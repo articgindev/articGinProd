@@ -14,14 +14,24 @@
 /* Imagen para móviles y tabletas */
 .mobile-tablet-img {
   display: block;
-  max-width: 70%;
+  max-width: 30%;
   height: auto;
+  position: absolute;
+  right: 1rem;
 }
 
 /* Imagen para pantallas grandes (PC) */
 .desktop-img {
   display: none;
 }
+
+@media (max-width: 375px) and (max-height: 700px) {
+  .mobile-tablet-img {
+    max-width: 25%;
+  }
+}
+
+
 
 /* Media queries para pantallas más grandes (PC) */
 @media (min-width: 1025px) {

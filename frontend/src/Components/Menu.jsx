@@ -9,6 +9,7 @@ import ecoImage from '../assets/menuOptions/menuEco5.png';
 import nosotrosImage from '../assets/menuOptions/menuContacto6.png';
 import showMenu from '../assets/buttons/montanaScrollIzq.png';
 import backMenu from '../assets/buttons/montanaScrollIDer.png';
+import backMenuMob from '../assets/buttons/back3.png'; // Nuevo botón móvil
 
 const sections = [
   { id: 'gin-section', name: 'GIN', image: ginImage },
@@ -28,13 +29,25 @@ const Menu = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [currentSection, setCurrentSection] = useState('');
   const [hoveredSection, setHoveredSection] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
   const timerRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Detecta si es una pantalla móvil o no
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
-      let current = '';
+      let current = ''; // Default is empty
       sections.forEach((section) => {
         const element = document.getElementById(section.id);
         if (element) {
@@ -51,7 +64,7 @@ const Menu = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call once to set the initial state
+    handleScroll(); // Llamada inicial para establecer el estado
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -78,6 +91,21 @@ const Menu = () => {
           .scrollIntoView({ behavior: 'smooth' });
       }
     }
+  };
+
+  const handleBackClick = () => {
+    // Si no hay ninguna sección actual o no está en una de las secciones listadas, devolver al landing
+    if (!currentSection) {
+      document
+        .getElementById('land-section')
+        .scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Si hay una sección válida, volver a esa
+      document
+        .getElementById(currentSection)
+        .scrollIntoView({ behavior: 'smooth' });
+    }
+    setToggleMenu(false); // Cierra el menú si estaba abierto
   };
 
   const getLinkStyle = (index) => {
@@ -135,9 +163,11 @@ const Menu = () => {
 
   return (
     <div className="menu">
-      <button onClick={() => setToggleMenu(!toggleMenu)}>
-        <img className="showMenu" src={showMenu} />
-      </button>
+      {!toggleMenu && ( // Solo mostrar cuando el menú esté cerrado
+        <button onClick={() => setToggleMenu(true)}>
+          <img className="showMenu" src={showMenu} />
+        </button>
+      )}
       <div className={`menu-overlay ${toggleMenu ? 'open' : ''}`}>
         <ul className="menu-links">
           {sections.map((section, index) => (
@@ -156,7 +186,21 @@ const Menu = () => {
             </li>
           ))}
         </ul>
-        <img src={backMenu} alt="Back" className="backMenu" />
+        {!isMobile ? (
+          <img
+            src={backMenu}
+            alt="Back"
+            className="backMenu"
+            onClick={handleBackClick}
+          />
+        ) : (
+          <img
+            src={backMenuMob}
+            alt="Back"
+            className="backMenuMob"
+            onClick={handleBackClick}
+          />
+        )}
       </div>
     </div>
   );

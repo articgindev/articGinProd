@@ -1,4 +1,4 @@
-/* General styles */
+/* Estilos generales */
 .menu {
   position: relative;
 }
@@ -11,31 +11,38 @@
   border: none;
   cursor: pointer;
   background-color: rgba(19, 27, 32, 0);
+  z-index: 9999;
 }
 
 .showMenu {
   width: 100px;
   height: 130px;
-  z-index: 100000;
+  z-index: 9999;
 }
 
-.menu button {
-  position: fixed;
-  top: 50%;
-  left: -8%;
-  transform: translateY(-50%);
-  border: none;
-  cursor: pointer;
-  background-color: rgba(19, 27, 32, 0);
-}
-
+/* Botón de retroceso para pantallas grandes */
 .backMenu {
   width: 100px;
   height: 130px;
-  z-index: 100000;
+  z-index: 10000;
+  position: fixed;
+  top: 50%;
+  right: 1%;
+  transform: translateY(-50%);
 }
 
-/* Menu overlay styles */
+/* Botón de retroceso para pantallas móviles */
+.backMenuMob {
+  width: 50px;
+  height: 50px;
+  z-index: 1000;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Estilos del menú */
 .menu-overlay {
   position: fixed;
   top: 0;
@@ -48,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10000;
   overflow: hidden;
 }
 
@@ -85,7 +92,7 @@
   width: 20rem;
   height: 2.6rem;
   transition: filter 0.3s ease;
-  padding: 0.3rem;
+  padding: 0.4rem;
 }
 
 .menu-image.special {
@@ -100,22 +107,19 @@
 /* Media Queries for larger screens (web) */
 @media (min-width: 1025px) {
 
-  /* Adjust button position on larger screens */
+  /* Ajustar la posición del botón en pantallas grandes */
   .menu button {
     top: 50%;
     left: 0;
     transform: translateY(-50%);
   }
 
-
   .menu-overlay {
     background: rgba(0, 0, 0, 0.9);
-    /* Make the overlay a bit darker for web */
   }
 
   .menu-links a {
     font-size: 1.75em;
-    /* Slightly larger font size for web */
   }
 
   .menu-image {

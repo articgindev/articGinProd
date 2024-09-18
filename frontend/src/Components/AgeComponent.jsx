@@ -45,9 +45,9 @@ const AgeComponent = () => {
     value: i + 1,
     label: i + 1,
   }));
-  const years = Array.from({ length: 100 }, (_, i) => ({
-    value: new Date().getFullYear() - i,
-    label: new Date().getFullYear() - i,
+  const years = Array.from({ length: 91 }, (_, i) => ({
+    value: 2010 - i,
+    label: 2010 - i,
   }));
 
   return (
@@ -63,7 +63,6 @@ const AgeComponent = () => {
               placeholder="Día"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-day"
-              isClearable
             />
             <Select
               value={month}
@@ -72,7 +71,6 @@ const AgeComponent = () => {
               placeholder="Mes"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-month"
-              isClearable
             />
             <Select
               value={year}
@@ -81,7 +79,6 @@ const AgeComponent = () => {
               placeholder="Año"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-year"
-              isClearable
             />
           </div>
           <button type="submit">Continuar</button>
