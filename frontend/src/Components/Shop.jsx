@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import './Shop.css';
@@ -15,13 +15,40 @@ import cartNotFilled from '../assets/shop/cartNotFIlled.png';
 import bottle from '../assets/shop/bottle.png';
 import h1Logo from '../assets/logos/h1Logo.png';
 
+const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
 const ShopComponent = () => {
   const [quantity, setQuantity] = useState(1);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [isCartFilled, setIsCartFilled] = useState(false);
   const [cartId, setCartId] = useState(null);
-  const unitPrice = 1;
+  const [unitPrice, setUnitPrice] = useState(0); // Estado para almacenar el precio unitario
   const navigate = useNavigate();
+
+  // Función para obtener el precio unitario desde Google Sheets
+  useEffect(() => {
+    const fetchUnitPrice = async () => {
+      try {
+        const range = 'Price!pUnitPrice';
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}`
+        );
+        if (!response.ok) {
+          throw new Error(
+            'Error al obtener el precio unitario de Google Sheets'
+          );
+        }
+        const data = await response.json();
+        const price = parseFloat(data.values[0][0]); // Asegúrate de que es un número válido
+        setUnitPrice(price);
+      } catch (error) {
+        console.error('Error fetching unit price:', error);
+      }
+    };
+
+    fetchUnitPrice();
+  }, []);
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
@@ -68,7 +95,6 @@ const ShopComponent = () => {
           />
         </div>
         <div className="shop-main">
-          {/* Contenedor para la botella y el batch */}
           <div className="bottle-batch-container">
             <img src={bottle} alt="Bottle" className="shop-bottle" />
             <img src={batch} alt="Batch Number" className="shop-batch-number" />
@@ -79,7 +105,7 @@ const ShopComponent = () => {
             className="shop-product-description"
           />
           <div className="shop-price">
-            <p>- ${unitPrice * quantity} ARS -</p>
+            <p>- ${unitPrice * quantity} ARS -</p> {/* Precio dinámico */}
           </div>
           <div className="shop-quantity-control">
             <img src={less} alt="Decrease Quantity" onClick={handleDecrease} />
