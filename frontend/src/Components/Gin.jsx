@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import h1Logo from '../assets/logos/h1Logo.png';
 import comprarGin from '../assets/buttons/comprarGin.png';
-import bottleCartoonWebmPub from '/bottleCartoon1.mp4'; // Video para móvil
-import desktopVideo from '/bottleCartoon.mp4';
+
+// URLs de los videos desde Cloudinary
+const bottleCartoonWebmPub =
+  'https://res.cloudinary.com/dtu2unujm/video/upload/v1726628008/bottleCartoon1_uqtgel.mp4'; // Video para móvil
+const desktopVideo =
+  'https://res.cloudinary.com/dtu2unujm/video/upload/v1726627997/bottleCartoon_tdufjy.mp4'; // Video para escritorio
 
 import './Gin.css';
 
