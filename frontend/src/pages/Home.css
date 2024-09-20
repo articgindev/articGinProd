@@ -1,0 +1,66 @@
+/* Estilos generales para las secciones */
+section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Estilos para el contenedor del video de fondo */
+.background-video-container {
+  position: relative;
+  width: 100vw;
+  height: 200vh;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Estilos para el video de fondo */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 200vh;
+  object-fit: cover;
+  z-index: -1;
+  /* Asegura que el video esté detrás del contenido */
+}
+
+/* Estilos para cada sección */
+#land-section,
+#gin-section {
+  z-index: 1;
+  /* Asegura que las secciones estén por encima del video */
+}
+
+#botanicos-section,
+#origen-section,
+#eco-section,
+#nosotros-section {
+  background-color: white;
+  /* Fondo sólido para estas secciones */
+}
+
+/* Estilos para mantener la continuidad entre secciones */
+#botanicos-section {
+  background-color: #f5f5f5;
+  /* Ejemplo de color de fondo distinto */
+}
+
+#origen-section {
+  background-color: #e0e0e0;
+  /* Otro color de fondo */
+}
+
+#eco-section {
+  background-color: #d0d0d0;
+  /* Fondo gris */
+}
+
+#nosotros-section {
+  background-color: #c0c0c0;
+  /* Fondo más oscuro */
+}

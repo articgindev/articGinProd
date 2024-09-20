@@ -1,0 +1,17 @@
+.background-video-container {
+  position: relative;
+  width: 100vw;
+  height: 200vh;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  /* Esto asegura que el video esté detrás del contenido */
+}

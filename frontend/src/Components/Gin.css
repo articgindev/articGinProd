@@ -40,12 +40,11 @@
 /* Botón de comprar */
 .comprarButton {
   position: absolute;
-  bottom: 2rem;
-  /* Ajusta la distancia desde el fondo */
+  bottom: 0;
+  left: 0;
   z-index: 2;
-  /* Asegura que esté por encima del video */
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 
@@ -54,15 +53,19 @@
   cursor: pointer;
 }
 
-/* Estilos para el logo */
 .gin-logo {
   max-width: 50%;
   height: auto;
   position: absolute;
   top: 10%;
+  /* Mantiene la posición en el eje Y */
+  left: 50%;
+  /* Centra el logo horizontalmente */
+  transform: translateX(-50%);
+  /* Ajusta la posición para que quede perfectamente centrado */
   z-index: 2;
-  /* Asegura que el logo esté por encima del video */
 }
+
 
 /* Media queries para controlar la versión móvil y PC */
 @media (max-width: 1024px) {

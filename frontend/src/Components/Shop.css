@@ -216,3 +216,14 @@ p {
     width: 80%;
   }
 }
+
+
+@media (min-width: 1025px) {
+  .shop-container {
+    max-height: 100vh;
+  }
+
+  .shop-sub-container {
+    max-height: 90vh;
+  }
+}
