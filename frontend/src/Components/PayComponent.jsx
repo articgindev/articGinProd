@@ -9,11 +9,8 @@ import axios from 'axios';
 const Pay = () => {
   const { cartId } = useParams();
 
-  //APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11 uat
-  //APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58 prod
-
   useEffect(() => {
-    initMercadoPago('APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11', {
+    initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
       locale: 'es-AR',
     });
   }, []);
@@ -29,9 +26,10 @@ const Pay = () => {
     nombre: '',
     apellido: '',
     email: '',
+    cel: '', // Campo para el número de teléfono
     direccion: '',
-    localidad: '',
     altura: '',
+    localidad: '',
     entreCalles: '',
     tipoVivienda: 'casa',
     piso: '',
@@ -47,7 +45,7 @@ const Pay = () => {
             ? 'https://artic-gin-server.vercel.app'
             : 'http://localhost:5555';
 
-        console.log('Fetching cart with ID:', cartId); // Añadir para depurar
+        console.log('Fetching cart with ID:', cartId);
         const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
         setTotalCost(response.data.total);
       } catch (error) {
@@ -78,9 +76,10 @@ const Pay = () => {
     if (!formData.nombre) newErrors.nombre = true;
     if (!formData.apellido) newErrors.apellido = true;
     if (!validateEmail(formData.email)) newErrors.email = true;
+    if (!formData.cel) newErrors.cel = true; // Validación para el número de teléfono
     if (!formData.direccion) newErrors.direccion = true;
-    if (!formData.localidad) newErrors.localidad = true;
     if (!formData.altura) newErrors.altura = true;
+    if (!formData.localidad) newErrors.localidad = true;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -99,10 +98,12 @@ const Pay = () => {
 
       const personalData = {
         name: formData.nombre,
-        address: formData.direccion,
-        city: formData.localidad,
-        postalCode: formData.altura,
+        surname: formData.apellido,
         email: formData.email,
+        cel: formData.cel, // Añadido el número de teléfono
+        address: formData.direccion,
+        postalCode: formData.altura,
+        city: formData.localidad,
         contact: formData.contactoReceptor || 'N/A',
         notes: formData.notasPedido || 'N/A',
       };
@@ -199,6 +200,18 @@ const Pay = () => {
           <div className="pay-form-row">
             <input
               type="text"
+              name="cel"
+              placeholder="Número de Teléfono"
+              value={formData.cel} // Valor para el número de teléfono
+              onChange={handleInputChange}
+              className={`pay-input-complete ${
+                errors.cel ? 'invalid-placeholder' : ''
+              }`}
+            />
+          </div>
+          <div className="pay-form-row">
+            <input
+              type="text"
               name="direccion"
               placeholder="Dirección"
               value={formData.direccion}
@@ -209,24 +222,24 @@ const Pay = () => {
             />
             <input
               type="text"
-              name="localidad"
-              placeholder="Localidad"
-              value={formData.localidad}
-              onChange={handleInputChange}
-              className={`pay-input ${
-                errors.localidad ? 'invalid-placeholder' : ''
-              }`}
-            />
-          </div>
-          <div className="pay-form-row">
-            <input
-              type="text"
               name="altura"
               placeholder="Altura"
               value={formData.altura}
               onChange={handleInputChange}
               className={`pay-input ${
                 errors.altura ? 'invalid-placeholder' : ''
+              }`}
+            />
+          </div>
+          <div className="pay-form-row">
+            <input
+              type="text"
+              name="localidad"
+              placeholder="Localidad"
+              value={formData.localidad}
+              onChange={handleInputChange}
+              className={`pay-input ${
+                errors.localidad ? 'invalid-placeholder' : ''
               }`}
             />
             <input

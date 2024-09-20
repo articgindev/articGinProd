@@ -23,7 +23,17 @@ export const createOrder = async (req, res) => {
     }
 
     // Crear un externalReference usando ciertos campos de personalData
-    const externalReference = `${personalData.email}`;
+    const externalReference = `
+    Name: ${personalData.name}, 
+    Surname: ${personalData.surname}, 
+    Email: ${personalData.email}, 
+    Cel: ${personalData.cel}, 
+    Address: ${personalData.address}, 
+    Postal Code: ${personalData.postalCode}, 
+    City: ${personalData.city}, 
+    Contact: ${personalData.contact}, 
+    Notes: ${personalData.notes}
+  `.trim();
 
     // Crear preferencia de Mercado Pago
     const preference = new Preference(client);
