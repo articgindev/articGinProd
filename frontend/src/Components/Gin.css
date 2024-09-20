@@ -40,11 +40,11 @@
 /* Botón de comprar */
 .comprarButton {
   position: absolute;
-  bottom: 0;
+  bottom: 1rem;
   left: 0;
   z-index: 2;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
 }
 
@@ -57,12 +57,9 @@
   max-width: 50%;
   height: auto;
   position: absolute;
-  top: 10%;
-  /* Mantiene la posición en el eje Y */
+  top: 0%;
   left: 50%;
-  /* Centra el logo horizontalmente */
   transform: translateX(-50%);
-  /* Ajusta la posición para que quede perfectamente centrado */
   z-index: 2;
 }
 

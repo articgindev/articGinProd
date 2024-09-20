@@ -24,7 +24,8 @@
 
 @media (max-width: 375px) and (max-height: 700px) {
   .mobile-tablet-img {
-    max-width: 25%;
+    max-width: 30%;
+    top: 10%;
   }
 }
 
