@@ -1,6 +1,6 @@
 .gin-container {
   width: 100vw;
-  height: 100vh;
+  height: 125vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -40,7 +40,7 @@
 /* Botón de comprar */
 .comprarButton {
   position: absolute;
-  bottom: 1rem;
+  bottom: 3rem;
   left: 0;
   z-index: 2;
   display: flex;
@@ -94,5 +94,11 @@
 
   .gin-comprar-button {
     max-width: 15rem;
+  }
+}
+
+@media (max-width: 375px) and (max-height: 670px) {
+  .comprarButton {
+    bottom: 2rem;
   }
 }
