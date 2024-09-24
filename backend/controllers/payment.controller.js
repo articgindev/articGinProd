@@ -3,8 +3,6 @@ import { MERCADOPAGO_API_KEY } from '../config.js';
 import Sale from '../models/Sale.js'; // Importar el modelo de ventas
 import axios from 'axios';
 import Payment from '../models/Payment.js'; // Importar el modelo de pagos
-import { writeToSheet } from '../writeGs.js';
-
 
 // Crear una instancia del cliente Mercado Pago
 const client = new MercadoPagoConfig({
@@ -23,17 +21,7 @@ export const createOrder = async (req, res) => {
     }
 
     // Crear un externalReference usando ciertos campos de personalData
-    const externalReference = `
-    Name: ${personalData.name}, 
-    Surname: ${personalData.surname}, 
-    Email: ${personalData.email}, 
-    Cel: ${personalData.cel}, 
-    Address: ${personalData.address}, 
-    Postal Code: ${personalData.postalCode}, 
-    City: ${personalData.city}, 
-    Contact: ${personalData.contact}, 
-    Notes: ${personalData.notes}
-  `.trim();
+    const externalReference = cartId;
 
     // Crear preferencia de Mercado Pago
     const preference = new Preference(client);
@@ -50,7 +38,7 @@ export const createOrder = async (req, res) => {
         back_urls: {
           success: 'https://artictv.com/success',
         },
-        notification_url: `https://artic-gin-server.vercel.app/webhook`,
+        notification_url: `https://08df-2800-2427-f000-452-586c-4481-67a0-1cf3.ngrok-free.app/webhook`,
         external_reference: externalReference,
       },
     });
@@ -98,36 +86,25 @@ export const receiveWebhook = async (req, res) => {
         return res.status(200).send('Payment already processed');
       }
 
+      // Fecha original en UTC
+      const originalDate = new Date(paymentData.date_created);
+      console.log('Fecha original (UTC):', originalDate);
+
+      // Ajustar la fecha a la zona horaria de Argentina (UTC-3)
+      const adjustedDate = new Date(originalDate.getTime() - (3 * 60 * 60 * 1000));
+      console.log('Fecha ajustada (Argentina):', adjustedDate);
+
       // Crear un nuevo registro del pago en la base de datos
       const newPayment = new Payment({
         paymentId: paymentData.id,
         status: paymentData.status,
-        dateCreated: paymentData.date_created,
+        dateCreated: adjustedDate, // Usar la fecha ajustada
         total: paymentData.transaction_amount,
         external_reference: paymentData.external_reference || 'No reference',
       });
 
       await newPayment.save();
       console.log(`Pago con ID ${paymentId} guardado correctamente.`);
-
-      // Prepara los datos para Google Sheets
-      const values = [
-        [
-          newPayment.paymentId,
-          newPayment.status,
-          newPayment.total,
-          newPayment.external_reference,
-          newPayment.dateCreated.toISOString(),
-        ]
-      ];
-
-      // Agrega logs antes de llamar a writeToSheet
-      console.log('Preparando para escribir en Google Sheets...');
-
-      // Escribir los datos en Google Sheets
-      await writeToSheet(values);
-
-      console.log('Datos escritos exitosamente en Google Sheets.');
 
       res.status(200).send('Payment processed successfully');
     } else {
@@ -138,3 +115,4 @@ export const receiveWebhook = async (req, res) => {
     res.status(500).json({ message: 'Error al procesar el webhook', error: error.message });
   }
 };
+

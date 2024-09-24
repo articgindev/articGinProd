@@ -9,6 +9,9 @@ import axios from 'axios';
 const Pay = () => {
   const { cartId } = useParams();
 
+  //APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11 prod
+  //APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58 uat
+
   useEffect(() => {
     initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
       locale: 'es-AR',
@@ -40,10 +43,7 @@ const Pay = () => {
   useEffect(() => {
     const fetchCartTotal = async () => {
       try {
-        const baseUrl =
-          process.env.NODE_ENV === 'production'
-            ? 'https://artic-gin-server.vercel.app'
-            : 'http://localhost:5555';
+        const baseUrl = 'http://localhost:5555';
 
         console.log('Fetching cart with ID:', cartId);
         const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
@@ -80,6 +80,7 @@ const Pay = () => {
     if (!formData.direccion) newErrors.direccion = true;
     if (!formData.altura) newErrors.altura = true;
     if (!formData.localidad) newErrors.localidad = true;
+    if (!formData.entreCalles) newErrors.entreCalles = true;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -100,10 +101,11 @@ const Pay = () => {
         name: formData.nombre,
         surname: formData.apellido,
         email: formData.email,
-        cel: formData.cel, // Añadido el número de teléfono
+        cel: formData.cel,
         address: formData.direccion,
-        postalCode: formData.altura,
+        altura: formData.altura,
         city: formData.localidad,
+        streets: formData.entreCalles,
         contact: formData.contactoReceptor || 'N/A',
         notes: formData.notasPedido || 'N/A',
       };
@@ -124,6 +126,7 @@ const Pay = () => {
   };
 
   const handleBuy = async () => {
+    if (preferenceId) return; // Evita crear una nueva preferencia si ya existe una
     const id = await createPreference();
     if (id) {
       setPreferenceId(id);
@@ -132,13 +135,17 @@ const Pay = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (!isButtonDisabled && !preferenceId) {
+      // Asegura que solo se haga una vez
       setIsButtonDisabled(true);
-      handleBuy();
-    } else {
-      setShowErrorPopup(true);
+      if (validateForm()) {
+        await handleBuy();
+      } else {
+        setShowErrorPopup(true);
+      }
+      setIsButtonDisabled(false);
     }
   };
 
@@ -248,7 +255,9 @@ const Pay = () => {
               placeholder="Entre Calles"
               value={formData.entreCalles}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.altura ? 'invalid-placeholder' : ''
+              }`}
             />
           </div>
           <div className="pay-form-row">

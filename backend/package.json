@@ -20,6 +20,7 @@
     "fs": "^0.0.1-security",
     "googleapis": "^105.0.0",
     "mercadopago": "^2.0.15",
+    "moment-timezone": "^0.5.45",
     "mongoose": "^8.4.1",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",

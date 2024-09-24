@@ -209,13 +209,11 @@ const CartComponent = ({
         ? 'http://localhost:5555'
         : 'https://artic-gin-server.vercel.app';
 
-      // Enviar total y crear el carrito
-      console.log('Sending request to create cart...');
+      // Enviar total y código postal al backend
       const response = await axios.post(`${baseUrl}/create-cart`, {
         total: totalCost,
+        postalCode, // Incluye el código postal aquí
       });
-
-      console.log('Response from create-cart:', response.data);
 
       const { cartId: savedCartId } = response.data;
 

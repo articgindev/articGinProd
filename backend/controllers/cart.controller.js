@@ -1,14 +1,22 @@
 import { v4 as uuidv4 } from 'uuid';
-import Cart from '../models/Cart.js'; // Asegúrate de importar tu modelo de carrito
+import Cart from '../models/Cart.js';  // Asegúrate de que el modelo esté importado
 
 export const createCart = async (req, res) => {
-  const { total } = req.body;
+  const { total, postalCode } = req.body;  // Desestructuramos total y postalCode del body
 
   try {
     const cartId = uuidv4(); // Genera un cartId único
 
-    // Crear el carrito en la base de datos MongoDB
-    const newCart = await Cart.create({ cartId, total });
+    // Ajustar la fecha actual a la zona horaria de Argentina (UTC-3)
+    const createdAt = new Date(Date.now() - (3 * 60 * 60 * 1000));
+
+    // Crear el carrito en la base de datos MongoDB, incluyendo el código postal y la fecha ajustada
+    const newCart = await Cart.create({
+      cartId,
+      total,
+      postalCode: postalCode || null,  // Si no hay código postal, se guarda como null
+      createdAt,  // Guardar la fecha ajustada
+    });
 
     // Enviar el cartId como respuesta al frontend
     res.status(201).json({ cartId: newCart.cartId });
@@ -17,6 +25,7 @@ export const createCart = async (req, res) => {
     res.status(500).json({ error: 'Error creando el carrito' });
   }
 };
+
 
 
 export const getCartById = async (req, res) => {

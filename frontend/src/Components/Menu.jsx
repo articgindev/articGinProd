@@ -3,13 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './Menu.css';
 import ginImage from '../assets/menuOptions/menuArticGin1.png';
 import shopImage from '../assets/menuOptions/menuShop2.png';
-import botanicosImage from '../assets/menuOptions/menuBotanicos3.png';
-import origenImage from '../assets/menuOptions/menuOrigen4.png';
-import ecoImage from '../assets/menuOptions/menuEco5.png';
+import botanicosImage from '../assets/menuOptions/MenuBotanicosBloqueado.png';
+import origenImage from '../assets/menuOptions/MenuOrigenBloqueado.png';
+import ecoImage from '../assets/menuOptions/MenuEcoArticBloqueado.png';
 import nosotrosImage from '../assets/menuOptions/menuContacto6.png';
 import showMenu from '../assets/buttons/montanaScrollIzq.png';
 import backMenu from '../assets/buttons/montanaScrollIDer.png';
-import backMenuMob from '../assets/buttons/back3.png'; // Nuevo botón móvil
+import backMenuMob from '../assets/buttons/back.png'; // Nuevo botón móvil
 
 const sections = [
   { id: 'gin-section', name: 'GIN', image: ginImage },

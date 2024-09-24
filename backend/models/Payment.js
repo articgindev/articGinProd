@@ -22,13 +22,6 @@ const paymentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  personalData: {
-    name: { type: String, required: false },
-    email: { type: String, required: false },
-    address: { type: String, required: false },
-    city: { type: String, required: false },
-    postalCode: { type: String, required: false },
-  },
 });
 
 const Payment = mongoose.model('Payment', paymentSchema);

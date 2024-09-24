@@ -33,12 +33,6 @@
 
 /* Media queries para pantallas más grandes (PC) */
 @media (min-width: 1025px) {
-  .landComponent {
-    background: url('../assets/backgrounds/FondoLandingCompu.jpg');
-    /* Cambia el fondo para PC */
-    background-size: cover;
-    background-position: center;
-  }
 
   .mobile-tablet-img {
     display: none;

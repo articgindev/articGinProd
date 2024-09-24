@@ -7,11 +7,12 @@ import NosotrosComponent from '../Components/Nosotros';
 import LandComponent from '../Components/LandComponent';
 import BackgroundVideo from '../Components/BGvideo'; // Importamos el video de fondo
 import './Home.css'; // Asegúrate de importar los estilos
+import Menu from '../Components/Menu'; // Asegúrate de importar el menú
 
 const Home = () => {
   return (
     <div>
-      {/* Video de fondo que solo se muestra en las primeras dos secciones */}
+      <Menu />
       <div className="background-video-container">
         <BackgroundVideo />
         <section id="land-section">
