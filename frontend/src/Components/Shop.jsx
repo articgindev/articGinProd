@@ -105,7 +105,7 @@ const ShopComponent = () => {
             className="shop-product-description"
           />
           <div className="shop-price">
-            <p>- ${unitPrice * quantity} ARS -</p> {/* Precio dinámico */}
+            <p>- ${unitPrice * quantity} ARS -</p>
           </div>
           <div className="shop-quantity-control">
             <img src={less} alt="Decrease Quantity" onClick={handleDecrease} />

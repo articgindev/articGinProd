@@ -24,7 +24,8 @@ p {
 
 .shop-sub-container {
   background: rgba(0, 0, 0, 0.2);
-  min-height: 94vh;
+  margin-top: 1rem;
+  min-height: 90vh;
   width: 88vw;
   max-width: 400px;
   border-radius: 50px;
@@ -38,23 +39,28 @@ p {
 }
 
 .shop-header {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  z-index: 20;
+  z-index: 10000;
 }
 
 .shop-logo {
-  max-width: 30vw;
-  margin-left: 1rem;
+  max-width: 25vw;
+  margin-left: 1.5rem;
+  transform: translateY(-20%);
 }
 
 .shop-back-button {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
   max-width: 3rem;
   cursor: pointer;
-  margin-right: 1rem;
+  z-index: 10000;
 }
 
 .shop-main {
@@ -72,19 +78,16 @@ p {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  margin-top: -5rem;
+  margin-top: -9rem;
   position: relative;
   width: 100%;
-  /* Para asegurar que el contenedor use todo el ancho */
 }
 
 .shop-bottle {
   width: 45vw;
-  max-width: 250px;
+  max-width: 70vw;
   margin-right: 1rem;
-  /* Espacio entre la botella y el batch */
   margin-left: auto;
-  /* Asegura que la botella esté centrada */
   margin-right: auto;
 }
 
@@ -92,28 +95,31 @@ p {
   width: 30%;
   max-width: 80px;
   position: absolute;
-  bottom: 1rem;
-  right: 0;
+  bottom: 2rem;
+  right: 1.8rem;
 }
 
 .shop-product-description {
-  width: 80%;
+  z-index: 10000;
+  width: 100%;
+  position: relative;
+  top: -1rem;
   margin: 1.5rem auto;
 }
 
 .shop-price {
   text-align: center;
-  font-size: clamp(1em, 2vw, 1.2em);
+  font-size: 1.2rem;
   color: white;
   font-weight: bold;
-  margin-top: 0.5rem;
+  margin-top: -3.5rem;
 }
 
 .shop-quantity-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.5rem;
+  margin-top: -1rem;
 }
 
 .shop-quantity-control img {
@@ -121,7 +127,7 @@ p {
 }
 
 .shop-quantity-control p {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: white;
   font-weight: bold;
   margin: 0 0.5rem;
@@ -133,15 +139,19 @@ p {
   justify-content: center;
   width: 100%;
   padding: 10px;
-  margin-top: 1rem;
+  margin-top: -1rem;
+  position: relative;
 }
 
 .shop-add-to-cart {
+  align-self: center;
   max-width: 12rem;
 }
 
 .shop-cart-icon {
-  max-width: 3rem;
+  max-width: 3.7rem;
+  position: absolute;
+  right: 3rem;
 }
 
 .blur-background {
@@ -150,25 +160,26 @@ p {
 }
 
 @media (max-width: 375px) {
+  .bottle-batch-container {
+    margin-top: -8rem;
+  }
+
   .shop-bottle {
-    width: 35vw;
+    width: 45vw;
   }
 
   .shop-batch-number {
+    right: 1rem;
     width: 30%;
   }
 
   .shop-product-description {
-    width: 90%;
     margin: 1rem auto;
   }
 
   .shop-price {
     font-size: 0.9em;
-  }
-
-  .shop-addTocart-container {
-    margin-top: 0.5rem;
+    margin-top: -3rem
   }
 
   .shop-quantity-control img {
@@ -180,22 +191,17 @@ p {
   }
 
   .shop-add-to-cart {
-    max-width: 8rem;
+    max-width: 10rem;
   }
 
   .shop-cart-icon {
-    max-width: 2.5rem;
+    max-width: 3rem;
   }
 }
 
 @media (min-width: 376px) and (max-width: 768px) {
   .shop-bottle {
-    width: 40vw;
-  }
-
-  .shop-product-description {
-    width: 85%;
-    margin: 1.5rem auto;
+    width: 45vw;
   }
 }
 
