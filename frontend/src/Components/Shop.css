@@ -190,12 +190,8 @@ p {
     font-size: 0.9rem;
   }
 
-  .shop-add-to-cart {
-    max-width: 10rem;
-  }
-
   .shop-cart-icon {
-    max-width: 3rem;
+    right: 2rem;
   }
 }
 
