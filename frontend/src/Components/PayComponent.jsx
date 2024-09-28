@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import back from '../assets/shop/back.png';
-import comprar from '../assets/cart/cartComprar.png';
+import pagar from '../assets/buttons/pagar.png';
 import './PayComponent.css';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from 'axios';
@@ -317,7 +317,7 @@ const Pay = () => {
           {!preferenceId && (
             <div className="pay-submit-button-container">
               <img
-                src={comprar}
+                src={pagar}
                 alt="Pagar"
                 className="pay-submit-button"
                 onClick={handleSubmit}

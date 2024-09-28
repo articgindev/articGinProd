@@ -7,7 +7,7 @@ import cartUnidades from '../assets/cart/cartUnidades.png';
 import less from '../assets/shop/less.png';
 import more from '../assets/shop/more.png';
 import productDescript from '../assets/cart/productDescript.png';
-import cartOkDesc from '../assets/cart/cartOkDesc.png';
+import cartOk from '../assets/cart/cartOk.png';
 import comprar from '../assets/cart/cartComprar.png';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid'; // Para generar un cartId único
@@ -23,7 +23,7 @@ const CartComponent = ({
   unitPrice,
 }) => {
   const [postalCode, setPostalCode] = useState('');
-  const [shippingCost, setShippingCost] = useState('$XX ARS');
+  const [shippingCost, setShippingCost] = useState('$XX');
   const [cartQuantity, setCartQuantity] = useState(quantity);
   const [discountCode, setDiscountCode] = useState('');
   const [discountValue, setDiscountValue] = useState(0);
@@ -77,7 +77,7 @@ const CartComponent = ({
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(e.target.value);
-    setShippingCost('$XX ARS');
+    setShippingCost('$XX');
     setIsPostalCodeInvalid(false);
   };
 
@@ -187,12 +187,12 @@ const CartComponent = ({
 
   const subtotal = (unitPrice * cartQuantity - calculatedDiscount).toFixed(2);
   const shippingCostNumber =
-    parseFloat(shippingCost.replace('$', '').replace(' ARS', '')) || 0;
+    parseFloat(shippingCost.replace('$', '').replace('', '')) || 0;
   const totalCost = (parseFloat(subtotal) + shippingCostNumber).toFixed(2);
 
   const handlePurchase = async () => {
     try {
-      if (shippingCost === '$XX ARS') {
+      if (shippingCost === '$XX') {
         setShowInvalidPostalCodePopup(true);
         setIsPostalCodeInvalid(true);
         return;
@@ -209,10 +209,12 @@ const CartComponent = ({
         ? 'http://localhost:5555'
         : 'https://artic-gin-server.vercel.app';
 
-      // Enviar total y código postal al backend
+      // Enviar total, código postal, día de entrega y cantidad de gines al backend
       const response = await axios.post(`${baseUrl}/create-cart`, {
         total: totalCost,
         postalCode, // Incluye el código postal aquí
+        deliveryDate: pickupDates[selectedIndex], // Envía el día de entrega
+        quantity: cartQuantity, // Envía la cantidad de gines comprados
       });
 
       const { cartId: savedCartId } = response.data;
@@ -284,7 +286,7 @@ const CartComponent = ({
               />
             </form>
             <img
-              src={cartOkDesc}
+              src={cartOk}
               alt="okDesc"
               className="cart-descuentoOk-img"
               onClick={handleApplyDiscount}
@@ -298,24 +300,24 @@ const CartComponent = ({
                     {discountValue > 0 ? `${discountValue}% OFF` : '0% OFF'}
                   </p>
                   <p className="cart-discount-amount">
-                    - ${calculatedDiscount.toFixed(2)} ARS
+                    - ${calculatedDiscount.toFixed(2)}
                   </p>
                 </div>
               )}
               <div className="cart-subtotal-values">
-                <p className="cart-cartSubtotal-label">Subtotal:</p>
-                <p className="cart-cartSubtotal-value">${subtotal} ARS</p>
+                <p className="cart-cartSubtotal-label">SUBTOTAL:</p>
+                <p className="cart-cartSubtotal-value">${subtotal}</p>
               </div>
             </div>
           </div>
           <div className="shipping-form">
             <div className="cart-shipping-form-container">
-              <p className="cart-cartCP-label">Carga tu CP:</p>
+              <p className="cart-cartCP-label">ENVIO:</p>
               <form onSubmit={handleCalculateShipping} className="cart-CP-form">
                 <input
                   type="text"
                   id="postalCode"
-                  placeholder="Código Postal"
+                  placeholder="C.P."
                   value={postalCode}
                   onChange={handlePostalCodeChange}
                   onBlur={() => handleBlur(handleCalculateShipping)}
@@ -323,18 +325,24 @@ const CartComponent = ({
                   className={isPostalCodeInvalid ? 'invalid-placeholder' : ''}
                 />
               </form>
+              <img
+                src={cartOk}
+                alt="okDesc"
+                className="cart-envioOk-img"
+                onClick={handleCalculateShipping}
+              />
             </div>
             <div className="cart-CP-cost">
-              <p className="shipping-label">Costo de Envío:</p>
+              <p className="shipping-label">COSTO ENVIO:</p>
               <p className="shipping-value">{shippingCost}</p>
             </div>
           </div>
           <div className="cart-total">
-            <p className="cart-label">Total:</p>
+            <p className="cart-label">TOTAL:</p>
             <p className="cart-value">${totalCost} ARS</p>
           </div>
           <div className="cart-end-container">
-            <p className="cart-end-label">Día de entrega</p>
+            <p className="cart-end-label">DIA DE ENTREGA</p>
             <select
               className="select-date"
               value={selectedIndex}

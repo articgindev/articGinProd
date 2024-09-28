@@ -38,7 +38,7 @@ export const createOrder = async (req, res) => {
         back_urls: {
           success: 'https://artictv.com/success',
         },
-        notification_url: `https://08df-2800-2427-f000-452-586c-4481-67a0-1cf3.ngrok-free.app/webhook`,
+        notification_url: `https://dcb2-2800-2427-f000-27-98e7-a216-697f-d49a.ngrok-free.app/webhook`,
         external_reference: externalReference,
       },
     });
