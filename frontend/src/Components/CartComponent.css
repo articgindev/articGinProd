@@ -39,11 +39,12 @@ body {
 }
 
 .cart-bottle {
-  width: 100%;
+  width: 140%;
   height: auto;
   position: absolute;
-  left: 0;
+  left: -8rem;
   top: 50%;
+  z-index: 100;
   transform: translateY(-50%);
 }
 
@@ -449,6 +450,11 @@ body {
 
   }
 
+  .cart-bottle {
+    width: 140%;
+    left: -7rem;
+  }
+
   .cart-discount-form-container {
     margin-bottom: 5px;
   }
@@ -463,11 +469,6 @@ body {
 
   .discount-error {
     font-size: 0.75rem;
-  }
-
-  .cart-bottle {
-    height: auto;
-    max-width: auto;
   }
 
   .cart-CP-cost {
