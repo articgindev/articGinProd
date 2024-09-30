@@ -47,7 +47,7 @@ const Pay = () => {
   useEffect(() => {
     const fetchCartTotal = async () => {
       try {
-        const baseUrl = 'http://localhost:5555';
+        const baseUrl = 'https://artic-gin-server.vercel.app/';
         const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
         setTotalCost(response.data.total);
       } catch (error) {
