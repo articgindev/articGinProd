@@ -123,14 +123,17 @@ const CartComponent = ({
   };
 
   const handleKeyDown = (e, handler) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && discountCode) {
       e.preventDefault();
       handler();
     }
   };
 
+  // Modificar handleBlur y handleKeyDown para verificar si hay un código antes de ejecutar la validación
   const handleBlur = (handler) => {
-    handler();
+    if (discountCode) {
+      handler();
+    }
   };
 
   const handleIncrease = () => {
@@ -148,6 +151,8 @@ const CartComponent = ({
   };
 
   const handleApplyDiscount = async () => {
+    if (!discountCode) return; // Si no hay código, no se aplica la validación
+
     try {
       const discountRange = 'dCodigoDesc';
       const percentageRange = 'dPorcentajeDesc';

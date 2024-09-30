@@ -108,6 +108,8 @@ const Pay = () => {
         streets: formData.entreCalles,
         contact: formData.contactoReceptor || 'N/A',
         notes: formData.notasPedido || 'N/A',
+        tipoVivienda: formData.tipoVivienda,
+        piso: formData.piso, // Aquí capturamos si es casa o depto
       };
 
       const response = await axios.post(`${baseUrl}/create-order`, {
@@ -256,7 +258,7 @@ const Pay = () => {
               value={formData.entreCalles}
               onChange={handleInputChange}
               className={`pay-input ${
-                errors.altura ? 'invalid-placeholder' : ''
+                errors.entreCalles ? 'invalid-placeholder' : ''
               }`}
             />
           </div>

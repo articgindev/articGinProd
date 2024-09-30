@@ -9,7 +9,6 @@ const client = new MercadoPagoConfig({
   accessToken: MERCADOPAGO_API_KEY, // Verifica que esta clave esté correctamente configurada
 });
 
-
 // Controlador para crear una nueva orden de pago
 export const createOrder = async (req, res) => {
   try {
@@ -49,7 +48,11 @@ export const createOrder = async (req, res) => {
     const newSale = new Sale({
       cartId,
       total,
-      personalData,
+      personalData: {
+        ...personalData,
+        tipoVivienda: personalData.tipoVivienda || 'casa',
+        piso: personalData.piso || '',
+      },
       paymentStatus: 'pending',
       external_reference: externalReference,
     });
@@ -63,6 +66,7 @@ export const createOrder = async (req, res) => {
   }
 };
 
+// Controlador para manejar el webhook
 export const receiveWebhook = async (req, res) => {
   try {
     const { type, data } = req.body;
@@ -86,13 +90,9 @@ export const receiveWebhook = async (req, res) => {
         return res.status(200).send('Payment already processed');
       }
 
-      // Fecha original en UTC
+      // Fecha original en UTC y ajuste para la zona horaria de Argentina
       const originalDate = new Date(paymentData.date_created);
-      console.log('Fecha original (UTC):', originalDate);
-
-      // Ajustar la fecha a la zona horaria de Argentina (UTC-3)
-      const adjustedDate = new Date(originalDate.getTime() - (3 * 60 * 60 * 1000));
-      console.log('Fecha ajustada (Argentina):', adjustedDate);
+      const adjustedDate = new Date(originalDate.getTime() - (3 * 60 * 60 * 1000)); // UTC-3
 
       // Crear un nuevo registro del pago en la base de datos
       const newPayment = new Payment({
@@ -111,8 +111,7 @@ export const receiveWebhook = async (req, res) => {
       res.status(400).send('Tipo de evento no soportado');
     }
   } catch (error) {
-    console.error('Error al procesar el webhook:', error);
+    console.error('Error al procesar el webhook:', error.message); // Mostrar mensaje de error específico
     res.status(500).json({ message: 'Error al procesar el webhook', error: error.message });
   }
 };
-

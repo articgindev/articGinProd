@@ -1,24 +1,39 @@
 import mongoose from 'mongoose';
 
-const SaleSchema = new mongoose.Schema({
-  cartId: { type: String, required: true },
-  total: { type: Number, required: true },
-  personalData: {
-    name: { type: String, required: true },     // Añadir "name"
-    surname: { type: String, required: true },  // Añadir "surname"
-    email: { type: String, required: true },    // Añadir "email"
-    cel: { type: String, required: true },      // Añadir "cel"
-    address: { type: String, required: true },  // Añadir "address"
-    altura: { type: String, required: true },   // Añadir "altura"
-    city: { type: String, required: true },     // Añadir "city"
-    streets: { type: String, required: true },     // Añadir "city"
-    contact: { type: String, default: 'N/A' },  // Añadir "contact"
-    notes: { type: String, default: 'N/A' },    // Añadir "notes"
+const saleSchema = new mongoose.Schema({
+  cartId: {
+    type: String,
+    required: true,
   },
-  paymentStatus: { type: String, default: 'pending' },
-  external_reference: { type: String, required: true },  // Campo existente para "external_reference"
-});
+  total: {
+    type: Number,
+    required: true,
+  },
+  personalData: {
+    name: { type: String, required: true },
+    surname: { type: String, required: true },
+    email: { type: String, required: true },
+    cel: { type: String, required: true },
+    address: { type: String, required: true },
+    altura: { type: String, required: true },
+    city: { type: String, required: true },
+    streets: { type: String, required: true },
+    contact: { type: String, default: 'N/A' },
+    notes: { type: String, default: 'N/A' },
+    tipoVivienda: { type: String, required: true, default: 'casa' },
+    piso: { type: String, required: true, default: '' },
+  },
+  paymentStatus: {
+    type: String,
+    required: true,
+    default: 'pending',
+  },
+  external_reference: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
 
-const Sale = mongoose.model('Sale', SaleSchema);
+const Sale = mongoose.model('Sale', saleSchema);
 
 export default Sale;
