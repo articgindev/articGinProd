@@ -318,7 +318,13 @@ const CartComponent = ({
           <div className="shipping-form">
             <div className="cart-shipping-form-container">
               <p className="cart-cartCP-label">ENVIO:</p>
-              <form onSubmit={handleCalculateShipping} className="cart-CP-form">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+                  handleCalculateShipping(); // Llama a la función para calcular el envío
+                }}
+                className="cart-CP-form"
+              >
                 <input
                   type="text"
                   id="postalCode"

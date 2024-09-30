@@ -21,7 +21,7 @@ const saleSchema = new mongoose.Schema({
     contact: { type: String, default: 'N/A' },
     notes: { type: String, default: 'N/A' },
     tipoVivienda: { type: String, required: true, default: 'casa' },
-    piso: { type: String, required: true, default: '' },
+    piso: { type: String },
   },
   paymentStatus: {
     type: String,

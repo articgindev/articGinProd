@@ -13,23 +13,26 @@ const Pay = () => {
   //APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58 uat
 
   useEffect(() => {
-    initMercadoPago('APP_USR-c1392b0e-bd6c-4224-8089-1cf48f811b58', {
+    initMercadoPago('APP_USR-da7ab2f6-03c1-4f91-a659-b992782beb11', {
       locale: 'es-AR',
     });
   }, []);
 
   const navigate = useNavigate();
+  const [isWalletVisible, setIsWalletVisible] = useState(false);
   const [totalCost, setTotalCost] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [showGeneralErrorPopup, setShowGeneralErrorPopup] = useState(false);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Estado para el loader
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
     email: '',
-    cel: '', // Campo para el número de teléfono
+    cel: '',
     direccion: '',
     altura: '',
     localidad: '',
@@ -39,13 +42,12 @@ const Pay = () => {
     contactoReceptor: '',
     notasPedido: '',
   });
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
 
   useEffect(() => {
     const fetchCartTotal = async () => {
       try {
         const baseUrl = 'http://localhost:5555';
-
-        console.log('Fetching cart with ID:', cartId);
         const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
         setTotalCost(response.data.total);
       } catch (error) {
@@ -76,11 +78,14 @@ const Pay = () => {
     if (!formData.nombre) newErrors.nombre = true;
     if (!formData.apellido) newErrors.apellido = true;
     if (!validateEmail(formData.email)) newErrors.email = true;
-    if (!formData.cel) newErrors.cel = true; // Validación para el número de teléfono
+    if (!formData.cel) newErrors.cel = true;
     if (!formData.direccion) newErrors.direccion = true;
     if (!formData.altura) newErrors.altura = true;
     if (!formData.localidad) newErrors.localidad = true;
     if (!formData.entreCalles) newErrors.entreCalles = true;
+    if (formData.tipoVivienda === 'depto' && !formData.piso) {
+      newErrors.piso = true;
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -109,7 +114,7 @@ const Pay = () => {
         contact: formData.contactoReceptor || 'N/A',
         notes: formData.notasPedido || 'N/A',
         tipoVivienda: formData.tipoVivienda,
-        piso: formData.piso, // Aquí capturamos si es casa o depto
+        piso: formData.piso,
       };
 
       const response = await axios.post(`${baseUrl}/create-order`, {
@@ -128,38 +133,54 @@ const Pay = () => {
   };
 
   const handleBuy = async () => {
-    if (preferenceId) return; // Evita crear una nueva preferencia si ya existe una
+    if (validateForm()) {
+      setShowConfirmationPopup(true);
+    } else {
+      setShowErrorPopup(true);
+    }
+  };
+
+  const handleConfirm = async () => {
+    setIsLoading(true); // Inicia el loader
+    setShowConfirmationPopup(false);
     const id = await createPreference();
     if (id) {
       setPreferenceId(id);
-    } else {
-      setIsButtonDisabled(false);
+      setIsWalletVisible(true);
     }
+    setIsLoading(false); // Finaliza el loader
+  };
+
+  const handleEdit = () => {
+    setShowConfirmationPopup(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isButtonDisabled && !preferenceId) {
-      // Asegura que solo se haga una vez
       setIsButtonDisabled(true);
-      if (validateForm()) {
-        await handleBuy();
-      } else {
-        setShowErrorPopup(true);
-      }
+      await handleBuy();
       setIsButtonDisabled(false);
     }
   };
 
-  const handleToggle = (type) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tipoVivienda: type,
-    }));
-  };
-
   const handleBack = () => {
     navigate('/cart');
+  };
+
+  const handleToggle = (type) => {
+    setFormData((prev) => ({
+      ...prev,
+      tipoVivienda: type,
+    }));
+
+    // Si el usuario elige "Casa", limpiar el error de "Piso"
+    if (type === 'casa') {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        piso: false,
+      }));
+    }
   };
 
   return (
@@ -171,7 +192,10 @@ const Pay = () => {
           className="pay-back-button"
           onClick={handleBack}
         />
-        <form className="pay-form" onSubmit={handleSubmit}>
+        <form
+          className={`pay-form ${isWalletVisible ? 'wallet-visible' : ''}`}
+          onSubmit={handleSubmit}
+        >
           <div className="pay-form-row">
             <input
               type="text"
@@ -182,6 +206,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.nombre ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
             <input
               type="text"
@@ -192,6 +217,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.apellido ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -204,6 +230,7 @@ const Pay = () => {
               className={`pay-input-complete ${
                 errors.email ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -211,11 +238,12 @@ const Pay = () => {
               type="text"
               name="cel"
               placeholder="Número de Teléfono"
-              value={formData.cel} // Valor para el número de teléfono
+              value={formData.cel}
               onChange={handleInputChange}
               className={`pay-input-complete ${
                 errors.cel ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -228,6 +256,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.direccion ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
             <input
               type="text"
@@ -238,6 +267,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.altura ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -250,6 +280,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.localidad ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
             <input
               type="text"
@@ -260,6 +291,7 @@ const Pay = () => {
               className={`pay-input ${
                 errors.entreCalles ? 'invalid-placeholder' : ''
               }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -270,6 +302,7 @@ const Pay = () => {
                   formData.tipoVivienda === 'casa' ? 'active' : ''
                 }`}
                 onClick={() => handleToggle('casa')}
+                disabled={isFormDisabled}
               >
                 CASA
               </button>
@@ -279,17 +312,24 @@ const Pay = () => {
                   formData.tipoVivienda === 'depto' ? 'active' : ''
                 }`}
                 onClick={() => handleToggle('depto')}
+                disabled={isFormDisabled}
               >
                 DPTO.
               </button>
             </div>
+
             <input
               type="text"
               name="piso"
-              placeholder="Piso (opcional)"
+              placeholder={
+                formData.tipoVivienda === 'depto' ? 'PISO' : 'Piso (opcional)'
+              }
               value={formData.piso}
               onChange={handleInputChange}
-              className="pay-input"
+              className={`pay-input ${
+                errors.piso ? 'invalid-placeholder' : ''
+              }`}
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
@@ -300,20 +340,22 @@ const Pay = () => {
               value={formData.contactoReceptor}
               onChange={handleInputChange}
               className="pay-input-complete-opcional"
+              disabled={isFormDisabled}
             />
           </div>
           <div className="pay-form-row">
-            <input
-              type="text"
+            <textarea
               name="notasPedido"
               placeholder="Notas del pedido (opcional)"
               value={formData.notasPedido}
               onChange={handleInputChange}
-              className="pay-input-complete-opcional"
+              className="pay-textarea"
               style={{
-                height: '2rem',
                 borderRadius: '15px',
+                resize: 'none',
               }}
+              rows="3"
+              disabled={isFormDisabled}
             />
           </div>
           {!preferenceId && (
@@ -328,15 +370,77 @@ const Pay = () => {
             </div>
           )}
           {preferenceId && (
-            <div className="pay-submit-button-container">
+            <div className="pay-submit-button-container.wallet-visible">
               <Wallet
                 initialization={{ preferenceId }}
-                customization={{ texts: { valueProp: 'smart_option' } }}
+                customization={{
+                  texts: {
+                    action: 'pay',
+                    valueProp: '',
+                  },
+                  visual: {
+                    buttonBackground: 'black',
+                    borderRadius: '100px',
+                    valuePropColor: 'grey',
+                    verticalPadding: '8px',
+                    horizontalPadding: '6px',
+                  },
+                }}
               />
             </div>
           )}
         </form>
       </div>
+
+      {showConfirmationPopup && (
+        <div className="ups-popup">
+          <div className="ups-popup-content">
+            <p>
+              <strong>ATENCIÓN</strong>, para que ARTIC llegue bien a tus manos
+              necesitamos que hagas un doble chequeo de tus datos.
+            </p>
+            <ul>
+              <li>
+                <strong>Email:</strong> {formData.email}
+              </li>
+              <li>
+                <strong>Teléfono:</strong> {formData.cel}
+              </li>
+              <li>
+                <strong>Dirección:</strong> {formData.direccion}{' '}
+                {formData.altura}
+              </li>
+              <li>
+                <strong>Localidad:</strong> {formData.localidad}
+              </li>
+              <li>
+                <strong>Entre Calles:</strong> {formData.entreCalles}
+              </li>
+              <li>
+                <strong>Tipo de Vivienda:</strong>{' '}
+                {formData.tipoVivienda === 'casa' ? 'Casa' : 'Depto'}
+              </li>
+              {formData.tipoVivienda === 'depto' && (
+                <li>
+                  <strong>Piso:</strong> {formData.piso}
+                </li>
+              )}
+            </ul>
+            <div className="popup-actions">
+              <button onClick={handleEdit}>Editar</button>
+              <button onClick={handleConfirm}>Ok</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-bar">
+            <div className="loading-progress"></div>
+          </div>
+        </div>
+      )}
 
       {showErrorPopup && (
         <div className="ups-popup">
