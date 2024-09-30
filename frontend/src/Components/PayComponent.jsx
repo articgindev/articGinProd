@@ -48,7 +48,7 @@ const Pay = () => {
     const fetchCartTotal = async () => {
       try {
         const baseUrl = 'https://artic-gin-server.vercel.app';
-        const response = await axios.get(`${baseUrl}get-cart/${cartId}`);
+        const response = await axios.get(`${baseUrl}/get-cart/${cartId}`);
         setTotalCost(response.data.total);
       } catch (error) {
         console.error('Error obteniendo el total del carrito:', error);
