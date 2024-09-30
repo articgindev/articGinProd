@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .pay-container {
@@ -25,6 +26,7 @@
   height: auto;
   overflow: visible;
   justify-content: flex-start;
+  transform: translateY(-15%);
 }
 
 .pay-back-button {
@@ -41,7 +43,7 @@
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
-  padding-bottom: 4rem;
+  padding-bottom: 1rem;
 }
 
 .pay-form-row {
@@ -244,4 +246,24 @@ input:-webkit-autofill:active {
   .toggle-container {
     width: 100%;
   }
+}
+
+@media (max-width: 376px) {
+
+  .pay-input,
+  .pay-input-complete,
+  .pay-input-complete-opcional {
+    font-size: 0.6rem;
+    padding: 6px;
+  }
+
+  .toggle-button {
+    font-size: 0.6rem;
+    padding: 6px;
+  }
+
+  .pay-container {
+    transform: translateY(-12%);
+  }
+
 }
