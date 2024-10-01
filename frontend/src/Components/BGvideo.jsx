@@ -56,7 +56,7 @@ const BackgroundVideo = () => {
       <source
         src={
           isMobile
-            ? 'https://res.cloudinary.com/dtu2unujm/video/upload/v1726876272/fondoCel_br0wnh.mp4'
+            ? '/fondoCel_br0wnh.mp4'
             : 'https://res.cloudinary.com/dtu2unujm/video/upload/v1726876233/fondoPc_yyrpxb.mp4'
         }
         type="video/mp4"
