@@ -3,22 +3,13 @@ import React, { useState, useEffect } from 'react';
 const BackgroundVideo = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
 
+  // Función para detectar si es móvil o PC
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1024);
+      setIsMobile(window.innerWidth <= 1024); // Si el ancho de la pantalla es menor o igual a 1024px, es móvil
     };
 
     window.addEventListener('resize', handleResize);
-
-    // Forzar reproducción cuando el video esté listo
-    const video = document.querySelector('video');
-    if (video) {
-      video.muted = true;
-      video.removeAttribute('controls');
-      video.play().catch((error) => {
-        console.log('Error trying to autoplay the video:', error);
-      });
-    }
 
     // Limpiar el event listener al desmontar el componente
     return () => {
@@ -27,14 +18,7 @@ const BackgroundVideo = () => {
   }, []);
 
   return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      className="background-video"
-    >
+    <video autoPlay loop muted playsInline className="background-video">
       <source
         src={
           isMobile

@@ -14,26 +14,4 @@
   height: 225vh;
   object-fit: cover;
   z-index: -1;
-  pointer-events: none;
-  animation-play-state: running !important;
-}
-
-video::-webkit-media-controls {
-  display: none !important;
-}
-
-video::-webkit-media-controls-play-button {
-  display: none !important;
-}
-
-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-}
-
-video::media-controls-overlay-play-button {
-  display: none !important;
-}
-
-video::media-controls {
-  display: none !important;
 }
