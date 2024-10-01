@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -1;
 }
 
 /* Imagen grande en el centro */
@@ -37,9 +38,12 @@
   transform: translate(-50%, -50%);
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  z-index: 2000;
   max-width: 400px;
   text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  background-color: white;
+  border-radius: 10px;
 }
 
 .ups-popup-content p {

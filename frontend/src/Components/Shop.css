@@ -45,7 +45,7 @@ p {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 .shop-logo {
@@ -60,7 +60,6 @@ p {
   right: 0.5rem;
   max-width: 3rem;
   cursor: pointer;
-  z-index: 10000;
 }
 
 .shop-main {
@@ -105,7 +104,7 @@ p {
 }
 
 .shop-product-description {
-  z-index: 10000;
+  z-index: 1000;
   width: 100%;
   position: relative;
   top: -1rem;
