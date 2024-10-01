@@ -18,7 +18,7 @@ const BackgroundVideo = () => {
   }, []);
 
   useEffect(() => {
-    const video = document.querySelector('video');
+    const video = document.getElementById('autoplay');
 
     const tryPlayVideo = () => {
       if (video && video.paused) {
@@ -29,8 +29,10 @@ const BackgroundVideo = () => {
       }
     };
 
-    // Intentar reproducir automáticamente el video cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', tryPlayVideo);
+    // Reproducir el video cuando el DOM esté completamente cargado
+    window.onload = () => {
+      tryPlayVideo();
+    };
 
     // Si la reproducción automática falla, reproducir cuando el usuario interactúe
     document.addEventListener('click', tryPlayVideo);
@@ -38,25 +40,18 @@ const BackgroundVideo = () => {
 
     // Limpiar los event listeners cuando el componente se desmonte
     return () => {
-      document.removeEventListener('DOMContentLoaded', tryPlayVideo);
       document.removeEventListener('click', tryPlayVideo);
       document.removeEventListener('scroll', tryPlayVideo);
     };
   }, []);
 
   return (
-    <video
-      autoPlay="autoplay"
-      loop
-      muted
-      playsInline
-      className="background-video"
-    >
+    <video loop muted id="autoplay" playsInline className="background-video">
       <source
         src={
           isMobile
-            ? '/fondoCel_br0wnh.mp4'
-            : 'https://res.cloudinary.com/dtu2unujm/video/upload/v1726876233/fondoPc_yyrpxb.mp4'
+            ? '/fondoCel_br0wnh.mp4' // Si estás cargando desde la carpeta public
+            : '/fondoPc_yyrpxb.mp4'
         }
         type="video/mp4"
       />
