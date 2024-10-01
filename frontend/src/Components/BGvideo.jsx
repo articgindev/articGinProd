@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import './BGvideo.css';
 
 const BackgroundVideo = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
 
-  // Función para detectar si es móvil o PC
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1024); // Si el ancho de la pantalla es menor o igual a 1024px, es móvil
+      setIsMobile(window.innerWidth <= 1024);
     };
 
     window.addEventListener('resize', handleResize);
@@ -17,8 +17,42 @@ const BackgroundVideo = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const video = document.querySelector('video');
+
+    const tryPlayVideo = () => {
+      if (video && video.paused) {
+        video.muted = true; // Asegúrate de que esté silenciado
+        video.play().catch((error) => {
+          console.log('Error al intentar reproducir el video:', error);
+        });
+      }
+    };
+
+    // Intentar reproducir automáticamente el video cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', tryPlayVideo);
+
+    // Si la reproducción automática falla, reproducir cuando el usuario interactúe
+    document.addEventListener('click', tryPlayVideo);
+    document.addEventListener('scroll', tryPlayVideo);
+
+    // Limpiar los event listeners cuando el componente se desmonte
+    return () => {
+      document.removeEventListener('DOMContentLoaded', tryPlayVideo);
+      document.removeEventListener('click', tryPlayVideo);
+      document.removeEventListener('scroll', tryPlayVideo);
+    };
+  }, []);
+
   return (
-    <video autoPlay loop muted playsInline className="background-video">
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      className="background-video"
+    >
       <source
         src={
           isMobile

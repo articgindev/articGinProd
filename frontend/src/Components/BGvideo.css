@@ -1,0 +1,47 @@
+.background-video-container {
+  position: relative;
+  width: 100vw;
+  height: 225vh;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 225vh;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+  /* Evita la interacción del usuario con el video */
+}
+
+/* Ocultar controles en Safari iOS */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+/* Para navegadores que soporten la especificación de controls del HTML5 video */
+video::media-controls-overlay-play-button {
+  display: none !important;
+}
+
+video::media-controls {
+  display: none !important;
+}
+
+/* Forzar que el video se mantenga en reproducción continua */
+video {
+  -webkit-animation-play-state: running !important;
+  animation-play-state: running !important;
+}
