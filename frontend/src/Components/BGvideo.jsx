@@ -45,7 +45,13 @@ const BackgroundVideo = () => {
   }, []);
 
   return (
-    <video autoPlay loop muted playsInline className="background-video">
+    <video
+      autoPlay="autoplay"
+      loop
+      muted
+      playsInline
+      className="background-video"
+    >
       <source
         src={
           isMobile
