@@ -22,7 +22,9 @@ const Home = () => {
           <GinComponent />
         </section>
       </div>
-      {/* <section id="botanicos-section">
+      {/* Secciones comentadas para futuras adiciones */}
+      {/* 
+      <section id="botanicos-section">
         <BotanicosComponent />
       </section>
       <section id="origen-section">
@@ -33,7 +35,8 @@ const Home = () => {
       </section>
       <section id="nosotros-section">
         <NosotrosComponent />
-      </section> */}
+      </section>
+      */}
     </div>
   );
 };

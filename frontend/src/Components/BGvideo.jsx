@@ -10,6 +10,16 @@ const BackgroundVideo = () => {
 
     window.addEventListener('resize', handleResize);
 
+    // Forzar reproducción cuando el video esté listo
+    const video = document.querySelector('video');
+    if (video) {
+      video.muted = true;
+      video.removeAttribute('controls');
+      video.play().catch((error) => {
+        console.log('Error trying to autoplay the video:', error);
+      });
+    }
+
     // Limpiar el event listener al desmontar el componente
     return () => {
       window.removeEventListener('resize', handleResize);
