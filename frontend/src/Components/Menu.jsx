@@ -22,7 +22,7 @@ const sections = [
   },
   { id: 'origen-section', name: 'ORIGEN', image: origenImage },
   { id: 'eco-section', name: 'ECO', image: ecoImage },
-  { id: 'nosotros-section', name: 'NOSOTROS', image: nosotrosImage },
+  { id: 'contacto-section', name: 'CONTACTO', image: nosotrosImage },
 ];
 
 const Menu = () => {
@@ -74,12 +74,17 @@ const Menu = () => {
   const handleSectionClick = (section) => {
     setToggleMenu(false);
     setCurrentSection(section.id);
-    if (section.isShop) {
+
+    if (section.id === 'contacto-section') {
+      // Redirigir a la página de contacto en lugar de hacer scroll
+      navigate('/contact');
+    } else if (section.isShop) {
       // Redirigir a /cart
       navigate('/cart');
     } else {
+      // Si estamos en la página de cart, necesitamos navegar primero al home
       if (location.pathname === '/cart') {
-        navigate('/', { replace: true }); // Navega a la página principal
+        navigate('/', { replace: true });
         setTimeout(() => {
           document
             .getElementById(section.id)

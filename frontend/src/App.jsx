@@ -13,6 +13,7 @@ const Cart = lazy(() => import('./pages/Cart'));
 const Age = lazy(() => import('./pages/Age'));
 const Pay = lazy(() => import('./pages/Pay'));
 const Success = lazy(() => import('./pages/Success'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 function App() {
   const isAdult = () => {
@@ -39,6 +40,10 @@ function App() {
           <Route
             path="/success"
             element={isAdult() ? <Success /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/contact"
+            element={isAdult() ? <Contact /> : <Navigate to="/" />}
           />
         </Routes>
       </Suspense>

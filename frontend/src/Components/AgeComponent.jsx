@@ -63,6 +63,7 @@ const AgeComponent = () => {
               placeholder="Día"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-day"
+              isSearchable={false} // Deshabilitar búsqueda
             />
             <Select
               value={month}
@@ -71,6 +72,7 @@ const AgeComponent = () => {
               placeholder="Mes"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-month"
+              isSearchable={false} // Deshabilitar búsqueda
             />
             <Select
               value={year}
@@ -79,6 +81,7 @@ const AgeComponent = () => {
               placeholder="Año"
               maxMenuHeight={150} // Controla la altura del menú desplegable
               className="select-year"
+              isSearchable={false} // Deshabilitar búsqueda
             />
           </div>
           <button type="submit">Continuar</button>

@@ -1,0 +1,110 @@
+.contact-form-container {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 60px;
+  width: 80%;
+  max-width: 500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+}
+
+.title-image-placeholder {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.title-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.contact-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-input {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  width: 48%;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+.form-input-full {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  width: 100%;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+.form-textarea {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 15px;
+  padding: 10px;
+  width: 100%;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  resize: none;
+  height: 100px;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+}
+
+.submit-button {
+  background-color: rgb(165, 166, 168);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: #cc0000;
+}
+
+.social-media {
+  margin-top: 20px;
+}
+
+.instagram-icon {
+  max-width: 50px;
+  height: auto;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-input {
+    width: 100%;
+  }
+}
