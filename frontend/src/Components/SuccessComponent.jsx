@@ -12,7 +12,7 @@ const SuccessComponent = () => {
     setShowPopup(false); // Cierra el pop-up cuando se hace clic en el botón
     setTimeout(() => {
       navigate('/'); // Redirige después de 5 segundos
-    }, 10000);
+    }, 5000);
   };
 
   return (

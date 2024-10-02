@@ -9,7 +9,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: -1;
 }
 
 /* Imagen grande en el centro */
@@ -30,23 +29,43 @@
   z-index: 2;
 }
 
-/* Estilos del pop-up */
+/* Estilos del pop-up (adaptado desde el carrito) */
 .ups-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 2000;
-  max-width: 400px;
-  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
   background: rgba(0, 0, 0, 0.5);
-  background-color: white;
-  border-radius: 10px;
+  /* Fondo semi-transparente */
+}
+
+.ups-popup-content {
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente */
+  border-radius: 50px;
+  /* Bordes redondeados */
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  /* Ancho máximo */
+  height: auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra suave */
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .ups-popup-content p {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.2rem;
   color: #333;
   margin-bottom: 20px;
@@ -60,4 +79,21 @@
   border-radius: 30px;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
+}
+
+.ups-popup-content button:hover {
+  background-color: #cc0000;
+  /* Color de hover */
+}
+
+/* Adaptaciones para pantallas pequeñas */
+@media (max-width: 375px) {
+  .ups-popup-content {
+    padding: 15px;
+    max-width: 90%;
+  }
+
+  .ups-popup-content p {
+    font-size: 1rem;
+  }
 }
