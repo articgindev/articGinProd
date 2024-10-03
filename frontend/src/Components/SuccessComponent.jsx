@@ -22,7 +22,7 @@ const SuccessComponent = () => {
           <div className="ups-popup-content">
             <p>
               Gracias por tu compra. En breve nos comunicaremos por mail con los
-              detalles de tu compra. ¡Salute! :)
+              detalles de tu compra. Salute! :)
             </p>
             <button onClick={handleClosePopup}>Cerrar</button>
           </div>
