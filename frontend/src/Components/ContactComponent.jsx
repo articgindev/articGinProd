@@ -7,7 +7,7 @@ import logoIg from '../assets/contact/LogoIgContacto.png';
 import enviar from '../assets/contact/EnviarContacto.png';
 import Menu from './Menu';
 
-const ContactComponent = () => {
+export const Consultas = () => {
   const [email, setEmail] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -183,5 +183,3 @@ const ContactComponent = () => {
     </div>
   );
 };
-
-export default ContactComponent;

@@ -1,11 +1,11 @@
 import React from 'react';
-import ContactComponent from '../Components/ContactComponent';
+import { Consultas } from '../Components/ContactComponent.jsx'; // Importación nombrada
 
 const Contact = () => {
   return (
     <div>
       <section id="contacto-section">
-        <ContactComponent />
+        <Consultas />
       </section>
     </div>
   );
