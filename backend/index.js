@@ -5,6 +5,7 @@ import morgan from 'morgan';
 
 import cartRoutes from './routes/cart.routes.js'; // Importar rutas de carrito
 import paymentRoutes from './routes/payment.routes.js'; // Importar rutas de carrito
+import contactRoutes from './routes/contact.routes.js';
 
 dotenv.config();
 
@@ -44,6 +45,8 @@ app.use((req, res, next) => {
 // Rutas
 app.use(cartRoutes); // Usar las rutas de carrito
 app.use(paymentRoutes); // Registrar la ruta /create-order
+app.use(contactRoutes);
+
 
 // Conexión a la base de datos
 mongoose.connect(mongoDBURL)

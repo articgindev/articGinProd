@@ -1,3 +1,10 @@
+/* Estilo para evitar el scroll en la pantalla */
+body,
+html {
+  overflow: hidden;
+  margin: 0;
+}
+
 /* Contenedor general para la página de éxito */
 .success-container {
   position: relative;
