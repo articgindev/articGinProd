@@ -104,3 +104,20 @@ html {
     font-size: 1rem;
   }
 }
+
+
+@media (min-width: 1025px) {
+  .success-image-bottom-right {
+    max-width: 20rem;
+    bottom: 40%;
+    right: 10%;
+  }
+
+  .success-image-middle {
+    bottom: 0px;
+    max-width: 35%;
+    transform: rotate(-15deg);
+
+  }
+
+}

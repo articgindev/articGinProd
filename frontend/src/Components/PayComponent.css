@@ -392,3 +392,19 @@ ul li {
   }
 
 }
+
+@media (min-width: 1025px) {
+  .pay-overlay {
+    background: url('../assets/backgrounds/FondoShopPc.jpg');
+    background-size: cover;
+  }
+
+  .pay-container {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+}
+
+@media (min-width: 1025px) {
+
+  .success-image-bottom-right {}

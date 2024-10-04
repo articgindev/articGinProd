@@ -225,11 +225,90 @@ p {
 
 
 @media (min-width: 1025px) {
+
   .shop-container {
-    max-height: 100vh;
+    background: url('../assets/backgrounds/FondoShopPc.jpg');
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
   }
 
   .shop-sub-container {
-    max-height: 90vh;
+    height: 100vh;
+    width: 35vw;
+    max-width: 80%;
+    border-radius: 0px;
+    margin-top: 0px;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1),
+      0 0 20px 10px rgba(0, 0, 0, 0.1),
+      ¡ 0 0 30px 10px rgba(0, 0, 0, 0.1);
   }
+
+  .shop-price {
+    font-size: 1.5rem;
+  }
+
+  .shop-bottle {
+    max-width: 18vw;
+  }
+
+  .bottle-batch-container {
+    top: 1rem
+  }
+
+  .shop-batch-number {
+    max-width: 300px;
+  }
+
+  .shop-logo {
+    position: fixed;
+    top: 4rem;
+    left: 4rem;
+    max-width: 18vw;
+    transform: none;
+    z-index: 999;
+  }
+
+  .shop-addTocart-container {
+    position: fixed;
+    width: auto;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Alinea los elementos a la derecha */
+  }
+
+  /* Posiciona el ícono del carrito arriba a la derecha */
+  .shop-cart-icon {
+    position: fixed;
+    top: 2rem;
+    right: 3rem;
+    max-width: 5rem;
+    margin-bottom: 10px;
+  }
+
+  .shop-product-description {
+    width: 100%;
+  }
+
+  /* Posiciona el botón "Add to cart" abajo a la derecha */
+  .shop-add-to-cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 18rem;
+  }
+
+  .shop-back-button {
+    display: none;
+  }
+
 }

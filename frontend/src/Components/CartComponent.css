@@ -526,3 +526,114 @@ body {
     font-size: 0.8rem;
   }
 }
+
+@media (min-width: 1025px) {
+
+  .cart-overlay {
+    background: url('../assets/backgrounds/FondoShopPc.jpg');
+    background-size: cover;
+  }
+
+  .cart-unidades {
+    margin-bottom: 1rem;
+  }
+
+  .cart-right-container {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    right: 28%;
+    width: 23vw;
+    max-width: 400px;
+    height: 85vh;
+    flex-direction: column;
+  }
+
+  .cart-description-img {
+    width: 16rem;
+    max-width: 120%;
+    margin-bottom: 1rem;
+  }
+
+  .discount-form input {
+    font-size: 14px;
+  }
+
+  .cart-subtotal-values {
+    margin-top: 10px;
+  }
+
+  .cart-cartSubtotal-label {
+    font-size: 1.2rem;
+  }
+
+  .cart-cartSubtotal-value {
+    font-size: 1.2rem;
+  }
+
+  .cart-discount-percentage {
+    font-size: 1rem;
+  }
+
+  .cart-discount-amount {
+    font-size: 1rem;
+  }
+
+  .shipping-label {
+    font-size: 1rem;
+  }
+
+  .shipping-value {
+    font-size: 1rem;
+  }
+
+  .cart-label {
+    font-size: 1.2rem;
+  }
+
+  .cart-value {
+    font-size: 1.2rem;
+  }
+
+  .cart-end-label {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    color: black;
+  }
+
+  .cart-comprar-button {
+    max-width: 12rem;
+    transform: translateY(45%);
+  }
+
+  .cart-end-container {
+    margin-top: 10px;
+  }
+
+  .cart-shipping-form-container {
+    margin-top: 1rem;
+  }
+
+  .cart-cartCP-label {
+    font-size: 1rem;
+  }
+
+  .cart-CP-form {
+    padding: 0.7rem;
+    margin-left: 1.3rem;
+  }
+
+  .cart-descuentoOk-img {
+    width: 2rem;
+  }
+
+  .cart-envioOk-img {
+    width: 2rem;
+    right: 10px;
+  }
+
+  .cart-bottle {
+    width: 200%;
+    left: -12rem;
+  }
+
+}

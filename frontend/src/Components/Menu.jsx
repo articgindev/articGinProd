@@ -75,6 +75,12 @@ const Menu = () => {
     setToggleMenu(false);
     setCurrentSection(section.id);
 
+    // Si la sección es GIN, redirigir a la URL base
+    if (section.id === 'gin-section') {
+      navigate('/'); // Redirige a la URL base
+      return; // Termina la ejecución aquí para evitar el scroll
+    }
+
     if (section.id === 'contacto-section') {
       // Redirigir a la página de contacto en lugar de hacer scroll
       navigate('/contact');

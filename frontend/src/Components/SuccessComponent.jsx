@@ -9,10 +9,10 @@ const SuccessComponent = () => {
   const navigate = useNavigate();
 
   const handleClosePopup = () => {
-    setShowPopup(false); // Cierra el pop-up cuando se hace clic en el botón
+    setShowPopup(false);
     setTimeout(() => {
-      navigate('/'); // Redirige después de 5 segundos
-    }, 5000);
+      navigate('/');
+    }, 10000);
   };
 
   return (

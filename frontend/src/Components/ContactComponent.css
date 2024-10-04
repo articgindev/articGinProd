@@ -1,7 +1,10 @@
 /* Estilo para evitar el scroll en la pantalla */
 body,
 html {
-  overflow: hidden;
+  overflow-x: hidden;
+  /* Evita el desplazamiento horizontal */
+  overflow-y: auto;
+  /* Permite el desplazamiento vertical */
   margin: 0;
 }
 
@@ -18,7 +21,7 @@ html {
 /* Contenedor para centrar las imágenes */
 .title-image-placeholder {
   width: 70%;
-  margin-top: 6rem;
+  margin-top: 3rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
