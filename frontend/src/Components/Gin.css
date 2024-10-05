@@ -92,6 +92,10 @@
   .gin-comprar-button {
     max-width: 15rem;
   }
+
+  .comprarButton {
+    bottom: 1rem;
+  }
 }
 
 @media (max-width: 375px) and (max-height: 670px) {

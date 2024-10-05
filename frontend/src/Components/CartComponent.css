@@ -601,8 +601,9 @@ body {
   }
 
   .cart-comprar-button {
+    position: fixed;
     max-width: 12rem;
-    transform: translateY(45%);
+    transform: translateY(610%);
   }
 
   .cart-end-container {
